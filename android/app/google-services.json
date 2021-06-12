@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "535103842169",
+    "project_id": "kids-socio",
+    "storage_bucket": "kids-socio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535103842169:android:7623ce4c1cf541f914f1a8",
+        "android_client_info": {
+          "package_name": "com.example.flutter_kid_socio_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535103842169-jd9blufkebtv1hmghsifqd43d7gis9s6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_kid_socio_app",
+            "certificate_hash": "92fa66c15332338b1aad0511c91a864b7bef2758"
+          }
+        },
+        {
+          "client_id": "535103842169-vvdlcpnehpghjtu6ahrjh4bkgg1n0f0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJzu_2FDIxKrO_dOsU56XPqCYkazdDFxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535103842169-vvdlcpnehpghjtu6ahrjh4bkgg1n0f0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
