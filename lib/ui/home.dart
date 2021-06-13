@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
 
 class Home extends StatefulWidget {
   final FirebaseUser user;

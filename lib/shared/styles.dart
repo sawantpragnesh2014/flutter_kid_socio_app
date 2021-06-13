@@ -1,36 +1,81 @@
 import 'package:flutter/material.dart';
 
-const redText = TextStyle(
-    color: Color(0xFFef4138),
-    fontSize: 30.0
-);
+import 'colors.dart';
 
-const blackText = TextStyle(
-    color: Color(0xFF676767),
-    fontSize: 30.0
-);
+class TextStyles {
 
-const blackTextSmall = TextStyle(
-    color: Color(0xFF676767),
-    fontSize: 15.0
-);
+  static const String opn_sans = 'OpenSans';
 
-const kTitleStyle = TextStyle(
-    fontSize: 20.0,
-    fontWeight: FontWeight.bold,
-    color: Colors.black);
+  static const FontWeight light = FontWeight.w300;
+  static const FontWeight regular = FontWeight.w400;
+  static const FontWeight semibold = FontWeight.w600;
 
-const kSubTitleStyle = TextStyle(
-    fontSize: 15.0,
-    color: Colors.black);
+  static const redText = TextStyle(
+      color: AppColors.coloref4138,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      fontSize: 30.0
+  );
 
-const textInputDecoration = InputDecoration(
-  fillColor: Color(0xFFf3f3f3),
-  filled: true,
-  enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.white)
-  ),
-  focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.white)
-  ),
-);
+  static const blackText = TextStyle(
+    color: AppColors.color676767,
+    fontFamily: opn_sans,
+    fontWeight: semibold,
+    fontSize: 30.0,
+  );
+
+  static const blackTextSmall = TextStyle(
+      color: AppColors.color676767,
+      fontFamily: opn_sans,
+      fontWeight: light,
+      fontSize: 15.0
+  );
+
+  static const kTitleStyle = TextStyle(
+      fontSize: 20.0,
+      fontFamily: opn_sans,
+      fontWeight: semibold,
+      color: AppColors.color676767);
+
+  static const kSubTitleStyle = TextStyle(
+      fontSize: 15.0,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      color: AppColors.color676767);
+
+  static const editTextStyle = TextStyle(
+      fontSize: 16.0,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      color: AppColors.color676767);
+
+  static const textInputDecoration = InputDecoration(
+    fillColor: AppColors.colorf3f3f3,
+    filled: true,
+    hintStyle: editTextStyle,
+    enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.colore6e6e6),
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
+    focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.colore6e6e6),
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
+  );
+
+  static ElevatedButtonStyle(String text) => ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // <-- Radius
+      ),
+      primary: AppColors.coloref4138,
+    ),
+    onPressed: () {},
+    child: Text(
+      text,
+      style: TextStyle(color: Colors.white,fontSize: 20.0,fontFamily: opn_sans,fontWeight: regular),
+    ),
+  );
+
+}

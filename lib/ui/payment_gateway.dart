@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
 class Payment extends StatefulWidget {
@@ -22,7 +23,7 @@ class _PaymentState extends State<Payment> {
             Center(
               child: Text(
                 'Payment Details',
-                  style: redText
+                  style: TextStyles.redText
               ),
             ),
             SizedBox(height: 20.0,),
@@ -35,7 +36,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Valid Card Number'),
+              decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Valid Card Number'),
               validator: (val) => val.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
@@ -61,7 +62,7 @@ class _PaymentState extends State<Payment> {
                     Container(
                       width: 100,
                       child: TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'MM/YY'),
+                        decoration: TextStyles.textInputDecoration.copyWith(hintText: 'MM/YY'),
                         validator: (val) => val.isEmpty?'Enter month year':null,
                         onChanged: (val){
                           setState(() {
@@ -87,7 +88,7 @@ class _PaymentState extends State<Payment> {
                     Container(
                       width: 100,
                       child: TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'CVC'),
+                        decoration: TextStyles.textInputDecoration.copyWith(hintText: 'CVC'),
                         validator: (val) => val.isEmpty?'Enter CVC':null,
                         onChanged: (val){
                           setState(() {
@@ -110,7 +111,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Card Owner Name'),
+              decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Card Owner Name'),
               validator: (val) => val.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
@@ -120,15 +121,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             Center(
-              child: RaisedButton(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                onPressed: () {},
-                child: Text(
-                  'Confirm Payment',
-                  style: TextStyle(color: Colors.white,fontSize: 20.0),
-                ),
-                color: Color(0xFFef4138),
-              ),
+              child: TextStyles.ElevatedButtonStyle('Confirm Payment'),
             ),
 
           ],

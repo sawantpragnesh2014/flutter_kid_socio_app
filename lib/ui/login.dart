@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/services/auth.dart';
+import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
 import 'package:flutter_kid_socio_app/ui/home.dart';
 
