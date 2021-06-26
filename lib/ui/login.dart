@@ -1,67 +1,58 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_kid_socio_app/services/auth.dart';
-import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/services/user_repository.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
-import 'package:flutter_kid_socio_app/ui/home.dart';
+import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'home.dart';
 
 class Login extends StatefulWidget {
+  bool loading = false;
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Login')), body: Body());
-  }
-}
 
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  FirebaseUser user;
-
-  @override
-  void initState() {
-    super.initState();
-    signOutGoogle();
-  }
-
-  void click() {
-    signInWithGoogle().then((user) => {
-      this.user = user,
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ChoosePlan(user)))
-    });
-  }
-
-  Widget googleLoginButton() {
-    return OutlineButton(
-        onPressed: this.click,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-        splashColor: Colors.grey,
-        borderSide: BorderSide(color: Colors.grey),
-        child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(image: AssetImage('assets/google_logo.png'), height: 35),
-                Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text('Sign in with Google',
-                        style: TextStyle(color: Colors.grey, fontSize: 25)))
-              ],
-            )));
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Align(alignment: Alignment.center, child: googleLoginButton());
+    return  (widget.loading) ? Loading()
+        : Align(alignment: Alignment.center,
+          child: ConnectFacebookGoogle(itemClick: () {
+            onGoogleSignIn(context);
+            setState(() {
+              widget.loading = true;
+            });
+          },
+          )
+        );
+  }
+
+  Widget Loading() {
+    return Container(
+      color: Colors.brown[100],
+      child: Center(
+        child: SpinKitDoubleBounce(
+          color: Colors.brown,
+          size: 50.0,
+        ),
+      ),
+
+    );
+  }
+
+  void onGoogleSignIn(BuildContext context) async {
+    User user = await AuthProvider.of(context).auth.handleSignIn();
+    print(user.uid);
+    /*User user = bloc.getUser();
+    var userSignedIn = Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                Home(user:user,googleSignIn: googleSignIn)));*/
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/size_config.dart';
 
 class BottomNav extends StatelessWidget {
   var textName;
@@ -7,8 +8,9 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
-      height: 100.0,
+      height: SizeConfig.blockSizeVertical*12,
       width: double.infinity,
       color: bgColor,
       child: GestureDetector(

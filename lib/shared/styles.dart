@@ -28,7 +28,15 @@ class TextStyles {
       color: AppColors.color676767,
       fontFamily: opn_sans,
       fontWeight: light,
-      fontSize: 15.0
+      fontSize: 15.0,
+  );
+
+  static const paragraphText = TextStyle(
+      color: AppColors.color676767,
+      fontFamily: opn_sans,
+      fontWeight: light,
+      fontSize: 15.0,
+    wordSpacing: 8.0,
   );
 
   static const kTitleStyle = TextStyle(
@@ -47,6 +55,24 @@ class TextStyles {
       fontSize: 16.0,
       fontFamily: opn_sans,
       fontWeight: regular,
+      color: AppColors.color676767);
+
+  static const hyperlinkStyle = TextStyle(
+      fontSize: 16.0,
+      fontFamily: opn_sans,
+      fontWeight: FontWeight.bold,
+      color: AppColors.color16499f);
+
+  static const facebookTextStyle = TextStyle(
+      fontSize: 25.0,
+      fontFamily: opn_sans,
+      fontWeight: semibold,
+      color: Colors.white);
+
+  static const googleTextStyle = TextStyle(
+      fontSize: 25.0,
+      fontFamily: opn_sans,
+      fontWeight: semibold,
       color: AppColors.color676767);
 
   static const textInputDecoration = InputDecoration(
