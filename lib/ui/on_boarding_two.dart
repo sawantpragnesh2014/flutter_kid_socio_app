@@ -3,6 +3,8 @@ import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
+import 'package:flutter_kid_socio_app/ui/login.dart';
+import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 //https://www.youtube.com/watch?v=8eRQyE2PN7w refer for design
 class OnBoardingTwo extends StatefulWidget {
@@ -141,7 +143,8 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
       ),
       bottomSheet: currentPage == numPages -1
           ? BottomNav(textName: "Get Started",bgColor:AppColors.coloref4138,onNavHit: (){
-            print('Hello Pragnesh');
+          Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => RootPage()));
       },)
           :Text(''),
     );

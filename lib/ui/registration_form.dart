@@ -1,13 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/services/user_repository.dart';
 import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
+import 'package:flutter_kid_socio_app/ui/otp_screen.dart';
+import 'package:flutter_kid_socio_app/ui/privacy_policy.dart';
 
 class RegistrationForm extends StatefulWidget {
   @override
@@ -17,9 +20,7 @@ class RegistrationForm extends StatefulWidget {
 class _RegistrationFormState extends State<RegistrationForm> {
   final formKey = GlobalKey<FormState>();
   String firstName;
-
   String lastName;
-
   String email;
   String gender;
 
@@ -104,6 +105,21 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
+  Widget genderButton2(String text){
+    return Expanded(
+      child: Card(
+        color: AppColors.colore6e6e6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // <-- Radius
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Text(text,style: TextStyles.editTextStyle,),
+        ),
+        ),
+      );
+  }
+
   Widget get _buildAgreeToTermsField {
     return FormField<bool>(
       initialValue: _agree,
@@ -122,21 +138,25 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 RichText(
                     text: TextSpan(
                         children: [
-                          TextSpan(text: 'I agree to the ',style: TextStyles.editTextStyle),
+                          TextSpan(text: 'By continuing you agree to our ',style: TextStyles.editTextStyle),
                           TextSpan(
-                              text: 'privacy policy',
+                              text: 'T & C',
                               style: TextStyles.hyperlinkStyle,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  print('Terms of Service"');
+                                  print('Terms of Service');
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => Policy()));
                                 }),
-                          TextSpan(text: ' & ',style: TextStyles.editTextStyle),
+                          TextSpan(text: ' and ',style: TextStyles.editTextStyle),
                           TextSpan(
-                              text: '\nterms and conditions',
-                              style: TextStyles.hyperlinkStyle,
+                              text: '\nPrivacy Policy',
+                              style: TextStyles.redTextSmall,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  print('Terms of Service"');
+                                  print('Privacy Policy');
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => Policy()));
                                 }),
                         ]
                     )
@@ -158,7 +178,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    user = AuthProvider.of(context).auth.getUser;
+    user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
   }
 
   @override
@@ -176,16 +196,37 @@ class _RegistrationFormState extends State<RegistrationForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(
-                    child: Text(
-                        'Registration',
-                        style: TextStyles.redText
-                    ),
-                  ),
-                  SizedBox(height: 20.0,),
-                  Text(
-                    'Enter your details below',
-                    style: TextStyles.kSubTitleStyle
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Registration',
+                              style: TextStyles.redText
+                          ),
+                          SizedBox(height: 20.0,),
+                          Text(
+                              'Parent Info',
+                              style: TextStyles.hyperlinkStyle
+                          ),
+                          SizedBox(height: 5.0,),
+                          Text(
+                              'Enter your details below',
+                              style: TextStyles.kSubTitleStyle
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap:(){
+                        },
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(user?.photoUrl + '?width=400&height400'),
+                          radius: 40.0,
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(height: 20.0,),
                   _firstName,
@@ -197,9 +238,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      genderButton('Male'),
+                      genderButton2('Male'),
                       SizedBox(width: 20.0,),
-                      genderButton('Female')
+                      genderButton2('Female')
                     ],
                   ),
                   SizedBox(height: 20.0,),
@@ -215,6 +256,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
       bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
         if(formKey.currentState.validate()) {
           print('Reg hit');
+            Navigator.push(context, MaterialPageRoute(
+        builder: (context) => OTPScreen()));
         }
       },),
     );

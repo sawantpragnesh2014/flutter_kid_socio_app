@@ -1,38 +1,39 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Auth{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final fb = FacebookLogin();
   bool isUserSignedIn = false;
   User user;
 
-  /*Future<FirebaseUser> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken);
-
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(currentUser.uid == user.uid);
-
-    return user;
-  }*/
-
   void signOutGoogle() async {
     await googleSignIn.signOut();
+  }
+
+  Future<void> signOut() async{
+    try{
+      bool isGoogleSignedIn = await googleSignIn.isSignedIn();
+      bool isFbSignedIn = await fb.isLoggedIn;
+      if(isGoogleSignedIn){
+        print('google signed out');
+        googleSignIn.signOut();
+      }else if(isFbSignedIn){
+        print('fb signed out');
+        fb.logOut();
+      }
+       _auth.signOut();
+       user = null;
+       isUserSignedIn = false;
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
   }
 
   Future<User> handleSignIn() async {
@@ -65,19 +66,6 @@ class Auth{
     return user;
   }
 
-  /*Future<bool> checkUserLoggedInVal() async{
-    bool isSignedIn = await googleSignIn.isSignedIn();
-    isUserSignedIn = isSignedIn;
-
-    return isSignedIn;
-  }
-
-  Future<User> fetchUser() async {
-    final FirebaseUser currentUser = await _auth.currentUser();
-    user = _userFromFireBaseUser(currentUser);
-    return user;
-  }*/
-
   User _userFromFireBaseUser(FirebaseUser user){
     return user != null?
     User(uid: user.uid,
@@ -100,8 +88,46 @@ class Auth{
   void setUser(User data) {
     user = data;
   }
+
+  Future<User> signInWithCredential(AuthCredential credential) async {
+    user = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+    return user;
+  }
+
+  Future<bool> loginFromFaceBook() async {
+    User result;
+    final res = await fb.logIn(
+        permissions: [
+          FacebookPermission.publicProfile,
+          FacebookPermission.email
+        ]
+    );
+
+    switch(res.status){
+      case FacebookLoginStatus.Success:
+        print('Login successful');
+        //Get token
+        final FacebookAccessToken fbToken = res.accessToken;
+
+        //Convert to AuthCredential
+        final AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: fbToken.token);
+
+        //User Credential to Sign in with Firebase
+        result = await signInWithCredential(credential);
+        print('Facebook Login successful');
+        break;
+      case FacebookLoginStatus.Cancel:
+        print('Login cancelled');
+        break;
+      case FacebookLoginStatus.Error:
+        print('Login Error');
+        break;
+    }
+    return result == null;
+  }
 }
 
+/*
 class AuthProvider extends InheritedWidget{
   final Auth auth;
   AuthProvider({Key key,Widget child,this.auth}):super(key:key,child: child);
@@ -113,4 +139,4 @@ class AuthProvider extends InheritedWidget{
   }
 
   //AuthProvider.of(context).auth
-}
+}*/

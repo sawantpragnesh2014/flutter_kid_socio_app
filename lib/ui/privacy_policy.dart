@@ -36,6 +36,7 @@ class Policy extends StatelessWidget {
         ),
       bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.coloref4138,onNavHit: (){
           print('Reg hit');
+          Navigator.pop(context);
       },),
     );
   }

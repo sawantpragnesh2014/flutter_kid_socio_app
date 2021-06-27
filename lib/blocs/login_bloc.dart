@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter_kid_socio_app/blocs/bloc.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
-import 'package:flutter_kid_socio_app/services/user_repository.dart';
 
 class LoginBloc extends Bloc {
   // UserRepository _userRepository;

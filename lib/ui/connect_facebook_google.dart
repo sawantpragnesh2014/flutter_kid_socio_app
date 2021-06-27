@@ -21,7 +21,7 @@ class ConnectFacebookGoogle extends StatelessWidget {
                 SizedBox(width: 10.0,),
                 Text('Login with $btnText',
                     style: textStyle
-                )
+                ),
               ],
             )
         )

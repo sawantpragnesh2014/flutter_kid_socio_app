@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/ui/home.dart';
 import 'package:otp_screen/otp_screen.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -20,8 +21,8 @@ class _OTPScreenState extends State<OTPScreen> {
 
   // action to be performed after OTP validation is success
   void moveToNextScreen(context) {
-  /*  Navigator.push(context, MaterialPageRoute(
-        builder: (context) => SuccessfulOtpScreen()));*/
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => Home()));
   }
 
   @override

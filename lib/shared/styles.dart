@@ -17,6 +17,13 @@ class TextStyles {
       fontSize: 30.0
   );
 
+  static const redTextSmall = TextStyle(
+      color: AppColors.coloref4138,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      fontSize: 16.0
+  );
+
   static const blackText = TextStyle(
     color: AppColors.color676767,
     fontFamily: opn_sans,
@@ -60,7 +67,7 @@ class TextStyles {
   static const hyperlinkStyle = TextStyle(
       fontSize: 16.0,
       fontFamily: opn_sans,
-      fontWeight: FontWeight.bold,
+      fontWeight: regular,
       color: AppColors.color16499f);
 
   static const facebookTextStyle = TextStyle(

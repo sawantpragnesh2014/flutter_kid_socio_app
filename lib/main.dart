@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
-import 'package:flutter_kid_socio_app/services/user_repository.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
 import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
 import 'package:flutter_kid_socio_app/ui/home.dart';
@@ -18,21 +18,19 @@ import 'models/user.dart';
 
 void main() {
   runApp(MyApp());
+  CustomBlocProvider.setBloc(AuthBloc());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return AuthProvider(
-      auth: Auth(),
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: RootPage(),
-      ),
+        home: OnBoardingTwo(),
     );
   }
 }

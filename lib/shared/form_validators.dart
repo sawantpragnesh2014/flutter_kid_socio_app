@@ -27,9 +27,9 @@ class FormValidators{
     RegExp regExp = new RegExp(pattern);
 
     if (name.isEmpty)
-      return 'Enter a name';
+      return 'Enter a mobile number';
     else if (!regExp.hasMatch(name))
-      return "Enter a valid name";
+      return "Invalid mobile number";
     else
       return null;
   }
