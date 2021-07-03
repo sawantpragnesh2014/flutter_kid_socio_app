@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/payment_gateway.dart';
 
@@ -44,23 +48,17 @@ class _ChoosePlanState extends State<ChoosePlan> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       resizeToAvoidBottomInset : false,
       body: Padding(
         padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
         child: Container(
+            height: SizeConfig.blockSizeVertical*80,
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Chetan', style: TextStyles.blackText),
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/google_logo.png'),
-                    radius: 40.0,
-                  ),
-                ]),
+            AppBarView(user: CustomBlocProvider.getBloc<AuthBloc>().getUser,),
             SizedBox(
               height: 10.0,
             ),
@@ -71,14 +69,17 @@ class _ChoosePlanState extends State<ChoosePlan> {
             Text('Choose a plan that works \nbest for you',
                 style: TextStyles.blackTextSmall),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 cardView('Trial', '3 playdates', 'for 1 week',Colors.red[300]),
                 cardView('Rs 500', 'Unlimited Playdates', 'for 1 month',AppColors.colore6e6e6,),
               ],
             ),
+            SizedBox(
+              height: 10.0,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 cardView('Rs 1500', 'Unlimited playdates', 'for 3 months',AppColors.color16499f),
                 cardView('Rs 5000', 'unlimited playdates', 'for 1 year',AppColors.colorfbaf43),

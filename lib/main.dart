@@ -4,6 +4,7 @@ import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
 import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
 import 'package:flutter_kid_socio_app/ui/home.dart';
+import 'package:flutter_kid_socio_app/ui/add_child.dart';
 import 'package:flutter_kid_socio_app/ui/login.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding_two.dart';

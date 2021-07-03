@@ -12,10 +12,6 @@ class Auth{
   bool isUserSignedIn = false;
   User user;
 
-  void signOutGoogle() async {
-    await googleSignIn.signOut();
-  }
-
   Future<void> signOut() async{
     try{
       bool isGoogleSignedIn = await googleSignIn.isSignedIn();

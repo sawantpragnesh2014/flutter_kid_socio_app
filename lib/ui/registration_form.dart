@@ -6,6 +6,7 @@ import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
+import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
@@ -23,11 +24,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String lastName;
   String email;
   String gender;
+  // print(list['age']); //32
+
 
   bool _agree = true;
   User user;
 
-  Widget get _lastName {
+    Widget get _lastName {
     return TextFormField(
       initialValue: user?.name,
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
@@ -83,42 +86,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  Widget genderButton(String text){
-    return Expanded(
-      child: Container(
-        child: TextButton(
-          onPressed: (){
-            setState(() {
-              gender = text;
-            });
-          },
-          child: Text(text,style: TextStyles.editTextStyle,),
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12), // <-- Radius
-            ),
-            backgroundColor: AppColors.colore6e6e6,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget genderButton2(String text){
-    return Expanded(
-      child: Card(
-        color: AppColors.colore6e6e6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12), // <-- Radius
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Text(text,style: TextStyles.editTextStyle,),
-        ),
-        ),
-      );
-  }
 
   Widget get _buildAgreeToTermsField {
     return FormField<bool>(
@@ -138,9 +105,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 RichText(
                     text: TextSpan(
                         children: [
-                          TextSpan(text: 'By continuing you agree to our ',style: TextStyles.editTextStyle),
+                          TextSpan(text: 'By continuing you agree to our ',style: TextStyles.genderTextStyle),
                           TextSpan(
-                              text: 'T & C',
+                              text: '\nT & C',
                               style: TextStyles.hyperlinkStyle,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
@@ -148,14 +115,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => Policy()));
                                 }),
-                          TextSpan(text: ' and ',style: TextStyles.editTextStyle),
+                          TextSpan(text: ' and ',style: TextStyles.genderTextStyle),
                           TextSpan(
-                              text: '\nPrivacy Policy',
+                              text: 'Privacy Policy',
                               style: TextStyles.redTextSmall,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   print('Privacy Policy');
-                                    Navigator.push(context, MaterialPageRoute(
+                                  Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => Policy()));
                                 }),
                         ]
@@ -186,13 +153,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
     SizeConfig().init(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
-          child: Form(
-            key: formKey,
-            child: Container(
-              height: SizeConfig.blockSizeVertical*80,
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
+        child: Form(
+          key: formKey,
+          child: Container(
+            height: SizeConfig.blockSizeVertical*80,
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -222,7 +189,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         onTap:(){
                         },
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(user?.photoUrl + '?width=400&height400'),
+                          // backgroundImage: NetworkImage(user?.photoUrl + '?width=400&height400'),
                           radius: 40.0,
                         ),
                       )
@@ -235,18 +202,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   SizedBox(height: 20.0,),
                   _email,
                   SizedBox(height: 20.0,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      genderButton2('Male'),
-                      SizedBox(width: 20.0,),
-                      genderButton2('Female')
-                    ],
-                  ),
+                  GenderView(callback: (value){
+                      print('gender is $value');
+                      return gender = value;
+                  },),
                   SizedBox(height: 20.0,),
                   _phoneNumber,
                   SizedBox(height: 20.0,),
-                  _buildAgreeToTermsField
+                  _buildAgreeToTermsField,
                 ],
               ),
             ),
@@ -256,8 +219,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
       bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
         if(formKey.currentState.validate()) {
           print('Reg hit');
-            Navigator.push(context, MaterialPageRoute(
-        builder: (context) => OTPScreen()));
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => OTPScreen()));
         }
       },),
     );
@@ -266,4 +229,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   String _validateTerms(bool agree) {
     return agree?null:"You must agree before proceeding";
   }
+
+
 }

@@ -21,7 +21,7 @@ class TextStyles {
       color: AppColors.coloref4138,
       fontFamily: opn_sans,
       fontWeight: regular,
-      fontSize: 16.0
+      fontSize: 14.0
   );
 
   static const blackText = TextStyle(
@@ -64,20 +64,26 @@ class TextStyles {
       fontWeight: regular,
       color: AppColors.color676767);
 
+  static const genderTextStyle = TextStyle(
+      fontSize: 14.0,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      color: AppColors.color676767);
+
   static const hyperlinkStyle = TextStyle(
-      fontSize: 16.0,
+      fontSize: 14.0,
       fontFamily: opn_sans,
       fontWeight: regular,
       color: AppColors.color16499f);
 
   static const facebookTextStyle = TextStyle(
-      fontSize: 25.0,
+      fontSize: 20.0,
       fontFamily: opn_sans,
       fontWeight: semibold,
       color: Colors.white);
 
   static const googleTextStyle = TextStyle(
-      fontSize: 25.0,
+      fontSize: 20.0,
       fontFamily: opn_sans,
       fontWeight: semibold,
       color: AppColors.color676767);
