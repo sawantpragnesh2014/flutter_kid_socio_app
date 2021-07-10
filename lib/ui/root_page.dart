@@ -22,7 +22,7 @@ class RootPage extends StatelessWidget {
                 final bool isLoggedIn = snapshot.hasData;
                 CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
                 print('Auth changed $isLoggedIn');
-                return isLoggedIn? RegistrationForm():Login();
+                return isLoggedIn? Home():Login();
               }
               return Loading();
           }

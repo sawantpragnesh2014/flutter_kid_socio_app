@@ -70,6 +70,12 @@ class TextStyles {
       fontWeight: regular,
       color: AppColors.color676767);
 
+  static const genderTextStyleSelected = TextStyle(
+      fontSize: 14.0,
+      fontFamily: opn_sans,
+      fontWeight: regular,
+      color: Colors.white);
+
   static const hyperlinkStyle = TextStyle(
       fontSize: 14.0,
       fontFamily: opn_sans,

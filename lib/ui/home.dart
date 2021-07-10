@@ -24,37 +24,38 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-          AppBarView(user: user,),
-            SizedBox(height: 20.0,),
-            Text(
-                'Slide to a child to continue',
-                style: TextStyles.kSubTitleStyle
-            ),
-            SizedBox(height: 20.0,),
-            TextButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => AddChild()));
-              },
-              child: Text('Add Child',style: TextStyles.facebookTextStyle,),
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
-                ),
-                backgroundColor: AppColors.coloref4138,
+    return SafeArea(
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBarView(user: user,height: 150.0,),
+          body: Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                  'Slide to a child to continue',
+                  style: TextStyles.kSubTitleStyle
               ),
-            ),
-          ],
-      )
-        ),
+              SizedBox(height: 20.0,),
+              TextButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => AddChild()));
+                },
+                child: Text('Add Child',style: TextStyles.facebookTextStyle,),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                  ),
+                  backgroundColor: AppColors.coloref4138,
+                ),
+              ),
+            ],
+        )
+          ),
+      ),
     );
   }
 }

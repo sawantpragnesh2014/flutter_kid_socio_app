@@ -11,6 +11,7 @@ import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
+import 'package:flutter_kid_socio_app/ui/interest_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -27,7 +28,26 @@ class _AddChildState extends State<AddChild> {
   String lastName;
   String email;
   String gender;
-  // print(list['age']); //32
+  String dob;
+  String type = 'form';
+  TextEditingController dateCtl = TextEditingController();
+
+  DateTime currentDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2005),
+        lastDate: DateTime.now());
+
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+        /*dob = currentDate.toString();
+        dateCtl.text = currentDate.toIso8601String();*/
+      });
+  }
 
   Widget get _firstName {
     return TextFormField(
@@ -54,14 +74,24 @@ class _AddChildState extends State<AddChild> {
   }
 
   Widget get _dob {
-    return TextFormField(
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Date of birth'),
-      validator: (val) => FormValidators.validateName(val),
-      onChanged: (val){
-        setState(() {
-          lastName = val;
-        });
+    return InkWell(
+      onTap: () async {
+        await _selectDate(context);
+        dateCtl.text =  '${currentDate.day}/${currentDate.month}/${currentDate.year}';
       },
+      child: IgnorePointer(
+        child: TextFormField(
+          controller: dateCtl,
+          initialValue: dob,
+          decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Date of birth',suffixIcon: Icon(Icons.calendar_today_sharp),),
+          validator: (val) => FormValidators.validateName(val),
+          onChanged: (val){
+            setState(() {
+              dob = val;
+            });
+          },
+        ),
+      ),
     );
   }
 
@@ -74,6 +104,91 @@ class _AddChildState extends State<AddChild> {
           lastName = val;
         });
       },
+    );
+  }
+
+  Widget get _addChildView{
+    if(type.contains('form')) {
+      return _childForm;
+    }else if(type.contains('interests')) {
+      return _interests;
+    }else if(type.contains('profile_pic')) {
+      return _addProfilePic;
+    }
+     return Container();
+  }
+
+  Widget get _childForm{
+    return
+      Form(
+        key: formKey,
+        child: Container(
+        height: SizeConfig.blockSizeVertical*80,
+        child: SingleChildScrollView(
+        child:Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+            'Enter Child\'s details below',
+            style: TextStyles.kSubTitleStyle
+        ),
+        SizedBox(height: 20.0,),
+        _firstName,
+        SizedBox(height: 20.0,),
+        _lastName,
+        SizedBox(height: 20.0,),
+        GenderView(callback: (value){
+          print('gender is $value');
+          return gender = value;
+        },),
+        SizedBox(height: 20.0,),
+        _dob,
+        SizedBox(height: 20.0,),
+        _schoolName,
+        SizedBox(height: 20.0,),
+      ],
+    ))));
+  }
+
+  Widget get _interests{
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+              'Enter your child\'s interests',
+              style: TextStyles.kSubTitleStyle
+          ),
+          SizedBox(height: 20.0,),
+          InterestView()
+        ],
+      ),
+    );
+  }
+
+  Widget get _addProfilePic{
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+              'Add a child to continue',
+              style: TextStyles.kSubTitleStyle
+          ),
+          SizedBox(height: 20.0,),
+          CircleAvatar(
+            backgroundImage: AssetImage('assets/google_logo.png'),
+            radius: 120.0,
+          ),
+          SizedBox(height: 30.0,),
+          Center(
+            child: Text(
+                'Add a profile photo',
+                style: TextStyles.kSubTitleStyle
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -93,47 +208,25 @@ class _AddChildState extends State<AddChild> {
   Widget build(BuildContext context) {
     print('hello');
     SizeConfig().init(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
-        child: Form(
-          key: formKey,
-          child: Container(
-            height: SizeConfig.blockSizeVertical*80,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppBarView(user: user,),
-                  SizedBox(height: 20.0,),
-                  Text(
-                      'Enter Child\'s details below',
-                      style: TextStyles.kSubTitleStyle
-                  ),
-                  SizedBox(height: 20.0,),
-                  _firstName,
-                  SizedBox(height: 20.0,),
-                  _lastName,
-                  SizedBox(height: 20.0,),
-                  GenderView(callback: (value){
-                    print('gender is $value');
-                    return gender = value;
-                  },),
-                  SizedBox(height: 20.0,),
-                  _dob,
-                  SizedBox(height: 20.0,),
-                  _schoolName,
-                  SizedBox(height: 20.0,),
-                ],
-              ),
-            ),
-          ),
-        ),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBarView( user:user, height:150.0),
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+          child: _addChildView,
       ),
-      bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
-        Navigator.pop(context);
-      },),
+        bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
+          /*Navigator.pop(context);*/
+          setState(() {
+            if(type.contains('form') && (formKey.currentState.validate())) {
+              type = 'interests';
+            }else if(type.contains('interests')) {
+              type = 'profile_pic';
+            }
+          });
+        },),
+      ),
     );
   }
 
