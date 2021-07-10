@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
+import 'package:flutter_kid_socio_app/ui/login.dart';
+import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 //https://www.youtube.com/watch?v=8eRQyE2PN7w refer for design
 class OnBoardingTwo extends StatefulWidget {
@@ -36,22 +40,23 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
                     padding: const EdgeInsets.all(40.0),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                        child: Image(
-                          image: AssetImage("assets/startUpKids.jpg"),
-                          height: 410.0,
-                          width: 410.0,
+                      Expanded(
+                        child: Center(
+                          child: Image(
+                            image: AssetImage("assets/startUpKids.jpg"),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       SizedBox(height: 30.0),
                       Text(
                         "Make PlayDates for your Kids, Make new Friends",
-                        style: kTitleStyle,
+                        style: TextStyles.kTitleStyle,
                       ),
                       SizedBox(height: 15.0),
                       Text(
                         "Make PlayDates for your Kids, Make new Friends",
-                        style: kSubTitleStyle,
+                        style: TextStyles.kSubTitleStyle,
                       ),
                     ],
                     ),
@@ -60,23 +65,23 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
                     padding: const EdgeInsets.all(40.0),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: Image(
-                            image: AssetImage("assets/startUpKids.jpg"),
-                            fit: BoxFit.contain,
-                            height: 410.0,
-                            width: 410.0,
+                        Expanded(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage("assets/startUpKids.jpg"),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           "Make PlayDates for your Kids, Make new Friends",
-                          style: kTitleStyle,
+                          style: TextStyles.kTitleStyle,
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           "Make PlayDates for your Kids, Make new Friends",
-                          style: kSubTitleStyle,
+                          style: TextStyles.kSubTitleStyle,
                         ),
                       ],
                     ),
@@ -85,23 +90,23 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
                     padding: const EdgeInsets.all(40.0),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Center(
-                          child: Image(
-                            image: AssetImage("assets/startUpKids.jpg"),
-                            fit: BoxFit.contain,
-                            height: 410.0,
-                            width: 410.0,
+                        Expanded(
+                          child: Center(
+                            child: Image(
+                              image: AssetImage("assets/startUpKids.jpg"),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           "Make PlayDates for your Kids, Make new Friends",
-                          style: kTitleStyle,
+                          style: TextStyles.kTitleStyle,
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           "Make PlayDates for your Kids, Make new Friends",
-                          style: kSubTitleStyle,
+                          style: TextStyles.kSubTitleStyle,
                         ),
                       ],
                     ),
@@ -116,7 +121,7 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
             currentPage != numPages -1?Expanded(
                 child:Align(
                   alignment: FractionalOffset.bottomRight,
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: (){
                       pageController.nextPage(duration: Duration(milliseconds: 150,),curve: Curves.ease);
                     },
@@ -124,7 +129,7 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Next',style: blackTextSmall),
+                        Text('Next',style: TextStyles.blackTextSmall),
                         SizedBox(width: 10.0,),
                         Icon(Icons.arrow_forward,size: 30.0,)
                       ],
@@ -137,36 +142,10 @@ class _OnBoardingTwoState extends State<OnBoardingTwo> {
         ),
       ),
       bottomSheet: currentPage == numPages -1
-          ? Container(
-        height: 100.0,
-        width: double.infinity,
-        color: Colors.red[600],
-        child: GestureDetector(
-          onTap: () => print('Get Started'),
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Get Started',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                ),
-                SizedBox(width: 10.0,),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: Color(0xFFfbaf43),
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Icon(Icons.arrow_forward_ios,size: 30.0,color: Colors.white,),
-                ),
-                SizedBox(width: 10.0,),
-              ],
-            )
-          ),
-        ),
-          )
+          ? BottomNav(textName: "Get Started",bgColor:AppColors.coloref4138,onNavHit: (){
+          Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => RootPage()));
+      },)
           :Text(''),
     );
   }

@@ -26,7 +26,13 @@ dependencies:
   firebase_auth: ^0.14.0+5
   firebase_core: ^0.4.0+9
   google_sign_in: ^4.4.4
+  flutter_login_facebook: ^0.2.1
   cloud_firestore: ^0.12.9+4
+  flutter_linkify: ^4.1.0
+  otp_screen: ^0.0.3
+  equatable: ^0.2.0
+  # For loader
+  flutter_spinkit: ^4.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -35,8 +41,6 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  integration_test:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the
@@ -65,17 +69,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Light.ttf
+          weight: 300
+        - asset: fonts/OpenSans-Regular.ttf
+          weight: 400
+        - asset: fonts/OpenSans-SemiBold.ttf
+          weight: 600
+
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
