@@ -185,8 +185,6 @@ class _AddChildState extends State<AddChild> {
     return
       Form(
         key: formKey,
-        child: Container(
-        height: SizeConfig.blockSizeVertical*80,
         child: SingleChildScrollView(
         child:Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -210,7 +208,7 @@ class _AddChildState extends State<AddChild> {
         _schoolName,
         SizedBox(height: 20.0,),
       ],
-    ))));
+    )));
   }
 
   Widget get _interests{
@@ -284,7 +282,10 @@ class _AddChildState extends State<AddChild> {
         appBar: AppBarView( user:user, height:150.0),
         body: Padding(
           padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
-          child: _addChildView,
+          child: Container(
+              height: SizeConfig.blockSizeVertical*80,
+              child: _addChildView
+          ),
       ),
         bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
           /*Navigator.pop(context);*/
