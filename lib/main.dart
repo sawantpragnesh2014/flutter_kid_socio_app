@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
 import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
@@ -20,6 +21,7 @@ import 'models/user.dart';
 void main() {
   runApp(MyApp());
   CustomBlocProvider.setBloc(AuthBloc());
+  CustomBlocProvider.setBloc(ChildBloc());
 }
 
 class MyApp extends StatelessWidget {

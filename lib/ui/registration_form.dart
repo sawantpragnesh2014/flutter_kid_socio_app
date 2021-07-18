@@ -32,7 +32,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
     Widget get _lastName {
     return TextFormField(
-      initialValue: user?.name,
+      initialValue: (user?.name?.split(' ')?.length > 1)?user?.name?.split(' ')[1]:'',
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
@@ -45,7 +45,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _firstName {
     return TextFormField(
-      initialValue: user?.name,
+      initialValue: user?.name?.split(' ')?.length > 0?user?.name?.split(' ')[0]:'',
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'First Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
@@ -189,7 +189,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         onTap:(){
                         },
                         child: CircleAvatar(
-                          // backgroundImage: NetworkImage(user?.photoUrl + '?width=400&height400'),
+                          backgroundImage: NetworkImage(user?.photoUrl + '?width=400&height400'),
                           radius: 40.0,
                         ),
                       )

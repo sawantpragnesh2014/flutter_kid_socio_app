@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
+import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
@@ -14,6 +18,13 @@ import 'package:flutter_kid_socio_app/ui/bottom_nav.dart';
 import 'package:flutter_kid_socio_app/ui/interest_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
+
+enum Type{
+  FORM,
+  INTEREST,
+  PROFILE
+}
 
 class AddChild extends StatefulWidget {
   @override
@@ -26,13 +37,64 @@ class _AddChildState extends State<AddChild> {
   final formKey = GlobalKey<FormState>();
   String firstName;
   String lastName;
+  String schoolName;
   String email;
   String gender;
   String dob;
-  String type = 'form';
+  Type type;
+  File _image;
   TextEditingController dateCtl = TextEditingController();
+  final _picker = ImagePicker();
 
   DateTime currentDate = DateTime.now();
+
+  _imgFromCamera() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.camera,);
+    final File image = File(pickedFile.path);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery,);
+    final File image = File(pickedFile.path);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
@@ -84,7 +146,7 @@ class _AddChildState extends State<AddChild> {
           controller: dateCtl,
           initialValue: dob,
           decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Date of birth',suffixIcon: Icon(Icons.calendar_today_sharp),),
-          validator: (val) => FormValidators.validateName(val),
+          validator: (val) => FormValidators.validateDob(val),
           onChanged: (val){
             setState(() {
               dob = val;
@@ -101,19 +163,20 @@ class _AddChildState extends State<AddChild> {
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          lastName = val;
+          schoolName = val;
         });
       },
     );
   }
 
   Widget get _addChildView{
-    if(type.contains('form')) {
-      return _childForm;
-    }else if(type.contains('interests')) {
-      return _interests;
-    }else if(type.contains('profile_pic')) {
-      return _addProfilePic;
+    switch(type){
+      case Type.FORM:
+        return _childForm;
+      case Type.INTEREST:
+        return _interests;
+      case Type.PROFILE:
+        return _addProfilePic;
     }
      return Container();
   }
@@ -176,9 +239,15 @@ class _AddChildState extends State<AddChild> {
               style: TextStyles.kSubTitleStyle
           ),
           SizedBox(height: 20.0,),
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/google_logo.png'),
-            radius: 120.0,
+          GestureDetector(
+            onTap: (){
+              _showPicker(context);
+            },
+            child: CircleAvatar(
+              backgroundImage: _image != null
+                  ? FileImage(_image) : AssetImage('assets/google_logo.png'),
+              radius: 120.0,
+            ),
           ),
           SizedBox(height: 30.0,),
           Center(
@@ -195,6 +264,7 @@ class _AddChildState extends State<AddChild> {
   @override
   void initState() {
     super.initState();
+    type = Type.FORM;
   }
 
   @override
@@ -219,15 +289,28 @@ class _AddChildState extends State<AddChild> {
         bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
           /*Navigator.pop(context);*/
           setState(() {
-            if(type.contains('form') && (formKey.currentState.validate())) {
-              type = 'interests';
-            }else if(type.contains('interests')) {
-              type = 'profile_pic';
+            print('${type.toString()}');
+            if(type == Type.FORM) {
+              if((formKey.currentState.validate())) {
+                type = Type.INTEREST;
+              }
+            }else if(type == Type.INTEREST) {
+              type = Type.PROFILE;
+            }else {
+              CustomBlocProvider.getBloc<ChildBloc>().addChild(Child(name: (firstName +' '+ lastName),dob: dob,gender: gender,schoolName: schoolName));
+              Navigator.pop(context);
             }
           });
         },),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    CustomBlocProvider.getBloc<ChildBloc>().dispose();
   }
 
 }

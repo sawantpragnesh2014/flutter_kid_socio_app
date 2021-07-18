@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
@@ -24,38 +26,84 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBarView(user: user,height: 150.0,),
-          body: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                  'Slide to a child to continue',
-                  style: TextStyles.kSubTitleStyle
-              ),
-              SizedBox(height: 20.0,),
-              TextButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => AddChild()));
-                },
-                child: Text('Add Child',style: TextStyles.facebookTextStyle,),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // <-- Radius
+    return StreamBuilder<List<Child>>(
+      stream: CustomBlocProvider.getBloc<ChildBloc>().childListStream,
+      builder: (context, snapshot) {
+        List<Child> childList = snapshot.data ?? [];
+        return SafeArea(
+          child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: AppBarView(user: user,height: 150.0,),
+              body: Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                      'Slide to a child to continue',
+                      style: TextStyles.kSubTitleStyle
                   ),
-                  backgroundColor: AppColors.coloref4138,
+                  SizedBox(height: 20.0,),
+                Container(
+                  height: 300.0,
+                  child: ListView.builder(
+                      itemCount: childList.length,
+                      itemBuilder: (context,index){
+                        return childListView(childList[index]);
+                      }),
                 ),
+                  SizedBox(height: 20.0,),
+                  TextButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => AddChild()));
+                    },
+                    child: Text('Add Child',style: TextStyles.facebookTextStyle,),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                      ),
+                      backgroundColor: AppColors.coloref4138,
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  TextButton(
+                    onPressed: (){
+                      Navigator.pop(context);
+                      CustomBlocProvider.getBloc<AuthBloc>().signOut();
+                    },
+                    child: Text('Logout',style: TextStyles.facebookTextStyle,),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                      ),
+                      backgroundColor: AppColors.coloref4138,
+                    ),
+                  ),
+                ],
+            )
               ),
-            ],
-        )
           ),
-      ),
+        );
+      }
     );
+  }
+
+  Widget childListView(Child child) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.0,horizontal: 4.0),
+        child: Card(
+          child: ListTile(
+            contentPadding: EdgeInsets.all(8.0),
+            title: Text('${child.name}',style: TextStyles.genderTextStyle,),
+            leading: CircleAvatar(
+              backgroundImage: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
+              radius: 40.0,
+            ),
+          ),
+        ),
+      );
   }
 }

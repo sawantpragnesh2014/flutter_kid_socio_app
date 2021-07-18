@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/ui/home.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding_two.dart';
 import 'package:flutter_kid_socio_app/ui/registration_form.dart';
@@ -22,7 +23,7 @@ class RootPage extends StatelessWidget {
                 final bool isLoggedIn = snapshot.hasData;
                 CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
                 print('Auth changed $isLoggedIn');
-                return isLoggedIn? Home():Login();
+                return isLoggedIn? RegistrationForm():Login();
               }
               return Loading();
           }
@@ -31,10 +32,10 @@ class RootPage extends StatelessWidget {
 
   Widget Loading() {
     return Container(
-      color: Colors.brown[100],
+      color: Colors.white,
       child: Center(
         child: SpinKitDoubleBounce(
-          color: Colors.brown,
+          color: Colors.red[900],
           size: 50.0,
         ),
       ),
