@@ -13,7 +13,7 @@ import 'bottom_nav.dart';
 
 class ChoosePlan extends StatefulWidget {
 
-  final User user;
+  final Parent user;
 
   ChoosePlan(this.user);
 

@@ -28,7 +28,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
 
   bool _agree = true;
-  User user;
+  Parent user;
 
     Widget get _lastName {
     return TextFormField(

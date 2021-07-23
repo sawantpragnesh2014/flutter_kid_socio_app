@@ -33,7 +33,7 @@ class AddChild extends StatefulWidget {
 }
 
 class _AddChildState extends State<AddChild> {
-  User user;
+  Parent user;
   final formKey = GlobalKey<FormState>();
   String firstName;
   String lastName;

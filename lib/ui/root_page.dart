@@ -16,9 +16,9 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final Auth auth = AuthProvider.of(context).auth;
-    return StreamBuilder<User>(
+    return StreamBuilder<Parent>(
           stream: CustomBlocProvider.getBloc<AuthBloc>().onAuthStateChanged,
-          builder: (BuildContext context,AsyncSnapshot<User> snapshot){
+          builder: (BuildContext context,AsyncSnapshot<Parent> snapshot){
               if(snapshot.connectionState == ConnectionState.active){
                 final bool isLoggedIn = snapshot.hasData;
                 CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);

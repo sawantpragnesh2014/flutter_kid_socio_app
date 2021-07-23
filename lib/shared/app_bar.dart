@@ -3,7 +3,7 @@ import 'package:flutter_kid_socio_app/models/user.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
 class AppBarView extends StatelessWidget implements PreferredSizeWidget {
-  final User user;
+  final Parent user;
   final double height;
 
   AppBarView({this.user,this.height});

@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  User user;
+  Parent user;
 
   @override
   void didChangeDependencies() {
