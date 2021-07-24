@@ -6,13 +6,13 @@ import 'package:flutter_kid_socio_app/models/user.dart';
 
 class LoginBloc extends Bloc {
   // UserRepository _userRepository;
-  User user;
+  Parent user;
 
 StreamController userController;
 
 Stream get userStream => userController.stream;
 LoginBloc(){
-  userController = StreamController<User>.broadcast();
+  userController = StreamController<Parent>.broadcast();
   // _userRepository = UserRepository.getInstance();
 }
 

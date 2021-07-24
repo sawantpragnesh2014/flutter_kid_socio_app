@@ -10,7 +10,7 @@ class Auth{
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final fb = FacebookLogin();
   bool isUserSignedIn = false;
-  User user;
+  Parent user;
 
   Future<void> signOut() async{
     try{
@@ -32,7 +32,7 @@ class Auth{
     }
   }
 
-  Future<User> handleSignIn() async {
+  Future<Parent> handleSignIn() async {
     // hold the instance of the authenticated user
     // flag to check whether we're signed in already
     bool isSignedIn = await googleSignIn.isSignedIn();
@@ -40,7 +40,7 @@ class Auth{
 
     if (isSignedIn) {
       // if so, return the current user
-      user = _userFromFireBaseUser(_auth.currentUser as FirebaseUser);
+      user = _userFromFireBaseUser(_auth.currentUser as User);
     }
     else {
       final GoogleSignInAccount googleUser =
@@ -50,7 +50,7 @@ class Auth{
       // get the credentials to (access / id token)userSignedIn
       // to sign in via Firebase Authentication
       final AuthCredential credential =
-      GoogleAuthProvider.getCredential(
+      GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken
       );
@@ -62,36 +62,36 @@ class Auth{
     return user;
   }
 
-  User _userFromFireBaseUser(FirebaseUser user){
+  Parent _userFromFireBaseUser(User user){
     return user != null?
-    User(uid: user.uid,
+    Parent(uid: user.uid,
       name: user.displayName,
       email: user.email,
       phoneNo: user.phoneNumber,
-      photoUrl: user.photoUrl
+      photoUrl: user.photoURL
     )
         : null;
   }
 
   //auth change user stream
-  Stream<User> get onAuthStateChanged{
-    return _auth.onAuthStateChanged
+  Stream<Parent> get onAuthStateChanged{
+    return _auth.authStateChanges()
         .map(_userFromFireBaseUser);
   }
 
-  User get getUser => user;
+  Parent get getUser => user;
 
-  void setUser(User data) {
+  void setUser(Parent data) {
     user = data;
   }
 
-  Future<User> signInWithCredential(AuthCredential credential) async {
+  Future<Parent> signInWithCredential(AuthCredential credential) async {
     user = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
     return user;
   }
 
   Future<bool> loginFromFaceBook() async {
-    User result;
+    Parent result;
     final res = await fb.logIn(
         permissions: [
           FacebookPermission.publicProfile,
@@ -103,12 +103,12 @@ class Auth{
       case FacebookLoginStatus.Success:
         print('Login successful');
         //Get token
-        final FacebookAccessToken fbToken = res.accessToken;
+        final String fbToken = res.accessToken.token;
 
         //Convert to AuthCredential
-        final AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: fbToken.token);
+        final AuthCredential credential = FacebookAuthProvider.credential(fbToken);
 
-        //User Credential to Sign in with Firebase
+        //Parent Credential to Sign in with Firebase
         result = await signInWithCredential(credential);
         print('Facebook Login successful');
         break;
@@ -122,17 +122,3 @@ class Auth{
     return result == null;
   }
 }
-
-/*
-class AuthProvider extends InheritedWidget{
-  final Auth auth;
-  AuthProvider({Key key,Widget child,this.auth}):super(key:key,child: child);
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
-
-  static AuthProvider of(BuildContext context){
-    return context.dependOnInheritedWidgetOfExactType<AuthProvider>();
-  }
-
-  //AuthProvider.of(context).auth
-}*/

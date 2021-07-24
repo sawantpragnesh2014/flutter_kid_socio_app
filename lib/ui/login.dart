@@ -65,9 +65,9 @@ class _LoginState extends State<Login> {
   }
 
   void onGoogleSignIn(BuildContext context) async {
-    User user = await CustomBlocProvider.getBloc<AuthBloc>().handleSignIn();
+    Parent user = await CustomBlocProvider.getBloc<AuthBloc>().handleSignIn();
     print(user.uid);
-    /*User user = bloc.getUser();
+    /*Parent user = bloc.getUser();
     var userSignedIn = Navigator.push(
         context,
         MaterialPageRoute(
