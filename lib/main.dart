@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
@@ -17,13 +18,15 @@ import 'package:flutter_kid_socio_app/ui/registration_form.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 import 'blocs/bloc_provider.dart';
-import 'models/user.dart';
+import 'models/parent.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   CustomBlocProvider.setBloc(AuthBloc());
   CustomBlocProvider.setBloc(ChildBloc());
+  CustomBlocProvider.setBloc(AddChildBloc());
+  CustomBlocProvider.setBloc(LoginBloc());
   runApp(MyApp());
 }
 

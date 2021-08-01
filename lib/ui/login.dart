@@ -2,12 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
-import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
-import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'home.dart';
 
@@ -23,6 +21,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    print('Login page ${widget.loading}');
     return  (widget.loading) ? Loading()
         : Scaffold(
           body: Align(alignment: Alignment.center,
@@ -51,20 +50,7 @@ class _LoginState extends State<Login> {
         );
   }
 
-  Widget Loading() {
-    return Container(
-      color: Colors.brown[100],
-      child: Center(
-        child: SpinKitDoubleBounce(
-          color: Colors.brown,
-          size: 50.0,
-        ),
-      ),
-
-    );
-  }
-
-  void onGoogleSignIn(BuildContext context) async {
+  Future<Parent> onGoogleSignIn(BuildContext context) async {
     Parent user = await CustomBlocProvider.getBloc<AuthBloc>().handleSignIn();
     print(user.uid);
     /*Parent user = bloc.getUser();
@@ -73,15 +59,19 @@ class _LoginState extends State<Login> {
         MaterialPageRoute(
             builder: (context) =>
                 Home(user:user,googleSignIn: googleSignIn)));*/
+    return user;
   }
 
   Widget loginButton(Color bgColor,String logoPath,String btnText,TextStyle textStyle){
     return TextButton(
-        onPressed:() {
+        onPressed:() async {
+          setState(() {
+            widget.loading = true;
+          });
           if(btnText.contains("facebook")){
-            CustomBlocProvider.getBloc<AuthBloc>().loginFromFaceBook();
+              await CustomBlocProvider.getBloc<AuthBloc>().loginFromFaceBook();
           }else if(btnText.contains("google")){
-            onGoogleSignIn(context);
+             await onGoogleSignIn(context);
           }
         },
         style: TextButton.styleFrom(

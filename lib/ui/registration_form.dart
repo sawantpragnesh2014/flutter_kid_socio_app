@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
-import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/gender_view.dart';
@@ -20,24 +21,23 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
   final formKey = GlobalKey<FormState>();
-  String firstName;
-  String lastName;
-  String email;
-  String gender;
   // print(list['age']); //32
 
 
   bool _agree = true;
   Parent user;
 
+  LoginBloc _loginBloc;
+  AuthBloc _authBloc;
+
     Widget get _lastName {
     return TextFormField(
-      initialValue: (user?.name?.split(' ')?.length > 1)?user?.name?.split(' ')[1]:'',
+      initialValue: user?.lastName,
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          lastName = val;
+          _loginBloc.lastName = val;
         });
       },
     );
@@ -45,12 +45,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _firstName {
     return TextFormField(
-      initialValue: user?.name?.split(' ')?.length > 0?user?.name?.split(' ')[0]:'',
+      initialValue: user?.firstName,
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'First Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          firstName = val;
+          _loginBloc.firstName = val;
         });
       },
     );
@@ -63,7 +63,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       validator: (val) => FormValidators.validateEmail(val),
       onChanged: (val){
         setState(() {
-          email = val;
+          _loginBloc.email = val;
         });
       },
     );
@@ -80,7 +80,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       validator: (val) => FormValidators.validateMobile(val),
       onChanged: (val){
         setState(() {
-          /*cardNumber = val;*/
+          _loginBloc.phoneNo = val;
         });
       },
     );
@@ -143,9 +143,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
+    print('didChangeDependencies');
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
+    user = _authBloc.getUser;
+    _loginBloc.firstName =  user?.firstName;
+    _loginBloc.lastName =  user?.lastName;
+    _loginBloc.email =  user?.email;
+    _loginBloc.gender =  user?.gender?? 'Male';
   }
 
   @override
@@ -204,7 +210,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   SizedBox(height: 20.0,),
                   GenderView(callback: (value){
                       print('gender is $value');
-                      return gender = value;
+                      return _loginBloc.gender = value;
                   },),
                   SizedBox(height: 20.0,),
                   _phoneNumber,
@@ -219,6 +225,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
       bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
         if(formKey.currentState.validate()) {
           print('Reg hit');
+          Parent parent = _loginBloc.createParentByFormFields(user.uid);
+          print('Parent created is $parent');
+          _authBloc.setUser(parent);
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => OTPScreen()));
         }

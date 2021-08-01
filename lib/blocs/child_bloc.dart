@@ -14,9 +14,14 @@ StreamController childController = StreamController<List<Child>>.broadcast();
 Stream get childListStream => childController.stream;
 
   List<Child> childList = [];
+
   void addChild(Child child){
     childList.add(child);
     getAllChildren();
+  }
+
+  void addChildData(Child child){
+
   }
 
 getAllChildren(){

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/ui/home.dart';
 import 'package:otp_screen/otp_screen.dart';
 
@@ -8,6 +11,9 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+
+  LoginBloc _loginBloc;
+  AuthBloc _authBloc;
 
   // logic to validate otp return [null] when success else error [String]
   Future<String> validateOtp(String otp) async {
@@ -20,9 +26,17 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   // action to be performed after OTP validation is success
-  void moveToNextScreen(context) {
+  Future<void> moveToNextScreen(context) async {
+    await _loginBloc.createParent(_authBloc.getUser);
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Home()));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
   }
 
   @override

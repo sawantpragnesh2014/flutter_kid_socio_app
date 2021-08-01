@@ -3,7 +3,7 @@ import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
-import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -69,9 +69,8 @@ class _HomeState extends State<Home> {
                   ),
                   SizedBox(height: 20.0,),
                   TextButton(
-                    onPressed: (){
-                      Navigator.pop(context);
-                      CustomBlocProvider.getBloc<AuthBloc>().signOut();
+                    onPressed: () async {
+                      await CustomBlocProvider.getBloc<AuthBloc>().signOut();
                     },
                     child: Text('Logout',style: TextStyles.facebookTextStyle,),
                     style: TextButton.styleFrom(

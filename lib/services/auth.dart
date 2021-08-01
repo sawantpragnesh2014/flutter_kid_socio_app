@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -10,7 +9,7 @@ class Auth{
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final fb = FacebookLogin();
   bool isUserSignedIn = false;
-  Parent user;
+  Parent parent;
 
   Future<void> signOut() async{
     try{
@@ -24,7 +23,7 @@ class Auth{
         fb.logOut();
       }
        _auth.signOut();
-       user = null;
+       parent = null;
        isUserSignedIn = false;
     }catch(e){
       print(e.toString());
@@ -40,7 +39,7 @@ class Auth{
 
     if (isSignedIn) {
       // if so, return the current user
-      user = _userFromFireBaseUser(_auth.currentUser as User);
+      parent = _userFromFireBaseUser(_auth.currentUser as User);
     }
     else {
       final GoogleSignInAccount googleUser =
@@ -54,18 +53,19 @@ class Auth{
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken
       );
-      user = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+      parent = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
       isSignedIn = await googleSignIn.isSignedIn();
       isUserSignedIn = isSignedIn;
     }
 
-    return user;
+    return parent;
   }
 
   Parent _userFromFireBaseUser(User user){
     return user != null?
     Parent(uid: user.uid,
-      name: user.displayName,
+      firstName: user.displayName?.split(' ')?.length > 0?user?.displayName?.split(' ')[0]:'',
+      lastName: user.displayName?.split(' ')?.length > 0?user?.displayName?.split(' ')[1]:'',
       email: user.email,
       phoneNo: user.phoneNumber,
       photoUrl: user.photoURL
@@ -79,15 +79,15 @@ class Auth{
         .map(_userFromFireBaseUser);
   }
 
-  Parent get getUser => user;
+  Parent get getUser => parent;
 
   void setUser(Parent data) {
-    user = data;
+    parent = data;
   }
 
   Future<Parent> signInWithCredential(AuthCredential credential) async {
-    user = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
-    return user;
+    parent = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+    return parent;
   }
 
   Future<bool> loginFromFaceBook() async {

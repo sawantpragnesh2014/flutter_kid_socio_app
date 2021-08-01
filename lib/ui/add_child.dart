@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
-import 'package:flutter_kid_socio_app/models/user.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
@@ -19,12 +21,6 @@ import 'package:flutter_kid_socio_app/ui/interest_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-
-enum Type{
-  FORM,
-  INTEREST,
-  PROFILE
-}
 
 class AddChild extends StatefulWidget {
   @override
@@ -41,7 +37,6 @@ class _AddChildState extends State<AddChild> {
   String email;
   String gender;
   String dob;
-  Type type;
   File _image;
   TextEditingController dateCtl = TextEditingController();
   final _picker = ImagePicker();
@@ -169,7 +164,7 @@ class _AddChildState extends State<AddChild> {
     );
   }
 
-  Widget get _addChildView{
+  Widget _addChildView(Type type){
     switch(type){
       case Type.FORM:
         return _childForm;
@@ -177,8 +172,9 @@ class _AddChildState extends State<AddChild> {
         return _interests;
       case Type.PROFILE:
         return _addProfilePic;
+      default:
+        return Container();
     }
-     return Container();
   }
 
   Widget get _childForm{
@@ -262,7 +258,6 @@ class _AddChildState extends State<AddChild> {
   @override
   void initState() {
     super.initState();
-    type = Type.FORM;
   }
 
   @override
@@ -276,34 +271,53 @@ class _AddChildState extends State<AddChild> {
   Widget build(BuildContext context) {
     print('hello');
     SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBarView( user:user, height:150.0),
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
-          child: Container(
-              height: SizeConfig.blockSizeVertical*80,
-              child: _addChildView
+    return StreamBuilder(
+      initialData: Type.FORM,
+      stream: CustomBlocProvider.getBloc<AddChildBloc>().childListStream,
+      builder: (context, snapshot) {
+        Type type = snapshot.data;
+        return SafeArea(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBarView(user: user, height: 150.0),
+            body: Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+              child: Container(
+                  height: SizeConfig.blockSizeVertical * 67,
+                  child: _addChildView(type)
+              ),
+            ),
+            bottomSheet: BottomNav(textName: 'Continue',
+              bgColor: AppColors.color16499f,
+              onNavHit: () {
+                /*Navigator.pop(context);*/
+                  print('${type.toString()}');
+
+                  switch(type){
+                    case Type.FORM:
+                      if (!(formKey.currentState.validate())) {
+                        CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.INTEREST);
+                      }
+                      break;
+                    case Type.INTEREST:
+                      CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.PROFILE);
+                      break;
+                    case Type.PROFILE:
+                    default:
+                    CustomBlocProvider.getBloc<ChildBloc>().addChild(
+                        Child(name: (firstName + ' ' + lastName),
+                            dob: dob,
+                            gender: gender,
+                            schoolName: schoolName,
+                            photoUrl: _upload()
+                        ));
+                    Navigator.pop(context);
+                    break;
+                  }
+              },),
           ),
-      ),
-        bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
-          /*Navigator.pop(context);*/
-          setState(() {
-            print('${type.toString()}');
-            if(type == Type.FORM) {
-              if((formKey.currentState.validate())) {
-                type = Type.INTEREST;
-              }
-            }else if(type == Type.INTEREST) {
-              type = Type.PROFILE;
-            }else {
-              CustomBlocProvider.getBloc<ChildBloc>().addChild(Child(name: (firstName +' '+ lastName),dob: dob,gender: gender,schoolName: schoolName));
-              Navigator.pop(context);
-            }
-          });
-        },),
-      ),
+        );
+      }
     );
   }
 
@@ -312,6 +326,14 @@ class _AddChildState extends State<AddChild> {
     // TODO: implement dispose
     super.dispose();
     CustomBlocProvider.getBloc<ChildBloc>().dispose();
+    CustomBlocProvider.getBloc<AddChildBloc>().dispose();
+  }
+
+  String _upload() {
+    if (_image == null) return null;
+    String base64Image = base64Encode(_image.readAsBytesSync());
+    String fileName = _image.path.split("/").last;
+    return base64Image;
   }
 
 }

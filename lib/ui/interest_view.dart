@@ -27,6 +27,21 @@ class _InterestViewState extends State<InterestView> {
     interestsList.add({'name':'Swimming','isSelected':false});
     interestsList.add({'name':'Running','isSelected':false});
     interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Swimming','isSelected':false});
+    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Swimming','isSelected':false});
+    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Swimming','isSelected':false});
+    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Swimming','isSelected':false});
+    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Swimming','isSelected':false});
+    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Football','isSelected':false});
   }
 
   @override
