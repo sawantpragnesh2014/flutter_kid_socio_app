@@ -49,14 +49,14 @@ class _GenderViewState extends State<GenderView> {
         },
         child: Card(
           elevation: 0.0,
-          color: genderMap['isSelected']?AppColors.colorf3f3f3:Colors.white,
+          color: genderMap['isSelected']?AppColors.color888E9A:AppColors.colorE5E5E5,
           shape: RoundedRectangleBorder(
-            side: new BorderSide(color: AppColors.colore6e6e6, width: 1.0),
-            borderRadius: BorderRadius.circular(12), // <-- Radius
+            side: new BorderSide(color: genderMap['isSelected']?AppColors.color888E9A:AppColors.colorE5E5E5, width: 1.0),
+            borderRadius: BorderRadius.circular(32), // <-- Radius
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-            child: Center(child: Text(genderMap['name'].toString(),style: TextStyles.genderTextStyle,)),
+            child: Center(child: Text(genderMap['name'].toString(),style: genderMap['isSelected']?TextStyles.genderTextStyleSelected:TextStyles.genderTextStyle,)),
           ),
         ),
       ),

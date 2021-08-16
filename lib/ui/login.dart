@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
+import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -24,25 +25,28 @@ class _LoginState extends State<Login> {
     print('Login page ${widget.loading}');
     return  (widget.loading) ? Loading()
         : Scaffold(
+          appBar: AppBarView(height: 120.0,),
           body: Align(alignment: Alignment.center,
             child: Container(
-              padding: EdgeInsets.fromLTRB(20.0, 60.0, 20.0, 0.0),
+              padding: EdgeInsets.fromLTRB(30.0, 60.0, 30.0, 0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                      'Login Account',
-                      style: TextStyles.redText
+                      'Login to your existing account',
+                      style: TextStyles.blackTextBold
                   ),
                   SizedBox(height: 20.0,),
-                  Text(
-                      'Hello, welcome back to KidsSocio',
-                      style: TextStyles.kSubTitleStyle
-                  ),
                   SizedBox(height: 20.0,),
-                  loginButton(Colors.white, 'google_logo.png', 'google', TextStyles.googleTextStyle),
+                  loginButton(AppColors.colorDADADA, 'google_logo.png', 'Google', TextStyles.blackTextBoldSmall),
                   SizedBox(height: 10.0,),
-                  loginButton(AppColors.color16499f, 'facebook_logo.png', 'facebook', TextStyles.facebookTextStyle),
+                  Text(
+                      'Or with',
+                      style: TextStyles.blackTextMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10.0,),
+                  loginButton(AppColors.colorDADADA, 'facebook_logo.png', 'Facebook', TextStyles.blackTextBoldSmall),
                 ],
               ),
             )
@@ -68,25 +72,25 @@ class _LoginState extends State<Login> {
           setState(() {
             widget.loading = true;
           });
-          if(btnText.contains("facebook")){
+          if(btnText.contains("Facebook")){
               await CustomBlocProvider.getBloc<AuthBloc>().loginFromFaceBook();
-          }else if(btnText.contains("google")){
+          }else if(btnText.contains("Google")){
              await onGoogleSignIn(context);
           }
         },
         style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
             backgroundColor: bgColor
         ),
         child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image(image: AssetImage('assets/$logoPath'), height: 35),
-                SizedBox(width: 10.0,),
-                Text('Login with $btnText',
+                SizedBox(width: 8.0,),
+                Text('$btnText',
                     style: textStyle
                 ),
               ],

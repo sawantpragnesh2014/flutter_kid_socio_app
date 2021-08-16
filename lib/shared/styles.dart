@@ -5,10 +5,16 @@ import 'colors.dart';
 class TextStyles {
 
   static const String opn_sans = 'OpenSans';
+  static const String m_plus_rounded = 'MPlusRounded';
+  static const String quicksand = 'Quicksand';
 
   static const FontWeight light = FontWeight.w300;
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight semibold = FontWeight.w600;
+
+  static const FontWeight semi_semi_bold = FontWeight.w700;
+  static const FontWeight bold = FontWeight.w800;
+  static const FontWeight medium = FontWeight.w500;
 
   static const redText = TextStyle(
       color: AppColors.coloref4138,
@@ -18,9 +24,9 @@ class TextStyles {
   );
 
   static const redTextSmall = TextStyle(
-      color: AppColors.coloref4138,
-      fontFamily: opn_sans,
-      fontWeight: regular,
+      color: AppColors.colorFF525B,
+      fontFamily: m_plus_rounded,
+      fontWeight: medium,
       fontSize: 14.0
   );
 
@@ -60,17 +66,23 @@ class TextStyles {
 
   static const editTextStyle = TextStyle(
       fontSize: 16.0,
-      fontFamily: opn_sans,
+      fontFamily: m_plus_rounded,
       fontWeight: regular,
-      color: AppColors.color676767);
+      color: AppColors.color888E9A);
 
   static const genderTextStyle = TextStyle(
       fontSize: 14.0,
-      fontFamily: opn_sans,
+      fontFamily: m_plus_rounded,
       fontWeight: regular,
-      color: AppColors.color676767);
+      color: AppColors.color888E9A);
 
   static const genderTextStyleSelected = TextStyle(
+      fontSize: 14.0,
+      fontFamily: m_plus_rounded,
+      fontWeight: regular,
+      color: Colors.white);
+
+  static const interestSelected = TextStyle(
       fontSize: 14.0,
       fontFamily: opn_sans,
       fontWeight: regular,
@@ -78,9 +90,9 @@ class TextStyles {
 
   static const hyperlinkStyle = TextStyle(
       fontSize: 14.0,
-      fontFamily: opn_sans,
-      fontWeight: regular,
-      color: AppColors.color16499f);
+      fontFamily: m_plus_rounded,
+      fontWeight: medium,
+      color: AppColors.color7059E1);
 
   static const facebookTextStyle = TextStyle(
       fontSize: 20.0,
@@ -94,7 +106,7 @@ class TextStyles {
       fontWeight: semibold,
       color: AppColors.color676767);
 
-  static const textInputDecoration = InputDecoration(
+  /*static const textInputDecoration = InputDecoration(
     fillColor: AppColors.colorf3f3f3,
     filled: true,
     hintStyle: editTextStyle,
@@ -106,7 +118,7 @@ class TextStyles {
         borderSide: BorderSide(color: AppColors.colore6e6e6),
         borderRadius: BorderRadius.all(Radius.circular(16)),
     ),
-  );
+  );*/
 
   static ElevatedButtonStyle(String text) => ElevatedButton(
     style: ElevatedButton.styleFrom(
@@ -122,5 +134,93 @@ class TextStyles {
       style: TextStyle(color: Colors.white,fontSize: 20.0,fontFamily: opn_sans,fontWeight: regular),
     ),
   );
+
+
+
+  //NEW UI
+
+  static const whiteTextBold = TextStyle(
+    color: Colors.white,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 16.0,
+  );
+  static const whiteTextMedium = TextStyle(
+    color: Colors.white,
+    fontFamily: m_plus_rounded,
+    fontWeight: medium,
+    fontSize: 14.0,
+  );
+
+  static const blackTextMedium = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: medium,
+    fontSize: 14.0,
+  );
+
+  static const blackTextRegular = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: regular,
+    fontSize: 16.0,
+  );
+
+  static const blackTextSemiSemiBold = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: quicksand,
+    fontWeight: semi_semi_bold,
+    fontSize: 36.0,
+  );
+
+  static const blackTextBold = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 24.0,
+  );
+
+  static const blackTextBoldSmall = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 16.0,
+  );
+
+  static elevatedActionButtonPurple(String text) => ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32), // <-- Radius
+      ),
+      primary: AppColors.color7059E1,
+    ),
+    onPressed: () {},
+    child: Text(
+      text,
+      style: whiteTextBold,
+    ),
+  );
+
+  static ButtonStyle stylePurpleButton = ElevatedButton.styleFrom(
+  shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(32), // <-- Radius
+  ),
+  primary: AppColors.color7059E1,
+  );
+
+  static const textInputDecoration = InputDecoration(
+    fillColor: AppColors.colorE5E5E5,
+    filled: true,
+    hintStyle: editTextStyle,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.colorE5E5E5),
+      borderRadius: BorderRadius.all(Radius.circular(32)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.colorE5E5E5),
+      borderRadius: BorderRadius.all(Radius.circular(32)),
+    ),
+  );
+
 
 }

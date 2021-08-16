@@ -9,5 +9,13 @@ class AppColors {
   static const color16499f = Color(0xFF16499f);
   static const colorfbaf43 = Color(0xFFfbaf43);
   static const colore6e6e6 = Color(0xFFe6e6e6);
-///shades of Yellow
+
+  //new UI
+  static const colorFFC107 = Color(0xFFFFC107);
+  static const color424242 = Color(0xFF424242);
+  static const color7059E1 = Color(0xFF7059E1);
+  static const colorDADADA = Color(0xFFDADADA);
+  static const colorE5E5E5 = Color(0xFFE5E5E5);
+  static const color888E9A = Color(0xFF888E9A);
+  static const colorFF525B = Color(0xFFFF525B);
 }

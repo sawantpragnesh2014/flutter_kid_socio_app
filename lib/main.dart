@@ -13,6 +13,7 @@ import 'package:flutter_kid_socio_app/ui/on_boarding.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding_two.dart';
 import 'package:flutter_kid_socio_app/ui/otp_screen.dart';
 import 'package:flutter_kid_socio_app/ui/payment_gateway.dart';
+import 'package:flutter_kid_socio_app/ui/phone_verification.dart';
 import 'package:flutter_kid_socio_app/ui/privacy_policy.dart';
 import 'package:flutter_kid_socio_app/ui/registration_form.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';

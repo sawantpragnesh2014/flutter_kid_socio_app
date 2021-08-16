@@ -72,7 +72,7 @@ class _InterestViewState extends State<InterestView> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Text(interestsMap['name'].toString(),style: interestsMap['isSelected']?TextStyles.genderTextStyleSelected:TextStyles.genderTextStyle,),
+          child: Text(interestsMap['name'].toString(),style: interestsMap['isSelected']?TextStyles.interestSelected:TextStyles.genderTextStyle,),
         ),
       ),
     );
