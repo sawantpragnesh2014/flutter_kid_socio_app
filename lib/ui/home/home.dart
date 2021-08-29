@@ -7,7 +7,7 @@ import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/add_child.dart';
+import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,7 +19,6 @@ class _HomeState extends State<Home> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
   }
@@ -33,7 +32,7 @@ class _HomeState extends State<Home> {
         return SafeArea(
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBarView(user: user,height: 150.0,),
+              appBar: AppBarView(height: 150.0,),
               body: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
               child: Column(

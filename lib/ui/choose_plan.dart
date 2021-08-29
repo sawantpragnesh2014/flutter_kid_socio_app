@@ -53,7 +53,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset : false,
-        appBar: AppBarView(user: widget.user,height: 150.0,),
+        appBar: AppBarView(height: 150.0,),
         body: Padding(
           padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
           child: Container(

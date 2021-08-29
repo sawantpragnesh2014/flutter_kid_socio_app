@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_kid_socio_app/blocs/bloc.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/repositories/parent_repository.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
 
 class LoginBloc extends Bloc {
   ParentRepository _parentRepository;
@@ -11,6 +12,16 @@ class LoginBloc extends Bloc {
   String _email;
   String _gender;
   String _phoneNo;
+
+
+
+  StreamController _parentController = StreamController<ApiResponse<String>>.broadcast();
+
+  StreamSink<ApiResponse<String>> get parentSink =>
+      _parentController.sink;
+
+  Stream<ApiResponse<String>> get parentStream =>
+      _parentController.stream;
 
 LoginBloc(){
   _parentRepository = ParentRepository();
@@ -21,7 +32,14 @@ LoginBloc(){
   }
 
   createParent(Parent parent) async{
-  _parentRepository.createParent(parent);
+  parentSink.add(ApiResponse.loading('Registering Parent'));
+  try{
+    String resultData = await _parentRepository.createParent(parent);
+    parentSink.add(ApiResponse.completed(resultData));
+
+  } catch (e) {
+    parentSink.add(ApiResponse.error(e.toString()));
+  }
 }
 
 /*
@@ -49,6 +67,7 @@ Future<Parent> fetchParent(String uid) async{
 
   @override
   void dispose() {
+  _parentController.close();
   }
 
   set lastName(String value) {

@@ -10,7 +10,7 @@ class ParentRepository{
     return ParentResponse.fromJson(response).results.isEmpty? null : ParentResponse.fromJson(response).results[0];
   }
 
-  void createParent(Parent parent) async{
+  Future<String> createParent(Parent parent) async{
     print('Parent is $parent');
     Map<String,dynamic> parentMap = {
       'userId': 0,
@@ -26,7 +26,7 @@ class ParentRepository{
       "userType": 3,
       "updatedBy": 0
     };
-    apiClient.addData(parentMap,'/api/users/create');
+    return apiClient.addData(parentMap,'/api/users/create');
   }
 
 }

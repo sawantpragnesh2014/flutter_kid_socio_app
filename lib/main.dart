@@ -4,18 +4,22 @@ import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
+import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
+import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
-import 'package:flutter_kid_socio_app/ui/connect_facebook_google.dart';
-import 'package:flutter_kid_socio_app/ui/home.dart';
-import 'package:flutter_kid_socio_app/ui/add_child.dart';
-import 'package:flutter_kid_socio_app/ui/login.dart';
+import 'package:flutter_kid_socio_app/ui/login/connect_facebook_google.dart';
+import 'package:flutter_kid_socio_app/ui/home/home.dart';
+import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
+import 'package:flutter_kid_socio_app/ui/home/home_new.dart';
+import 'package:flutter_kid_socio_app/ui/add_child/interest_view.dart';
+import 'package:flutter_kid_socio_app/ui/login/login.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding.dart';
-import 'package:flutter_kid_socio_app/ui/on_boarding_two.dart';
-import 'package:flutter_kid_socio_app/ui/otp_screen.dart';
+import 'package:flutter_kid_socio_app/ui/login/otp_screen.dart';
+import 'package:flutter_kid_socio_app/ui/login/otp_screen_new.dart';
 import 'package:flutter_kid_socio_app/ui/payment_gateway.dart';
-import 'package:flutter_kid_socio_app/ui/phone_verification.dart';
-import 'package:flutter_kid_socio_app/ui/privacy_policy.dart';
-import 'package:flutter_kid_socio_app/ui/registration_form.dart';
+import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
+import 'package:flutter_kid_socio_app/ui/login/privacy_policy.dart';
+import 'package:flutter_kid_socio_app/ui/login/registration_form.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 import 'blocs/bloc_provider.dart';
@@ -25,8 +29,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   CustomBlocProvider.setBloc(AuthBloc());
-  CustomBlocProvider.setBloc(ChildBloc());
-  CustomBlocProvider.setBloc(AddChildBloc());
   CustomBlocProvider.setBloc(LoginBloc());
   runApp(MyApp());
 }
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: RootPage(),
+        home: OnBoarding(),
     );
   }
 }

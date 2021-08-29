@@ -24,7 +24,7 @@ class TextStyles {
   );
 
   static const redTextSmall = TextStyle(
-      color: AppColors.colorFF525B,
+      color: AppColors.colorEB4C57,
       fontFamily: m_plus_rounded,
       fontWeight: medium,
       fontSize: 14.0
@@ -145,6 +145,14 @@ class TextStyles {
     fontWeight: bold,
     fontSize: 16.0,
   );
+
+  static const whiteTextBoldLarge = TextStyle(
+    color: Colors.white,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 40.0,
+  );
+
   static const whiteTextMedium = TextStyle(
     color: Colors.white,
     fontFamily: m_plus_rounded,
@@ -187,6 +195,20 @@ class TextStyles {
     fontSize: 16.0,
   );
 
+  static const blackTextBoldMedium = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 18.0,
+  );
+
+  static const blueTextBoldSmall = TextStyle(
+    color: AppColors.color2AC98A,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 16.0,
+  );
+
   static elevatedActionButtonPurple(String text) => ElevatedButton(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
@@ -206,6 +228,13 @@ class TextStyles {
   borderRadius: BorderRadius.circular(32), // <-- Radius
   ),
   primary: AppColors.color7059E1,
+  );
+
+  static ButtonStyle stylePinkButton = ElevatedButton.styleFrom(
+  shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(32), // <-- Radius
+  ),
+  primary: AppColors.colorEB4C57,
   );
 
   static const textInputDecoration = InputDecoration(

@@ -3,17 +3,12 @@ import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
-import 'package:flutter_kid_socio_app/services/api_response.dart';
-import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
-import 'package:flutter_kid_socio_app/ui/home.dart';
-import 'package:flutter_kid_socio_app/ui/on_boarding_two.dart';
-import 'package:flutter_kid_socio_app/ui/registration_form.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'home.dart';
+import 'package:flutter_kid_socio_app/ui/home/home.dart';
+import 'package:flutter_kid_socio_app/ui/login/registration_form.dart';
+import 'home/home.dart';
 
-import 'add_child.dart';
-import 'login.dart';
+import 'login/login.dart';
 
 class RootPage extends StatelessWidget {
   @override
@@ -27,7 +22,7 @@ class RootPage extends StatelessWidget {
                 CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
                 print('Auth changed $isLoggedIn');
 
-                return isLoggedIn?handleLoggedInState():Login();
+                return isLoggedIn?RegistrationForm():Login();
               }
               return Loading();
           }
@@ -77,6 +72,7 @@ class RootPage extends StatelessWidget {
         future: CustomBlocProvider.getBloc<LoginBloc>().fetchParent(CustomBlocProvider.getBloc<AuthBloc>().getUser.uid),
         builder: (context, snapshot) {
           print('Connection state ${snapshot.connectionState}');
+          print('Connection snapshot.hasError ${snapshot.hasError}');
           if (snapshot.connectionState == ConnectionState.waiting) {
             print('data loading');
             return Loading();

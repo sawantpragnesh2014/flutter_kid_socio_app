@@ -15,8 +15,8 @@ class _InterestViewState extends State<InterestView> {
   @override
   void initState() {
     super.initState();
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
+    interestsList.add({'name':'Board Games','isSelected':false});
+    interestsList.add({'name':'Arts & craft','isSelected':false});
     interestsList.add({'name':'Football','isSelected':false});
     interestsList.add({'name':'Swimming','isSelected':false});
     interestsList.add({'name':'Running','isSelected':false});
@@ -48,31 +48,37 @@ class _InterestViewState extends State<InterestView> {
   Widget build(BuildContext context) {
     return Container(
       child: Wrap(
-        alignment: WrapAlignment.start,
+        alignment: WrapAlignment.spaceBetween,
+        spacing: 10.0,
         children: interestsButtonList(interestsList),
       ),
     );
   }
 
   Widget interestsButton(Map interestsMap){
-    return GestureDetector(
-      onTap: (){
-        setState(() {
-          interestsMap['isSelected'] = !interestsMap['isSelected'];
-          print('interests for callback ${interestsMap['name']}');
-          // widget.callback(interestsMap['name'].toString());
-        });
-      },
-      child: Card(
-        margin: EdgeInsets.all(10.0),
-        color: interestsMap['isSelected']?AppColors.color16499f:AppColors.colorf3f3f3,
-        shape: RoundedRectangleBorder(
-          side: new BorderSide(color: AppColors.colore6e6e6, width: 1.0),
-          borderRadius: BorderRadius.circular(12), // <-- Radius
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Text(interestsMap['name'].toString(),style: interestsMap['isSelected']?TextStyles.interestSelected:TextStyles.genderTextStyle,),
+    return Container(
+      width: 150.0,
+      height: 150.0,
+      child: GestureDetector(
+        onTap: (){
+          setState(() {
+            interestsMap['isSelected'] = !interestsMap['isSelected'];
+            print('interests for callback ${interestsMap['name']}');
+            // widget.callback(interestsMap['name'].toString());
+          });
+        },
+        child: Card(
+          margin: EdgeInsets.all(10.0),
+          color: interestsMap['isSelected']?AppColors.color16499f:AppColors.colorf3f3f3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32), // <-- Radius
+          ),
+          child: Center(
+              child: Text(
+                interestsMap['name'].toString(),
+                style: interestsMap['isSelected']?TextStyles.interestSelected:TextStyles.genderTextStyle,
+              )
+          ),
         ),
       ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
-import 'bottom_nav.dart';
+import '../bottom_nav.dart';
 
 class Policy extends StatelessWidget {
   @override

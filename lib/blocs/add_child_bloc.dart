@@ -12,10 +12,15 @@ class AddChildBloc extends Bloc{
   void dispose() {
     childViewController.close();
   }
+
+  open(){
+    childViewController = StreamController<Type>.broadcast();
+  }
 }
 
 enum Type{
   FORM,
   INTEREST,
-  PROFILE
+  PROFILE,
+  SCHEDULE
 }

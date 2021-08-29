@@ -4,6 +4,7 @@ class FormValidators{
   static final RegExp regexName = new RegExp(r"/^[a-z ,.'-]+$/i");
   static final RegExp regexEmail = RegExp(r'\w+@\w+\.\w+'); // translates to word@word.word
   static final RegExp regexNumber = new RegExp(r'(^(?:[+0]9)?[0-9]{10}$)');
+  static final RegExp regexPinCode = new RegExp(r'(^(?:[+0]5)?[0-5]{6}$)');
 
   static String validateEmail(String email) {
     if (email.isEmpty)
@@ -34,9 +35,18 @@ class FormValidators{
       return null;
   }
 
+  static String validatePinCode(String name) {
+    if (name.isEmpty)
+      return 'Enter a pin code';
+    else if (!regexPinCode.hasMatch(name))
+      return "Invalid pin code";
+    else
+      return null;
+  }
+
   static String validateDob(String name) {
     if (name.isEmpty)
-      return 'Enter a mobile number';
+      return 'Enter date of birth';
     else
       return null;
   }

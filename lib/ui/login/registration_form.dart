@@ -5,14 +5,16 @@ import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
+import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
+import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/phone_verification.dart';
-import 'package:flutter_kid_socio_app/ui/privacy_policy.dart';
+import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
+import 'package:flutter_kid_socio_app/ui/login/privacy_policy.dart';
 
 class RegistrationForm extends StatefulWidget {
   @override
@@ -77,11 +79,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
         LengthLimitingTextInputFormatter(6),
       ],
       decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Pincode'),
-      validator: (val) => FormValidators.validateMobile(val),
+      validator: (val) => FormValidators.validatePinCode(val),
       onChanged: (val){
-        setState(() {
+        /*setState(() {
           _loginBloc.phoneNo = val;
-        });
+        });*/
       },
     );
   }
@@ -158,30 +160,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  Widget get _actionButton {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-        child: SizedBox(
-          height: 60.0,
-          width: double.infinity,
-          child: ElevatedButton(
-            style: TextStyles.stylePurpleButton,
-            onPressed: () {
-              if(formKey.currentState.validate()) {
-                print('Reg hit');
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => PhoneVerification()));
-              }
-            },
-            child: Text(
-              'Continue',
-              style: TextStyles.whiteTextBold,
-            ),
-          ),
-        ),
-      );
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -200,13 +178,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
     SizeConfig().init(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBarView(height: 120.0,),
+      appBar: AppBarNew(height: 120.0,),
       body: Padding(
         padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
         child: Form(
           key: formKey,
           child: Container(
-            height: SizeConfig.blockSizeVertical*80,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -264,7 +241,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   },),
                   SizedBox(height: 20.0,),
                   _buildAgreeToTermsField,
-                  _actionButton,
+                  ActionButtonView(
+                      btnName: "Continue",
+                      onBtnHit: (){
+                        if(formKey.currentState.validate()) {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => PhoneVerification()));
+                        }
+                      }
+                  ),
                 ],
               ),
             ),

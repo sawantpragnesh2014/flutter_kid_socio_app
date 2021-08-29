@@ -4,11 +4,12 @@ import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
+import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
-import 'home.dart';
+import '../home/home.dart';
 
 class Login extends StatefulWidget {
   bool loading = false;
@@ -25,7 +26,7 @@ class _LoginState extends State<Login> {
     print('Login page ${widget.loading}');
     return  (widget.loading) ? Loading()
         : Scaffold(
-          appBar: AppBarView(height: 120.0,),
+          appBar: AppBarNew(height: 120.0,),
           body: Align(alignment: Alignment.center,
             child: Container(
               padding: EdgeInsets.fromLTRB(30.0, 60.0, 30.0, 0.0),
