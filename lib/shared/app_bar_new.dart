@@ -14,7 +14,7 @@ class AppBarNew extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       color: AppColors.color7059E1,
       child: Center(
-        child: Text('Kid Socio',style: TextStyles.whiteTextBoldLarge,),
+        child: Text('Kid Socio',style: AppStyles.whiteTextBold40,),
       ),
     );
   }

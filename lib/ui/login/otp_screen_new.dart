@@ -8,6 +8,7 @@ import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -38,12 +39,12 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
             children: [
               Text(
                   "OTP Verification ",
-                  style: TextStyles.blackTextBoldSmall
+                  style: AppStyles.blackTextBold16
               ),
               SizedBox(height: 20.0,),
               Text(
                   "Please enter the verification code sent to +91*******918 ",
-                  style: TextStyles.blackTextRegular
+                  style: AppStyles.blackTextRegular16
               ),
               SizedBox(height: 20.0,),
               Row(
@@ -79,7 +80,7 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
         inputFormatters: [
           LengthLimitingTextInputFormatter(1),
         ],
-        decoration: TextStyles.textInputDecoration.copyWith(),
+        decoration: AppStyles.textInputDecoration.copyWith(),
         validator: (val) => FormValidators.validateMobile(val),
         onChanged: (val) {
           print('Value on key hit $val ${val.isEmpty}');
@@ -160,6 +161,10 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
                     builder: (context) => Home()));
                 break;
               case Status.ERROR:
+                return ErrorPage(
+                  errorMessage: snapshot.data.message,
+                  onRetryPressed: () => _loginBloc.createParent(_authBloc.getUser),
+                );
                 break;
             }
           }

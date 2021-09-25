@@ -34,13 +34,13 @@ class _HomeState extends State<Home> {
               resizeToAvoidBottomInset: false,
               appBar: AppBarView(height: 150.0,),
               body: Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+              padding: AppStyles.getPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                       'Slide to a child to continue',
-                      style: TextStyles.kSubTitleStyle
+                      style: AppStyles.kSubTitleStyle
                   ),
                   SizedBox(height: 20.0,),
                 Container(
@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) => AddChild()));
                     },
-                    child: Text('Add Child',style: TextStyles.facebookTextStyle,),
+                    child: Text('Add Child',style: AppStyles.facebookTextStyle,),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                       shape: RoundedRectangleBorder(
@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
                     onPressed: () async {
                       await CustomBlocProvider.getBloc<AuthBloc>().signOut();
                     },
-                    child: Text('Logout',style: TextStyles.facebookTextStyle,),
+                    child: Text('Logout',style: AppStyles.facebookTextStyle,),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                       shape: RoundedRectangleBorder(
@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
         child: Card(
           child: ListTile(
             contentPadding: EdgeInsets.all(8.0),
-            title: Text('${child.name}',style: TextStyles.genderTextStyle,),
+            title: Text('${child.name}',style: AppStyles.genderTextStyle,),
             leading: CircleAvatar(
               backgroundImage: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
               radius: 40.0,

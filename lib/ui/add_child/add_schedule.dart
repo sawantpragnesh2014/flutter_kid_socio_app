@@ -58,7 +58,7 @@ class _AddScheduleState extends State<AddSchedule> {
         children: [
           Expanded(
               flex: 1,
-              child: Text(day,style: TextStyles.blackTextBoldMedium,)
+              child: Text(day,style: AppStyles.blackTextBold18,)
           ),
           Expanded(
             flex: 2,
@@ -66,7 +66,7 @@ class _AddScheduleState extends State<AddSchedule> {
               children: [
                 _time('${selectedTime.hour}:${selectedTime.minute}'),
                 SizedBox(width: 8.0,),
-                Text('to',style: TextStyles.blackTextRegular,),
+                Text('to',style: AppStyles.blackTextRegular16,),
                 SizedBox(width: 8.0,),
                 _time('${selectedTime.hour}:${selectedTime.minute}'),
               ],
@@ -92,7 +92,7 @@ class _AddScheduleState extends State<AddSchedule> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(time,style: TextStyles.blackTextRegular,),
+            child: Text(time,style: AppStyles.blackTextRegular16,),
           ),
       ),
     );
@@ -115,7 +115,7 @@ class _AddScheduleState extends State<AddSchedule> {
                   activeColor: AppColors.color7059E1,
                   checkColor: Colors.white,
                 ),
-                Text('Use saved address',style: TextStyles.blackTextMedium,)
+                Text('Use saved address',style: AppStyles.blackTextMedium14,)
               ],
             ),
             state.errorText == null
@@ -135,7 +135,7 @@ class _AddScheduleState extends State<AddSchedule> {
   get _addressPicker {
     return TextFormField(
       /*initialValue: user?.firstName,*/
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -171,7 +171,7 @@ class _AddScheduleState extends State<AddSchedule> {
           children: [
             Text(
                 'Schedule',
-                style: TextStyles.blackTextBoldSmall
+                style: AppStyles.blackTextBold16
             ),
             SizedBox(height: 24.0,),
             Row(
@@ -180,14 +180,14 @@ class _AddScheduleState extends State<AddSchedule> {
                   flex: 1,
                   child: Text(
                       'Day',
-                      style: TextStyles.blackTextRegular
+                      style: AppStyles.blackTextRegular16
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: Text(
                       'Time',
-                      style: TextStyles.blackTextRegular
+                      style: AppStyles.blackTextRegular16
                   ),
                 ),
               ],
@@ -195,18 +195,18 @@ class _AddScheduleState extends State<AddSchedule> {
             _listSchedules,
             Text(
                 'Preferred Area',
-                style: TextStyles.blackTextRegular
+                style: AppStyles.blackTextRegular16
             ),
             _useSavedAddressCheckBox,
             _addressPicker,
             SizedBox(height:8.0),
             Text(
                 'Visible in',
-                style: TextStyles.blackTextRegular
+                style: AppStyles.blackTextRegular16
             ),
             _slider,
             SizedBox(height:8.0),
-            ActionButtonView(btnName: 'Continue',onBtnHit: (){widget.onActionBtnHit('');},buttonStyle: TextStyles.stylePinkButton,),
+            ActionButtonView(btnName: 'Continue',onBtnHit: (){widget.onActionBtnHit('');},buttonStyle: AppStyles.stylePinkButton,),
             SizedBox(height:30.0),
           ],
         )

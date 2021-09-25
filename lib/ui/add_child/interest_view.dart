@@ -15,33 +15,26 @@ class _InterestViewState extends State<InterestView> {
   @override
   void initState() {
     super.initState();
-    interestsList.add({'name':'Board Games','isSelected':false});
-    interestsList.add({'name':'Arts & craft','isSelected':false});
     interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Basketball','isSelected':false});
+    interestsList.add({'name':'Cricket','isSelected':false});
+    interestsList.add({'name':'Tennis','isSelected':false});
+    interestsList.add({'name':'Volleyball','isSelected':false});
+    interestsList.add({'name':'Table Tennis','isSelected':false});
+    interestsList.add({'name':'Badminton','isSelected':false});
     interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
-    interestsList.add({'name':'Swimming','isSelected':false});
-    interestsList.add({'name':'Running','isSelected':false});
-    interestsList.add({'name':'Football','isSelected':false});
+    interestsList.add({'name':'Chess','isSelected':false});
+    interestsList.add({'name':'Carrom','isSelected':false});
+    interestsList.add({'name':'Cards','isSelected':false});
+    interestsList.add({'name':'Dance','isSelected':false});
+    interestsList.add({'name':'Arts and Craft','isSelected':false});
+    interestsList.add({'name':'PlayArea ','isSelected':false});
+    interestsList.add({'name':'Chill Out','isSelected':false});
+    interestsList.add({'name':'Reading','isSelected':false});
+    interestsList.add({'name':'Movies','isSelected':false});
+    interestsList.add({'name':'Video Games','isSelected':false});
+    interestsList.add({'name':'Music','isSelected':false});
+    interestsList.add({'name':'Baby Sitting','isSelected':false});
   }
 
   @override
@@ -76,7 +69,7 @@ class _InterestViewState extends State<InterestView> {
           child: Center(
               child: Text(
                 interestsMap['name'].toString(),
-                style: interestsMap['isSelected']?TextStyles.interestSelected:TextStyles.genderTextStyle,
+                style: interestsMap['isSelected']?AppStyles.interestSelected:AppStyles.genderTextStyle,
               )
           ),
         ),

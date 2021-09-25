@@ -61,12 +61,12 @@ class _ChoosePlanState extends State<ChoosePlan> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Choose your plan', style: TextStyles.redText),
+              Text('Choose your plan', style: AppStyles.redText),
               SizedBox(
                 height: 10.0,
               ),
               Text('Choose a plan that works \nbest for you',
-                  style: TextStyles.blackTextSmall),
+                  style: AppStyles.blackTextSmall),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -88,7 +88,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                 height: 10.0,
               ),
               TextFormField(
-                decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Have a coupon?'),
+                decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Have a coupon?'),
                 validator: (val) => val.isEmpty?'Enter a valid coupon':null,
                 onChanged: (val){
                   setState(() {

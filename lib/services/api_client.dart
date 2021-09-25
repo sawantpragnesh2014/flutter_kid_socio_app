@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'app_exception.dart';
 
 class ApiClient{
-  final String _baseUrl = 'https://kidzooapi.azurewebsites.net';
+  final String _baseUrl = 'https://kidsocio.azurewebsites.net';
 
   Future<dynamic> getData(String url) async {
     var responseJson;

@@ -60,7 +60,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           flex: 2,
                           child: Text(
                             "Make PlayDates for your Kids",
-                            style: TextStyles.blackTextSemiSemiBold,
+                            style: AppStyles.blackTextSemiSemiBold36,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -69,7 +69,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           flex: 1,
                           child: Text(
                             "Make PlayDates for your Kids, Make new Friends",
-                            style: TextStyles.blackTextRegular,
+                            style: AppStyles.blackTextRegular16,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -96,7 +96,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             flex: 2,
                             child: Text(
                               "Make PlayDates for your Kids",
-                              style: TextStyles.blackTextSemiSemiBold,
+                              style: AppStyles.blackTextSemiSemiBold36,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -105,7 +105,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             flex: 1,
                             child: Text(
                               "Make PlayDates for your Kids, Make new Friends",
-                              style: TextStyles.blackTextRegular,
+                              style: AppStyles.blackTextRegular16,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -132,7 +132,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             flex: 2,
                             child: Text(
                               "Make PlayDates for your Kids",
-                              style: TextStyles.blackTextSemiSemiBold,
+                              style: AppStyles.blackTextSemiSemiBold36,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -141,7 +141,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             flex: 1,
                             child: Text(
                               "Make PlayDates for your Kids, Make new Friends",
-                              style: TextStyles.blackTextRegular,
+                              style: AppStyles.blackTextRegular16,
                               textAlign: TextAlign.center,
                             ),
                           ),

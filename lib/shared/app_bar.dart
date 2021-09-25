@@ -30,27 +30,28 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('Hello, ${user?.firstName?? 'Dummy Name'}', style: TextStyles.whiteTextBold),
+                  Text('Hello, ${user?.firstName?? 'N.A'}', style: AppStyles.whiteTextBold16),
                   SizedBox(height: 8.0,),
-                  Text('35/150 days',style: TextStyles.whiteTextMedium,)
+                  Text('35/150 days',style: AppStyles.whiteTextMedium14,)
                 ],
               ),
             ),
             Expanded(
               flex: 1,
-                child: Icon(Icons.notifications)
+                child: Icon(Icons.notifications_none,color: Colors.white,)
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  color: AppColors.colorFFC107,
-                  borderRadius: BorderRadius.all(Radius.circular(60.0))
+            Container(
+              height: 80.0,
+              width: 80.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
+                  fit: BoxFit.contain,
                 ),
-                child: CircleAvatar(
-                  backgroundImage: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
-                  radius: 30.0,
+                borderRadius: BorderRadius.all( Radius.circular(60.0)),
+                border: Border.all(
+                  color: AppColors.colorFFC107,
+                  width: 8.0,
                 ),
               ),
             ),

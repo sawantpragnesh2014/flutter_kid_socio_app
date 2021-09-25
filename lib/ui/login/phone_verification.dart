@@ -32,7 +32,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(10),
       ],
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Phone No.',prefixIcon: Padding(padding: EdgeInsets.all(15), child: Text('+91 ',style: TextStyles.editTextStyle,)),),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Phone No.',prefixIcon: Padding(padding: EdgeInsets.all(15), child: Text('+91 ',style: AppStyles.editTextStyle,)),),
       validator: (val) => FormValidators.validateMobile(val),
       onChanged: (val){
         setState(() {
@@ -54,12 +54,12 @@ class _PhoneVerificationState extends State<PhoneVerification> {
              children: [
                Text(
                    "Phone Number Verification ",
-                   style: TextStyles.blackTextBoldSmall
+                   style: AppStyles.blackTextBold16
                ),
                SizedBox(height: 20.0,),
                Text(
                    "Please confirm your phone number ",
-                   style: TextStyles.blackTextRegular
+                   style: AppStyles.blackTextRegular16
                ),
                SizedBox(height: 20.0,),
                _phoneNumber,

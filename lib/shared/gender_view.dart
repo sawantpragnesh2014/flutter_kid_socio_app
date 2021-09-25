@@ -56,7 +56,7 @@ class _GenderViewState extends State<GenderView> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-            child: Center(child: Text(genderMap['name'].toString(),style: genderMap['isSelected']?TextStyles.genderTextStyleSelected:TextStyles.genderTextStyle,)),
+            child: Center(child: Text(genderMap['name'].toString(),style: genderMap['isSelected']?AppStyles.genderTextStyleSelected:AppStyles.genderTextStyle,)),
           ),
         ),
       ),

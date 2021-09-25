@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-class TextStyles {
+class AppStyles {
 
   static const String opn_sans = 'OpenSans';
   static const String m_plus_rounded = 'MPlusRounded';
@@ -28,6 +28,13 @@ class TextStyles {
       fontFamily: m_plus_rounded,
       fontWeight: medium,
       fontSize: 14.0
+  );
+
+  static const redTextBoldLarge = TextStyle(
+      color: AppColors.colorEB4C57,
+      fontFamily: m_plus_rounded,
+      fontWeight: bold,
+      fontSize: 24.0
   );
 
   static const blackText = TextStyle(
@@ -76,6 +83,18 @@ class TextStyles {
       fontWeight: regular,
       color: AppColors.color888E9A);
 
+  static const greyRegularSmall = TextStyle(
+      fontSize: 14.0,
+      fontFamily: m_plus_rounded,
+      fontWeight: regular,
+      color: AppColors.color888E9A);
+
+  static const greyBold16 = TextStyle(
+      fontSize: 16.0,
+      fontFamily: m_plus_rounded,
+      fontWeight: bold,
+      color: AppColors.color888E9A);
+
   static const genderTextStyleSelected = TextStyle(
       fontSize: 14.0,
       fontFamily: m_plus_rounded,
@@ -94,6 +113,12 @@ class TextStyles {
       fontWeight: medium,
       color: AppColors.color7059E1);
 
+  static const purpleTextBold16 = TextStyle(
+      fontSize: 16.0,
+      fontFamily: m_plus_rounded,
+      fontWeight: bold,
+      color: AppColors.color7059E1);
+
   static const facebookTextStyle = TextStyle(
       fontSize: 20.0,
       fontFamily: opn_sans,
@@ -105,6 +130,8 @@ class TextStyles {
       fontFamily: opn_sans,
       fontWeight: semibold,
       color: AppColors.color676767);
+
+  static const getPadding = EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 20.0);
 
   /*static const textInputDecoration = InputDecoration(
     fillColor: AppColors.colorf3f3f3,
@@ -139,71 +166,106 @@ class TextStyles {
 
   //NEW UI
 
-  static const whiteTextBold = TextStyle(
+  static const whiteTextBold16 = TextStyle(
     color: Colors.white,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 16.0,
   );
 
-  static const whiteTextBoldLarge = TextStyle(
+  static const whiteTextBold40 = TextStyle(
     color: Colors.white,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 40.0,
   );
 
-  static const whiteTextMedium = TextStyle(
+  static const whiteTextMedium14 = TextStyle(
     color: Colors.white,
     fontFamily: m_plus_rounded,
     fontWeight: medium,
     fontSize: 14.0,
   );
 
-  static const blackTextMedium = TextStyle(
+  static const blackTextMedium14 = TextStyle(
     color: AppColors.color424242,
     fontFamily: m_plus_rounded,
     fontWeight: medium,
     fontSize: 14.0,
   );
 
-  static const blackTextRegular = TextStyle(
+  static const blackTextMedium36 = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: medium,
+    fontSize: 36.0,
+  );
+
+  static const blackTextMedium11 = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: medium,
+    fontSize: 11.0,
+  );
+
+  static const blackTextRegular16 = TextStyle(
     color: AppColors.color424242,
     fontFamily: m_plus_rounded,
     fontWeight: regular,
     fontSize: 16.0,
   );
 
-  static const blackTextSemiSemiBold = TextStyle(
+  static const blackTextRegular14 = TextStyle(
+    color: AppColors.color424242,
+    fontFamily: m_plus_rounded,
+    fontWeight: regular,
+    fontSize: 14.0,
+  );
+
+  static const blackTextSemiSemiBold36 = TextStyle(
     color: AppColors.color424242,
     fontFamily: quicksand,
     fontWeight: semi_semi_bold,
     fontSize: 36.0,
   );
 
-  static const blackTextBold = TextStyle(
+  static const blackTextBold24 = TextStyle(
     color: AppColors.color424242,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 24.0,
   );
 
-  static const blackTextBoldSmall = TextStyle(
+  static const blackTextBold16 = TextStyle(
     color: AppColors.color424242,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 16.0,
   );
 
-  static const blackTextBoldMedium = TextStyle(
+  static const blackTextBold18 = TextStyle(
     color: AppColors.color424242,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 18.0,
   );
 
-  static const blueTextBoldSmall = TextStyle(
+  static const blueTextBold16 = TextStyle(
     color: AppColors.color2AC98A,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 16.0,
+  );
+
+  static const redTextBold18 = TextStyle(
+    color: AppColors.colorEB4C57,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 18.0,
+  );
+
+  static const greenTextBold16 = TextStyle(
+    color: AppColors.color4CAF50,
     fontFamily: m_plus_rounded,
     fontWeight: bold,
     fontSize: 16.0,
@@ -219,7 +281,7 @@ class TextStyles {
     onPressed: () {},
     child: Text(
       text,
-      style: whiteTextBold,
+      style: whiteTextBold16,
     ),
   );
 

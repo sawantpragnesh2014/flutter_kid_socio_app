@@ -24,7 +24,7 @@ class _ChildFormState extends State<ChildForm> {
 
   Widget get _firstName {
     return TextFormField(
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'First Name'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -36,7 +36,7 @@ class _ChildFormState extends State<ChildForm> {
 
   Widget get _lastName {
     return TextFormField(
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -55,7 +55,7 @@ class _ChildFormState extends State<ChildForm> {
       child: IgnorePointer(
         child: TextFormField(
           controller: dateCtl,
-          decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Date of birth',suffixIcon: Icon(Icons.calendar_today_sharp),),
+          decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Date of birth',suffixIcon: Icon(Icons.calendar_today_sharp),),
           validator: (val) => FormValidators.validateDob(val),
           onChanged: (val){
             setState(() {
@@ -69,7 +69,7 @@ class _ChildFormState extends State<ChildForm> {
 
   Widget get _schoolName {
     return TextFormField(
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'School'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'School'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -110,7 +110,7 @@ class _ChildFormState extends State<ChildForm> {
               children: [
                 Text(
                     'Enter Kid\'s details',
-                    style: TextStyles.blackTextBoldSmall
+                    style: AppStyles.blackTextBold16
                 ),
                 SizedBox(height: 24.0,),
                 _firstName,
@@ -126,12 +126,11 @@ class _ChildFormState extends State<ChildForm> {
                   return _childBloc.gender = value;
                 },),
                 SizedBox(height: 24.0,),
-                ActionButtonView(btnName: "Continue",onBtnHit: (){
+                ActionButtonView(btnName: "Continue",onBtnHit: () {
                   if (formKey.currentState.validate()) {
-                    // CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.INTEREST);
                     widget.callback();
                   }
-                },buttonStyle: TextStyles.stylePinkButton,),
+                },buttonStyle: AppStyles.stylePinkButton,),
               ],
             )
         )

@@ -4,6 +4,8 @@ import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
+import 'package:flutter_kid_socio_app/ui/home/dashboard.dart';
+import 'package:flutter_kid_socio_app/ui/searchplaydate/search_playdates.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/choose_plan.dart';
@@ -23,6 +25,7 @@ import 'package:flutter_kid_socio_app/ui/login/registration_form.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 import 'blocs/bloc_provider.dart';
+import 'models/child.dart';
 import 'models/parent.dart';
 
 Future<void> main() async {

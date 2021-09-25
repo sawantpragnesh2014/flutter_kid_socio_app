@@ -26,6 +26,9 @@ Stream get childListStream => childController.stream;
   void addChild(){
     Child child = Child(name: _firstName,dob: _dob,schoolName: _schoolName,photoUrl: _photoUrl,gender: _gender);
     childList.add(child);
+    /*childList.add(child);
+    childList.add(child);
+    childList.add(child);*/
     getAllChildren();
   }
 

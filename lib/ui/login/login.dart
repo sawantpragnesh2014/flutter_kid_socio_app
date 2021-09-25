@@ -35,19 +35,19 @@ class _LoginState extends State<Login> {
                 children: [
                   Text(
                       'Login to your existing account',
-                      style: TextStyles.blackTextBold
+                      style: AppStyles.blackTextBold24
                   ),
                   SizedBox(height: 20.0,),
                   SizedBox(height: 20.0,),
-                  loginButton(AppColors.colorDADADA, 'google_logo.png', 'Google', TextStyles.blackTextBoldSmall),
+                  loginButton(AppColors.colorDADADA, 'google_logo.png', 'Google', AppStyles.blackTextBold16),
                   SizedBox(height: 10.0,),
                   Text(
                       'Or with',
-                      style: TextStyles.blackTextMedium,
+                      style: AppStyles.blackTextMedium14,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10.0,),
-                  loginButton(AppColors.colorDADADA, 'facebook_logo.png', 'Facebook', TextStyles.blackTextBoldSmall),
+                  loginButton(AppColors.colorDADADA, 'facebook_logo.png', 'Facebook', AppStyles.blackTextBold16),
                 ],
               ),
             )

@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
-import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'action_button.dart';
+import 'colors.dart';
 
 typedef StringValue = void Function(String);
 
@@ -31,23 +30,37 @@ class _AddPicState extends State<AddPic> {
       padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
                 'Add your profile picture',
-                style: TextStyles.blackTextBoldSmall
+                style: AppStyles.blackTextBold16
             ),
             SizedBox(height: 20.0,),
             GestureDetector(
               onTap: (){
                 _showPicker(context);
               },
-              child: CircleAvatar(
+              child: /*CircleAvatar(
                 backgroundImage: AssetImage('assets/vector_png.png'),
                 radius: 110.0,
                 child: CircleAvatar(
                   backgroundImage: _image != null ? FileImage(_image) : widget.photoUrl != null ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/facebook_logo.png'),
                   radius: 80.0,
+                ),
+              ),*/
+              Container(
+                height: 300.0,
+                width: 300.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: _image != null ? FileImage(_image) : widget.photoUrl != null ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/facebook_logo.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.all( Radius.circular(180.0)),
+                  border: Border.all(
+                    color: AppColors.colorEB4C57,
+                    width: 16.0,
+                  ),
                 ),
               ),
             ),

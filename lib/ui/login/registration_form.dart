@@ -35,7 +35,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     Widget get _lastName {
     return TextFormField(
       initialValue: user?.lastName,
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -48,7 +48,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget get _firstName {
     return TextFormField(
       initialValue: user?.firstName,
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'First Name'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -61,7 +61,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget get _email {
     return TextFormField(
       initialValue: user?.email,
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Email'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Email'),
       validator: (val) => FormValidators.validateEmail(val),
       onChanged: (val){
         setState(() {
@@ -78,7 +78,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(6),
       ],
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Pincode'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Pincode'),
       validator: (val) => FormValidators.validatePinCode(val),
       onChanged: (val){
         /*setState(() {
@@ -93,7 +93,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       initialValue: user?.phoneNo,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Address'),
+      decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address'),
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
@@ -124,20 +124,20 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 RichText(
                     text: TextSpan(
                         children: [
-                          TextSpan(text: 'By continuing you agree to the ',style: TextStyles.blackTextMedium),
+                          TextSpan(text: 'By continuing you agree to the ',style: AppStyles.blackTextMedium14),
                           TextSpan(
                               text: '\nT & C',
-                              style: TextStyles.hyperlinkStyle,
+                              style: AppStyles.hyperlinkStyle,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   print('Terms of Service');
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => Policy()));
                                 }),
-                          TextSpan(text: ' and ',style: TextStyles.blackTextMedium),
+                          TextSpan(text: ' and ',style: AppStyles.blackTextMedium14),
                           TextSpan(
                               text: 'Privacy Policy',
-                              style: TextStyles.redTextSmall,
+                              style: AppStyles.redTextSmall,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   print('Privacy Policy');
@@ -222,7 +222,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),*/
                   Text(
                       "Parent's Registration",
-                      style: TextStyles.blackTextBoldSmall
+                      style: AppStyles.blackTextBold16
                   ),
                   SizedBox(height: 20.0,),
                   _firstName,

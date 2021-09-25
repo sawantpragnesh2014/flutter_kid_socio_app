@@ -58,28 +58,30 @@ class _AddChildState extends State<AddChild> {
   }
 
   Widget get _interests{
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-              'Enter your child\'s interests',
-              style: TextStyles.kSubTitleStyle
-          ),
-          SizedBox(height: 20.0,),
-          InterestView(),
-          SizedBox(height: 20.0,),
-          ActionButtonView(btnName: "Continue",onBtnHit: (){
-            CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.SCHEDULE);
-          },buttonStyle: TextStyles.stylePinkButton,),
-          SizedBox(height: 30.0,),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+            'Enter your child\'s interests',
+            style: AppStyles.kSubTitleStyle
+        ),
+        SizedBox(height: 20.0,),
+        Expanded(
+            flex: 1,
+            child: SingleChildScrollView(child: InterestView())
+        ),
+        SizedBox(height: 20.0,),
+        ActionButtonView(btnName: "Continue",onBtnHit: (){
+          CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.SCHEDULE);
+        },buttonStyle: AppStyles.stylePinkButton,),
+        SizedBox(height: 30.0,),
+      ],
     );
   }
 
   Widget get _addProfilePic{
-    return AddPic(btnStyle: TextStyles.stylePinkButton,onActionBtnHit: (val){
+    return AddPic(btnStyle: AppStyles.stylePinkButton,onActionBtnHit: (val){
+      print('child bloc $_childBloc');
       _childBloc.photoUrl = val;
       CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.INTEREST);
     },);
@@ -112,7 +114,7 @@ class _AddChildState extends State<AddChild> {
             resizeToAvoidBottomInset: false,
             appBar: AppBarView(height: 150.0),
             body: Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
+              padding: AppStyles.getPadding,
               child: _addChildView(type),
             )
           ),
@@ -123,6 +125,7 @@ class _AddChildState extends State<AddChild> {
 
   @override
   void dispose() {
+    print('Dispose called');
     super.dispose();
     CustomBlocProvider.getBloc<AddChildBloc>().dispose();
   }

@@ -20,13 +20,13 @@ class ActionButtonView extends StatelessWidget {
         height: 60.0,
         width: double.infinity,
         child: ElevatedButton(
-          style: buttonStyle??TextStyles.stylePurpleButton,
+          style: buttonStyle??AppStyles.stylePurpleButton,
           onPressed: () {
             onBtnHit();
           },
           child: Text(
             btnName,
-            style: TextStyles.whiteTextBold,
+            style: AppStyles.whiteTextBold16,
           ),
         ),
       ),

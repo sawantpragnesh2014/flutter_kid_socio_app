@@ -3,6 +3,7 @@ import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/ui/home/home.dart';
 import 'package:flutter_kid_socio_app/ui/login/registration_form.dart';
@@ -15,19 +16,18 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // final Auth auth = AuthProvider.of(context).auth;
     return StreamBuilder<Parent>(
-          stream: CustomBlocProvider.getBloc<AuthBloc>().onAuthStateChanged,
-          builder: (BuildContext context,AsyncSnapshot<Parent> snapshot){
-              if(snapshot.connectionState == ConnectionState.active){
-                final bool isLoggedIn = snapshot.hasData;
-                CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
-                print('Auth changed $isLoggedIn');
+        stream: CustomBlocProvider.getBloc<AuthBloc>().onAuthStateChanged,
+        builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final bool isLoggedIn = snapshot.hasData;
+            CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
+            print('Auth changed $isLoggedIn');
 
-                return isLoggedIn?RegistrationForm():Login();
-              }
-              return Loading();
+            return isLoggedIn ? handleLoggedInState() : Login();
           }
-      );
-    }
+          return Loading();
+        });
+  }
 
   /*handleLoggedInState() {
     print('uid of user is ${CustomBlocProvider.getBloc<AuthBloc>().getUser.uid}');
@@ -57,7 +57,7 @@ class RootPage extends StatelessWidget {
 
         },
     );*/
-    
+
 
     /*bool isRegistered = true;
     if(isRegistered){
@@ -68,31 +68,36 @@ class RootPage extends StatelessWidget {
 
   handleLoggedInState() {
     print('uid of user is ${CustomBlocProvider.getBloc<AuthBloc>().getUser.uid}');
+
     return FutureBuilder<Parent>(
-        future: CustomBlocProvider.getBloc<LoginBloc>().fetchParent(CustomBlocProvider.getBloc<AuthBloc>().getUser.uid),
-        builder: (context, snapshot) {
-          print('Connection state ${snapshot.connectionState}');
-          print('Connection snapshot.hasError ${snapshot.hasError}');
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            print('data loading');
-            return Loading();
+      future: CustomBlocProvider.getBloc<LoginBloc>()
+          .fetchParent(CustomBlocProvider.getBloc<AuthBloc>().getUser.uid),
+      builder: (context, snapshot) {
+        print('Connection state ${snapshot.connectionState}');
+        print('Connection snapshot.hasError ${snapshot.hasError}');
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          print('data loading');
+          return Loading();
+        } else {
+          if (snapshot.hasData) {
+            print('data found');
+            Parent parent = snapshot.data;
+            print('parent is ${parent}');
+            CustomBlocProvider.getBloc<AuthBloc>().setUser(parent);
+            return Home();
+          } else if (snapshot.hasError) {
+            return ErrorPage(
+              errorMessage: snapshot.error.toString(),
+              onRetryPressed: () => CustomBlocProvider.getBloc<LoginBloc>()
+                  .fetchParent(
+                      CustomBlocProvider.getBloc<AuthBloc>().getUser.uid),
+            );
           } else {
-            if (snapshot.hasData) {
-              print('data found');
-              Parent parent = snapshot.data;
-              print('parent is ${parent}');
-              CustomBlocProvider.getBloc<AuthBloc>().setUser(parent);
-              return Home();
-            }else if(snapshot.hasError){
-              print(snapshot.error.toString());
-              return Text(snapshot.error.toString());
-            }else{
-              print('data empty ${snapshot.data}');
-              return RegistrationForm();
-            }
+            print('data empty ${snapshot.data}');
+            return RegistrationForm();
           }
-        },
+        }
+      },
     );
   }
-
 }

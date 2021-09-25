@@ -35,9 +35,9 @@ class ConnectFacebookGoogle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          loginButton(Colors.white, 'google_logo.png', 'google', TextStyles.googleTextStyle),
+          loginButton(Colors.white, 'google_logo.png', 'google', AppStyles.googleTextStyle),
           SizedBox(height: 10.0,),
-          loginButton(AppColors.color16499f, 'facebook_logo.png', 'facebook', TextStyles.facebookTextStyle),
+          loginButton(AppColors.color16499f, 'facebook_logo.png', 'facebook', AppStyles.facebookTextStyle),
         ],
       ),
     );

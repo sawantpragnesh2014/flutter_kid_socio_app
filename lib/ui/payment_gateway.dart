@@ -23,7 +23,7 @@ class _PaymentState extends State<Payment> {
             Center(
               child: Text(
                 'Payment Details',
-                  style: TextStyles.redText
+                  style: AppStyles.redText
               ),
             ),
             SizedBox(height: 20.0,),
@@ -36,7 +36,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Valid Card Number'),
+              decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Valid Card Number'),
               validator: (val) => val.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
@@ -62,7 +62,7 @@ class _PaymentState extends State<Payment> {
                     Container(
                       width: 100,
                       child: TextFormField(
-                        decoration: TextStyles.textInputDecoration.copyWith(hintText: 'MM/YY'),
+                        decoration: AppStyles.textInputDecoration.copyWith(hintText: 'MM/YY'),
                         validator: (val) => val.isEmpty?'Enter month year':null,
                         onChanged: (val){
                           setState(() {
@@ -88,7 +88,7 @@ class _PaymentState extends State<Payment> {
                     Container(
                       width: 100,
                       child: TextFormField(
-                        decoration: TextStyles.textInputDecoration.copyWith(hintText: 'CVC'),
+                        decoration: AppStyles.textInputDecoration.copyWith(hintText: 'CVC'),
                         validator: (val) => val.isEmpty?'Enter CVC':null,
                         onChanged: (val){
                           setState(() {
@@ -111,7 +111,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              decoration: TextStyles.textInputDecoration.copyWith(hintText: 'Card Owner Name'),
+              decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Card Owner Name'),
               validator: (val) => val.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
@@ -121,7 +121,7 @@ class _PaymentState extends State<Payment> {
             ),
             SizedBox(height: 20.0,),
             Center(
-              child: TextStyles.ElevatedButtonStyle('Confirm Payment'),
+              child: AppStyles.ElevatedButtonStyle('Confirm Payment'),
             ),
 
           ],
