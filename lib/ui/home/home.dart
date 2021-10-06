@@ -8,6 +8,7 @@ import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -97,7 +98,7 @@ class _HomeState extends State<Home> {
             contentPadding: EdgeInsets.all(8.0),
             title: Text('${child.name}',style: AppStyles.genderTextStyle,),
             leading: CircleAvatar(
-              backgroundImage: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
+              backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
               radius: 40.0,
             ),
           ),

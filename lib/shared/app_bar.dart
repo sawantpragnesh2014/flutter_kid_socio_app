@@ -4,6 +4,7 @@ import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class AppBarView extends StatelessWidget implements PreferredSizeWidget {
   final double height;
@@ -45,7 +46,7 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
               width: 80.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(user.photoUrl + '?width=400&height400'),
+                  image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
                   fit: BoxFit.contain,
                 ),
                 borderRadius: BorderRadius.all( Radius.circular(60.0)),

@@ -1,20 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
-import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
-import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
-import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
-import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
-import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
-import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
-
-import '../home/home.dart';
 
 class OtpScreenNew extends StatefulWidget {
   @override
@@ -22,8 +13,6 @@ class OtpScreenNew extends StatefulWidget {
 }
 
 class _OtpScreenNewState extends State<OtpScreenNew> {
-  LoginBloc _loginBloc;
-  AuthBloc _authBloc;
   int _firstDigit;
   int _secondDigit;
   int _thirdDigit;
@@ -131,46 +120,11 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
   }
 
   @override
-  void didChangeDependencies() {
-        super.didChangeDependencies();
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _loginBloc.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBarNew(height: 120.0,),
-      body: StreamBuilder<ApiResponse<String>>(
-        stream: _loginBloc.parentStream,
-        builder: (context, snapshot) {
-          if(snapshot.hasData){
-            switch(snapshot.data.status){
-              case Status.LOADING:
-                return Loading();
-                break;
-              case Status.COMPLETED:
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => Home()));
-                break;
-              case Status.ERROR:
-                return ErrorPage(
-                  errorMessage: snapshot.data.message,
-                  onRetryPressed: () => _loginBloc.createParent(_authBloc.getUser),
-                );
-                break;
-            }
-          }
-          return _otpScreen;
-        }
-      ),
+      body: _otpScreen
     );
   }
 }

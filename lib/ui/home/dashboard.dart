@@ -6,6 +6,7 @@ import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
 import 'package:flutter_kid_socio_app/ui/searchplaydate/search_playdates.dart';
 import 'package:flutter_kid_socio_app/ui/home/send_request_panel.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class Dashboard extends StatefulWidget {
   final List<Child> childList;
@@ -250,7 +251,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: /*user?.photoUrl == null ?*/AssetImage('assets/google_logo.png')/*:NetworkImage(user.photoUrl + '?width=400&height400')*/,
+            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Image.asset('assets/icon_msg.png', fit: BoxFit.cover),

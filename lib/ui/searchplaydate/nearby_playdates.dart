@@ -5,6 +5,7 @@ import 'package:flutter_kid_socio_app/shared/child_info.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/home/send_request_panel.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class NearbyPlayDates extends StatefulWidget {
 
@@ -78,7 +79,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
           ),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: /*user?.photoUrl == null ?*/AssetImage('assets/google_logo.png')/*:NetworkImage(user.photoUrl + '?width=400&height400')*/,
+            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Image.asset('assets/img_apartment.png', fit: BoxFit.cover),

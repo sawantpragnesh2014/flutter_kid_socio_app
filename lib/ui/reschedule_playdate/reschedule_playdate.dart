@@ -61,7 +61,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
                   ActionButtonView(
                     btnName: "Reschedule",
                     onBtnHit: (){
-                      Navigator.pop(context);
+                      showSendRequestPanel(widget.child);
                     },
                   ),
                   SizedBox(height: 12.0,),

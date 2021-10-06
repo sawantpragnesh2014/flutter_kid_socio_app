@@ -1,15 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/child_timings.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 
 typedef StringValue = void Function(String);
 
 class AddSchedule extends StatefulWidget {
   final StringValue onActionBtnHit;
+  final Child child;
 
-  AddSchedule({this.onActionBtnHit});
+  AddSchedule({this.onActionBtnHit,this.child});
 
   @override
   _AddScheduleState createState() => _AddScheduleState();
@@ -17,10 +23,14 @@ class AddSchedule extends StatefulWidget {
 
 class _AddScheduleState extends State<AddSchedule> {
 
-  List<String> scheduleDaysList = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  List<ChildTimings> scheduleDaysList;
+  List<ChildTimings> finalscheduleDaysList;
+  Map<String,ChildTimings> timeMap;
+
   bool _agree = true;
   int _value = 10;
-  TimeOfDay selectedTime = TimeOfDay.now();
+  /*TimeOfDay selectedTime = TimeOfDay.now();*/
+  TimeOfDay initialTime;
 
 
   // DateTime currentDate = DateTime.now();
@@ -36,39 +46,44 @@ class _AddScheduleState extends State<AddSchedule> {
     );
   }
 
-  Future<void> _selectTime(BuildContext context) async {
+  Future<TimeOfDay> _selectTime(BuildContext context) async {
     final TimeOfDay pickedTime = await showTimePicker(
         context: context,
-        initialTime: selectedTime, builder: (BuildContext context, Widget child) {
+        initialTime: TimeOfDay.now(), builder: (BuildContext context, Widget child) {
       return MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
         child: child,
       );});
 
-    if (pickedTime != null && pickedTime != selectedTime )
-      setState(() {
-        selectedTime = pickedTime;
-      });
+      pickedTime.replacing(hour: pickedTime.hourOfPeriod);
+
+      return pickedTime;
   }
 
-  scheduleDaysListView(String day) {
+  scheduleDaysListView(ChildTimings childTimings) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0,16.0,0,0),
       child: Row(
         children: [
           Expanded(
               flex: 1,
-              child: Text(day,style: AppStyles.blackTextBold18,)
+              child: InkWell(
+                  onTap: (){
+                    setState(() {
+                      childTimings.isSelected = !childTimings.isSelected;
+                    });
+                  },
+                  child: Text(childTimings.day,style: childTimings.isSelected ? AppStyles.redTextBold18 : AppStyles.blackTextBold18,))
           ),
           Expanded(
             flex: 2,
             child: Row(
               children: [
-                _time('${selectedTime.hour}:${selectedTime.minute}'),
+                Expanded(flex: 1,child: _fromTime(childTimings)),
                 SizedBox(width: 8.0,),
                 Text('to',style: AppStyles.blackTextRegular16,),
                 SizedBox(width: 8.0,),
-                _time('${selectedTime.hour}:${selectedTime.minute}'),
+                Expanded(flex:1,child: _toTime(childTimings)),
               ],
             ),
           )
@@ -77,12 +92,12 @@ class _AddScheduleState extends State<AddSchedule> {
     );
   }
 
-  _time(String time) {
+  Widget _fromTime(ChildTimings childTimings) {
     return GestureDetector(
-      onTap: (){
-        _selectTime(context);
+      onTap: () async{
+        childTimings.fromTime = await _selectTime(context);
+        print('time is ${childTimings.fromTime}');
         setState(() {
-          time = '${selectedTime.hour}:${selectedTime.minute}';
         });
       },
       child: DecoratedBox(
@@ -92,7 +107,28 @@ class _AddScheduleState extends State<AddSchedule> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(time,style: AppStyles.blackTextRegular16,),
+            child: Text(TimeUtils.getDisplayTime(childTimings.fromTime),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
+          ),
+      ),
+    );
+  }
+
+  Widget _toTime(ChildTimings childTimings) {
+    return GestureDetector(
+      onTap: () async{
+        childTimings.toTime = await _selectTime(context);
+        print('time is ${childTimings.toTime}');
+        setState(() {
+        });
+      },
+      child: DecoratedBox(
+          decoration: const BoxDecoration(
+            color: AppColors.colorC4C4C4,
+            borderRadius: BorderRadius.all(Radius.circular(18)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(TimeUtils.getDisplayTime(childTimings.toTime),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
           ),
       ),
     );
@@ -164,6 +200,34 @@ class _AddScheduleState extends State<AddSchedule> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    DateTime newDate = DateTime.now();
+    DateTime formatedDate = newDate.subtract(Duration(hours: newDate.hour, minutes: newDate.minute, seconds: newDate.second, milliseconds: newDate.millisecond, microseconds: newDate.microsecond));
+    initialTime = TimeOfDay.fromDateTime(formatedDate);
+
+    scheduleDaysList = [
+      ChildTimings(childId: widget.child.id,day: 'Monday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Tuesday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Wednesday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Thursday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Friday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Saturday',fromTime: initialTime,toTime: initialTime),
+      ChildTimings(childId: widget.child.id,day: 'Sunday',fromTime: initialTime,toTime: initialTime)
+    ];
+
+    /*timeMap = {
+      'Monday': ChildTimings(childId: widget.child.id,day: 'Monday',fromTime: initialTime,toTime: initialTime),
+      'Tuesday': ChildTimings(childId: widget.child.id,day: 'Tuesday',fromTime: initialTime,toTime: initialTime),
+      'Wednesday': ChildTimings(childId: widget.child.id,day: 'Wednesday',fromTime: initialTime,toTime: initialTime),
+      'Thursday': ChildTimings(childId: widget.child.id,day: 'Thursday',fromTime: initialTime,toTime: initialTime),
+      'Friday': ChildTimings(childId: widget.child.id,day: 'Friday',fromTime: initialTime,toTime: initialTime),
+      'Saturday': ChildTimings(childId: widget.child.id,day: 'Saturday',fromTime: initialTime,toTime: initialTime),
+      'Sunday': ChildTimings(childId: widget.child.id,day: 'Sunday',fromTime: initialTime,toTime: initialTime),
+    };*/
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Column(
@@ -206,10 +270,19 @@ class _AddScheduleState extends State<AddSchedule> {
             ),
             _slider,
             SizedBox(height:8.0),
-            ActionButtonView(btnName: 'Continue',onBtnHit: (){widget.onActionBtnHit('');},buttonStyle: AppStyles.stylePinkButton,),
+            ActionButtonView(
+              btnName: 'Continue',
+              onBtnHit: (){
+                widget.onActionBtnHit('');
+                finalscheduleDaysList = scheduleDaysList.where((i) => i.isSelected).toList();
+                print('finalscheduleDaysList is $finalscheduleDaysList');
+              },
+              buttonStyle: AppStyles.stylePinkButton,
+            ),
             SizedBox(height:30.0),
           ],
         )
     );
   }
+
 }

@@ -6,6 +6,7 @@ import 'package:flutter_kid_socio_app/shared/child_info.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/searchplaydate/preference.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class SearchPlayDates extends StatefulWidget {
   final Child child;
@@ -41,7 +42,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
       width: 60.0,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(child.photoUrl + '?width=400&height400'),
+          image: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
           fit: BoxFit.contain,
         ),
         borderRadius: BorderRadius.all( Radius.circular(30.0)),
@@ -114,7 +115,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
           title: Text('${child.name}, ',style: AppStyles.blackTextBold16),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: /*user?.photoUrl == null ?*/AssetImage('assets/google_logo.png')/*:NetworkImage(user.photoUrl + '?width=400&height400')*/,
+            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Text('30 JUL,21',style: AppStyles.greyRegularSmall),

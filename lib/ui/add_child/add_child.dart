@@ -46,7 +46,7 @@ class _AddChildState extends State<AddChild> {
    return AddSchedule(onActionBtnHit: (val){
      _childBloc.addChild();
      Navigator.pop(context);
-   },);
+   },child: Child(id: 0),);
   }
 
 

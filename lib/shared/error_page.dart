@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
+import 'app_bar_new.dart';
+
 class ErrorPage extends StatelessWidget {
   final String errorMessage;
   final VoidCallback onRetryPressed;
@@ -9,20 +11,26 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(errorMessage),
-          SizedBox(height: 8.0,),
-          ElevatedButton(
-              style:  AppStyles.stylePurpleButton,
-              onPressed: () {
-                onRetryPressed();
-              }, child: Text('Retry',
-            style: AppStyles.whiteTextBold16,
-          ),)
-        ],
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: AppStyles.getPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(errorMessage,style: AppStyles.blackTextBold16,),
+              SizedBox(height: 8.0,),
+              ElevatedButton(
+                  style:  AppStyles.stylePurpleButton,
+                  onPressed: () {
+                    onRetryPressed();
+                  }, child: Text('Retry',
+                style: AppStyles.whiteTextBold16,
+              ),)
+            ],
+          ),
+        ),
       ),
     );
   }

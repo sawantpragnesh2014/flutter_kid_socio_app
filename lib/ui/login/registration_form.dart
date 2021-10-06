@@ -81,9 +81,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Pincode'),
       validator: (val) => FormValidators.validatePinCode(val),
       onChanged: (val){
-        /*setState(() {
-          _loginBloc.phoneNo = val;
-        });*/
+        setState(() {
+          _loginBloc.pinCode = val;
+        });
       },
     );
   }
@@ -97,7 +97,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          _loginBloc.phoneNo = val;
+          _loginBloc.addressName = val;
         });
       },
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class FormValidators{
-  static final RegExp regexName = new RegExp(r"/^[a-z ,.'-]+$/i");
+  static final RegExp regexName = RegExp(r"/^[a-z ,.'-]+$/i");
   static final RegExp regexEmail = RegExp(r'\w+@\w+\.\w+'); // translates to word@word.word
-  static final RegExp regexNumber = new RegExp(r'(^(?:[+0]9)?[0-9]{10}$)');
-  static final RegExp regexPinCode = new RegExp(r'(^(?:[+0]5)?[0-5]{6}$)');
+  static final RegExp regexNumber = RegExp(r'(^(?:[+0]9)?[0-9]{10}$)');
+  static final RegExp regexPinCode = RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
 
   static String validateEmail(String email) {
     if (email.isEmpty)
@@ -35,10 +35,10 @@ class FormValidators{
       return null;
   }
 
-  static String validatePinCode(String name) {
-    if (name.isEmpty)
+  static String validatePinCode(String zip) {
+    if (zip.isEmpty)
       return 'Enter a pin code';
-    else if (!regexPinCode.hasMatch(name))
+    else if (!regexPinCode.hasMatch(zip))
       return "Invalid pin code";
     else
       return null;

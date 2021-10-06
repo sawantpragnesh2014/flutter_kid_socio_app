@@ -13,9 +13,25 @@ class ApiClient{
     try {
       // final response = await get(Uri.https('$_baseUrl','$url'));
       print('URL is ${_baseUrl+url}');
-      final Response response = await post(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
+      final Response response = await get(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
+
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+    return responseJson;
+  }
+
+  Future<dynamic> getDataByPostCall(String url,String uid) async {
+    var responseJson;
+    try {
+      // final response = await get(Uri.https('$_baseUrl','$url'));
+      print('URL is ${_baseUrl+url}');
+      final Response response = await post(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },body: jsonEncode('$uid'));
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -30,6 +46,9 @@ class ApiClient{
     final Response response = await post(Uri.parse('${_baseUrl + url}'),headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     }, body: jsonEncode(requestBody));
+
+
+    print('req body parent ${jsonEncode(requestBody)}');
 
     print('response.statusCode ${response.statusCode}');
 

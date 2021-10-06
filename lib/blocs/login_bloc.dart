@@ -12,15 +12,17 @@ class LoginBloc extends Bloc {
   String _email;
   String _gender;
   String _phoneNo;
+  String _photoUrl;
+  String _pinCode;
+  String _addressName;
+  Parent _parent;
 
+  StreamController _parentController = StreamController<ApiResponse<int>>.broadcast();
 
-
-  StreamController _parentController = StreamController<ApiResponse<String>>.broadcast();
-
-  StreamSink<ApiResponse<String>> get parentSink =>
+  StreamSink<ApiResponse<int>> get parentSink =>
       _parentController.sink;
 
-  Stream<ApiResponse<String>> get parentStream =>
+  Stream<ApiResponse<int>> get parentStream =>
       _parentController.stream;
 
 LoginBloc(){
@@ -34,7 +36,7 @@ LoginBloc(){
   createParent(Parent parent) async{
   parentSink.add(ApiResponse.loading('Registering Parent'));
   try{
-    String resultData = await _parentRepository.createParent(parent);
+    int resultData = await _parentRepository.createParent(parent);
     parentSink.add(ApiResponse.completed(resultData));
 
   } catch (e) {
@@ -86,7 +88,25 @@ Future<Parent> fetchParent(String uid) async{
     _phoneNo = value;
   }
 
-  Parent createParentByFormFields(String uid) {
-    return Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo);
+  set photoUrl(String value) {
+    _photoUrl = value;
+  }
+
+
+  set pinCode(String value) {
+    _pinCode = value;
+  }
+
+  Parent generateParentObject(String uid) {
+
+    return Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode));
+  }
+
+  set addressName(String value) {
+    _addressName = value;
+  }
+
+  set parent(Parent value) {
+    _parent = value;
   }
 }

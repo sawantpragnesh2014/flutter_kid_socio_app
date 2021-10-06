@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 import 'colors.dart';
 
@@ -25,7 +26,7 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
             width: 80.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: widget.child?.photoUrl == null ?AssetImage('assets/google_logo.png'):NetworkImage(widget.child.photoUrl + '?width=400&height400'),
+                image: widget.child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
                 fit: BoxFit.contain,
               ),
               borderRadius: BorderRadius.all( Radius.circular(60.0)),
