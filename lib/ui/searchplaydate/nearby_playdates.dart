@@ -70,7 +70,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
           title: RichText(
               text: TextSpan(
                   children: [
-                    TextSpan(text: '${child.name}, ',style: AppStyles.blackTextBold16),
+                    TextSpan(text: '${child.firstName}, ',style: AppStyles.blackTextBold16),
                     TextSpan(
                       text: '2:36 p.m',
                       style: AppStyles.blackTextBold18,),

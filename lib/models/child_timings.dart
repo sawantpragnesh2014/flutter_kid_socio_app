@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class ChildTimings extends Equatable{
-  final int childId;
+  int childId;
   String day;
-  TimeOfDay fromTime;
-  TimeOfDay toTime;
+  int fromTime;
+  int toTime;
   bool isSelected;
 
   ChildTimings({this.childId,this.day,this.fromTime,this.toTime,this.isSelected = false});
@@ -27,6 +27,35 @@ class ChildTimings extends Equatable{
         toTime: json['toTime']
     );
   }
+
+  Map<String, dynamic> toJson() => {
+      'childId': childId,
+      'childDay': day,
+      'fromTime': fromTime,
+      'toTime': toTime,
+    };
+}
+
+/*
+class TimeSpan {
+  double totalMilliseconds;
+
+  TimeSpan({this.totalMilliseconds});
+
+  Map<String, dynamic> toJson() => {
+    'totalMilliseconds': totalMilliseconds,
+  };
+}
+*/
+
+class ChildTimingsList {
+  ChildTimingsList(this.childTimingsList);
+
+  List<ChildTimings> childTimingsList;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'childTimings': childTimingsList,
+  };
 }
 
 class ChildTimingsResponse{

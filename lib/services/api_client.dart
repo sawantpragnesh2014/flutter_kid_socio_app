@@ -16,7 +16,7 @@ class ApiClient{
       final Response response = await get(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
-
+      print('response.statusCode ${response.statusCode}');
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -32,7 +32,7 @@ class ApiClient{
       final Response response = await post(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },body: jsonEncode('$uid'));
-
+      print('response.statusCode ${response.statusCode}');
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -40,7 +40,7 @@ class ApiClient{
     return responseJson;
   }
 
-  Future<String>  addData(Map<String,dynamic> requestBody,String url) async {
+  Future<dynamic>  addData(dynamic requestBody,String url) async {
     var responseJson;
     try {
     final Response response = await post(Uri.parse('${_baseUrl + url}'),headers: <String, String>{
@@ -48,7 +48,7 @@ class ApiClient{
     }, body: jsonEncode(requestBody));
 
 
-    print('req body parent ${jsonEncode(requestBody)}');
+    print('req body  ${jsonEncode(requestBody)}');
 
     print('response.statusCode ${response.statusCode}');
 

@@ -1,20 +1,158 @@
 import 'dart:async';
 
+import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/child_hobbies.dart';
+import 'package:flutter_kid_socio_app/models/child_timings.dart';
+import 'package:flutter_kid_socio_app/repositories/child_repository.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
+
 import 'bloc.dart';
 
 class AddChildBloc extends Bloc{
+
+  int _childId;
+
+  String _firstName;
+  String _lastName;
+  String _schoolName;
+  String _gender;
+  String _dob;
+  String _photoUrl;
+  List<String> hobbies;
+  List<ChildTimings> finalscheduleDaysList;
+  List<ChildHobbies> _selectedHobbiesList;
+
+  final ChildRepository childRepository = ChildRepository();
  StreamController childViewController = StreamController<Type>.broadcast();
 
-  Stream get childListStream => childViewController.stream;
-  StreamSink get childListSink => childViewController.sink;
+  Stream get childViewStream => childViewController.stream;
+  StreamSink get childViewSink => childViewController.sink;
+
+
+  StreamController childInterestsController = StreamController<ApiResponse<List<ChildHobbies>>>.broadcast();
+
+  Stream<ApiResponse<List<ChildHobbies>>> get childInterestsStream => childInterestsController.stream;
+  StreamSink<ApiResponse<List<ChildHobbies>>> get childInterestsSink => childInterestsController.sink;
+
+  fetchChildHobbiesMaster() async{
+    print('fetch hobbies master');
+   childInterestsSink.add(ApiResponse.loading('Registering Parent'));
+   try{
+     List<ChildHobbies> resultData = await childRepository.fetchHobbiesMaster();
+     childInterestsSink.add(ApiResponse.completed(resultData));
+
+   } catch (e) {
+     childInterestsSink.add(ApiResponse.error(e.toString()));
+   }
+ }
+
+  set selectedHobbiesList(List<ChildHobbies> value) {
+    _selectedHobbiesList = value;
+  }
+
+  Future<Child> addChild(int parentId) async {
+    try {
+      Child child = Child(firstName: _firstName,
+          lastName: _lastName,
+          parentId: parentId,
+          dob: _dob,
+          schoolName: _schoolName,
+          photoUrl: _photoUrl,
+          gender: _gender?? "Male");
+      return childRepository.createChild(child);
+    } catch(e){
+      print(e);
+      childViewSink.add(Type.FORM);
+      return null;
+    }
+    /*getAllChildren();*/
+
+  }
+
+  Future<void> addChildHobbies() async {
+    List<int> hobbiesId = fetchHobbiesId();
+    String hobbiesName = fetchHobbiesName();
+    ChildHobbiesDto childHobbiesDto = ChildHobbiesDto(childId: _childId,hobbies: hobbiesId,hobbiesName: hobbiesName);
+
+    try {
+      return childRepository.createChildHobbies(childHobbiesDto);
+    } catch(e){
+      print(e);
+      return null;
+    }
+
+  }
+
+  Future<void> addChildTimings(){
+    try {
+      return childRepository.createChildTimings(finalscheduleDaysList);
+    } catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  List<int> fetchHobbiesId() {
+    List<int> hobbiesIdList = [];
+    for(int i = 0; i < _selectedHobbiesList.length; i++){
+      hobbiesIdList.add(_selectedHobbiesList[i].id);
+    }
+
+    return hobbiesIdList;
+  }
+
+  String fetchHobbiesName() {
+    String hobbiesName = '';
+    for(int i = 0; i < _selectedHobbiesList.length; i++){
+      hobbiesName +=  (_selectedHobbiesList[i].name +',');
+    }
+    return hobbiesName;
+  }
+
+  set dob(String value) {
+    _dob = value;
+  }
+
+  set gender(String value) {
+    _gender = value;
+  }
+
+  set schoolName(String value) {
+    _schoolName = value;
+  }
+
+  set lastName(String value) {
+    _lastName = value;
+  }
+
+  set firstName(String value) {
+    _firstName = value;
+  }
+
+  set photoUrl(String value) {
+    _photoUrl = value;
+  }
+
+  set childId(int value) {
+    _childId = value;
+  }
+
+  int get childId => _childId;
 
   @override
   void dispose() {
     childViewController.close();
+    childInterestsController.close();
   }
 
   open(){
     childViewController = StreamController<Type>.broadcast();
+  }
+
+  void setChildIdInFinalScheduleDaysList() {
+    for(int i = 0; i < finalscheduleDaysList.length; i++){
+      finalscheduleDaysList[i].childId = _childId;
+    }
   }
 }
 
@@ -22,5 +160,6 @@ enum Type{
   FORM,
   INTEREST,
   PROFILE,
-  SCHEDULE
+  SCHEDULE,
+  LOADING
 }

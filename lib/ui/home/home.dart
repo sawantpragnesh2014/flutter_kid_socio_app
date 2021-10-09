@@ -4,6 +4,7 @@ import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -26,7 +27,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Child>>(
+    return StreamBuilder<ApiResponse<List<Child>>>(
       stream: CustomBlocProvider.getBloc<ChildBloc>().childListStream,
       builder: (context, snapshot) {
         List<Child> childList = snapshot.data ?? [];
@@ -96,7 +97,7 @@ class _HomeState extends State<Home> {
         child: Card(
           child: ListTile(
             contentPadding: EdgeInsets.all(8.0),
-            title: Text('${child.name}',style: AppStyles.genderTextStyle,),
+            title: Text('${child.firstName}',style: AppStyles.genderTextStyle,),
             leading: CircleAvatar(
               backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
               radius: 40.0,

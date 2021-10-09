@@ -39,7 +39,7 @@ class _ChildInfoState extends State<ChildInfo> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(flex:1 ,child: Text('${widget.child.name}',style: AppStyles.redTextBoldLarge,)),
+              Expanded(flex:1 ,child: Text('${widget.child.firstName}',style: AppStyles.redTextBoldLarge,)),
               Expanded(
                 flex: 1,
                 child: RichText(

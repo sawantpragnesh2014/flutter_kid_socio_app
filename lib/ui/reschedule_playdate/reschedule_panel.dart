@@ -17,6 +17,7 @@ class ReschedulePanel extends StatefulWidget {
 
 class _ReschedulePanelState extends State<ReschedulePanel> {
   TimeOfDay initialTime;
+  int initialTimeSpan;
   ChildTimings childTimings;
 
   @override
@@ -26,7 +27,9 @@ class _ReschedulePanelState extends State<ReschedulePanel> {
     DateTime formatedDate = newDate.subtract(Duration(hours: newDate.hour, minutes: newDate.minute, seconds: newDate.second, milliseconds: newDate.millisecond, microseconds: newDate.microsecond));
     initialTime = TimeOfDay.fromDateTime(formatedDate);
 
-    childTimings = ChildTimings(childId: 0,day: 'Monday',fromTime: initialTime,toTime: initialTime);
+    initialTimeSpan = /*TimeSpan(totalMilliseconds: (*/formatedDate.millisecondsSinceEpoch /** 1000).toDouble())*/;
+
+    childTimings = ChildTimings(childId: 0,day: 'Monday',fromTime: initialTimeSpan,toTime: initialTimeSpan);
   }
 
   @override
@@ -122,7 +125,7 @@ class _ReschedulePanelState extends State<ReschedulePanel> {
     );
   }
 
-  Future<TimeOfDay> _selectTime(BuildContext context) async {
+  Future<int> _selectTime(BuildContext context) async {
     final TimeOfDay pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(), builder: (BuildContext context, Widget child) {
@@ -133,6 +136,10 @@ class _ReschedulePanelState extends State<ReschedulePanel> {
 
     pickedTime.replacing(hour: pickedTime.hourOfPeriod);
 
-    return pickedTime;
+    final now = new DateTime.now();
+    DateTime dateTime = DateTime(now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
+
+
+    return /*TimeSpan(totalMilliseconds: (*/dateTime.millisecondsSinceEpoch /** 1000).toDouble())*/;
   }
 }

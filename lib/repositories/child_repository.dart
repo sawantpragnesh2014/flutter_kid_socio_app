@@ -1,6 +1,6 @@
-
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/child_hobbies.dart';
+import 'package:flutter_kid_socio_app/models/child_timings.dart';
 import 'package:flutter_kid_socio_app/services/api_client.dart';
 
 class ChildRepository{
@@ -17,32 +17,68 @@ class ChildRepository{
         .results[0];
   }
 
-  Future<String> createChild(Child child) async {
-    print('Child is $child');
-    Map<String, dynamic> childMap = convertToDto(child);
-
-    return apiClient.addData(childMap, '/api/UserMaster/Create');
+  Future<List<Child>> fetchAllChildByParentId(String parentId) async {
+    final response = await apiClient.getData('/api/ChildMaster/GetAllChildParent?UserId=$parentId');
+    try {
+      return ChildResponse
+          .fromJson(response)
+          .results
+          .isEmpty ? null : ChildResponse
+          .fromJson(response)
+          .results;
+    } catch(e){
+      print('Error parsing child list $e');
+      return [];
+    }
   }
 
-  Future<String> createChildHobbies(ChildHobbies childHobbies) async {
-    print('Child hobbies are $childHobbies');
-    Map<String, dynamic> childMap = convertToChildHobbiesDto(childHobbies);
+  Future<List<ChildHobbies>> fetchHobbiesMaster() async {
+    final response = await apiClient.getData('/api/hobbieslist');
+    return ChildHobbiesResponse
+        .fromJson(response)
+        .results
+        .isEmpty ? null : ChildHobbiesResponse
+        .fromJson(response)
+        .results;
+  }
 
-    return apiClient.addData(childMap, '/api/ChildHobbies/Create');
+  Future<Child> createChild(Child child) async {
+    print('Child is $child');
+    /*Map<String, dynamic> childMap = convertToDto(child);*/
+
+    final dynamic response = await apiClient.addData(child, '/api/Child/Create');
+
+    return ChildResponse.fromJson(response)
+        .results
+        .isEmpty ? null : ChildResponse
+        .fromJson(response)
+        .results[0];
+  }
+
+  Future<void> createChildHobbies(ChildHobbiesDto childHobbiesDto) async {
+    print('Child hobbies are $childHobbiesDto');
+    /*Map<String, dynamic> childMap = convertToChildHobbiesDto(childHobbies);*/
+    apiClient.addData(childHobbiesDto, '/api/ChildHobbies/Create');
+  }
+
+  Future<void> createChildTimings(List<ChildTimings> childTimingsList) async {
+    print('childTimingsList are $childTimingsList');
+    /*Map<String, dynamic> childMap = ChildTimings.toJson(childTimingsList[0]);*/
+    apiClient.addData(ChildTimingsList(childTimingsList), '/api/ChildTimings/Create');
   }
 
   Future<String> updateChild(Child child) async {
     print('Child is $child');
-    Map<String, dynamic> childMap = convertToDto(child);
+    /*Map<String, dynamic> childMap = convertToDto(child);*/
 
-    return apiClient.addData(childMap, '/api/UserMaster/Update');
+    return apiClient.addData(child, '/api/UserMaster/Update');
   }
 
   Future<String> updateChildHobbies(ChildHobbies childHobbies) async {
     print('Child is $childHobbies');
-    Map<String, dynamic> childMap = convertToChildHobbiesDto(childHobbies);
+    /*Map<String, dynamic> childMap = convertToChildHobbiesDto(childHobbies);*/
 
-    return apiClient.addData(childMap, '/api/ChildHobbies/Update');
+    return apiClient.addData(childHobbies, '/api/ChildHobbies/Update');
   }
 
   Future<List<Child>> fetchChildRequestsList(String childId) async {
@@ -100,18 +136,18 @@ class ChildRepository{
     Map<String, dynamic> childMap = {
       'childId': child.id ?? 0,
       'parentId': child.parentId,
-      'firstName': child.name,
-      'lastName': child.name,
+      'firstName': child.firstName,
+      'lastName': child.lastName,
+      'image': child.photoUrl,
       'schoolName': child.schoolName,
       'dob': child.dob,
-      'image': child.photoUrl,
       'gender': child.gender,
     };
 
     return childMap;
   }
 
-  Map<String, dynamic> convertToChildHobbiesDto(ChildHobbies childHobbies) {
+  /*Map<String, dynamic> convertToChildHobbiesDto(ChildHobbies childHobbies) {
     Map<String, dynamic> childHobbiesMap = {
       'childId': childHobbies.childId,
       'childHobby': childHobbies.hobbies,
@@ -120,4 +156,11 @@ class ChildRepository{
 
     return childHobbiesMap;
   }
+
+  Map<String, dynamic> convertToChildTimingsListDto(List<ChildTimings> childTimingsList) {
+    Map<String, dynamic> childTimingsListMap = {
+      'childTimings': childTimingsList,
+    };
+    return childTimingsListMap;
+  }*/
 }

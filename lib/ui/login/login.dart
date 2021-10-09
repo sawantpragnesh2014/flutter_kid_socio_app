@@ -78,6 +78,8 @@ class _LoginState extends State<Login> {
           }else if(btnText.contains("Google")){
              await onGoogleSignIn(context);
           }
+
+          Navigator.pop(context);
         },
         style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),

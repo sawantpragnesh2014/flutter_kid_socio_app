@@ -39,7 +39,7 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(/*'${widget.child.name}'*/'Jenny Doe',style: AppStyles.blackTextMedium36,),
+              Text(/*'${widget.child.firstName}'*/'Jenny Doe',style: AppStyles.blackTextMedium36,),
               Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium14),
               Text('6th, August - 2 hours ago',style: AppStyles.editTextStyle,),
             ],

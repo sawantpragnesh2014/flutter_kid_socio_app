@@ -33,7 +33,7 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Text('Hello, ${user?.firstName?? 'N.A'}', style: AppStyles.whiteTextBold16),
                   SizedBox(height: 8.0,),
-                  Text('35/150 days',style: AppStyles.whiteTextMedium14,)
+                  Text('0/150 days',style: AppStyles.whiteTextMedium14,)
                 ],
               ),
             ),

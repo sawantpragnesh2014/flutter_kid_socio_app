@@ -112,7 +112,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
       child: Card(
         child: ListTile(
           contentPadding: EdgeInsets.all(8.0),
-          title: Text('${child.name}, ',style: AppStyles.blackTextBold16),
+          title: Text('${child.firstName}, ',style: AppStyles.blackTextBold16),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
             backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),

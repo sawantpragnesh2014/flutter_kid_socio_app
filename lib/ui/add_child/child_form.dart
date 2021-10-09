@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 
 class ChildForm extends StatefulWidget {
   final VoidCallback callback;
@@ -20,7 +22,7 @@ class _ChildFormState extends State<ChildForm> {
   TextEditingController dateCtl = TextEditingController();
   DateTime currentDate = DateTime.now();
 
-  ChildBloc _childBloc;
+  AddChildBloc _addChildBloc;
 
   Widget get _firstName {
     return TextFormField(
@@ -28,7 +30,7 @@ class _ChildFormState extends State<ChildForm> {
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          _childBloc.firstName = val;
+          _addChildBloc.firstName = val;
         });
       },
     );
@@ -40,7 +42,7 @@ class _ChildFormState extends State<ChildForm> {
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          _childBloc.lastName = val;
+          _addChildBloc.lastName = val;
         });
       },
     );
@@ -51,6 +53,7 @@ class _ChildFormState extends State<ChildForm> {
       onTap: () async {
         await _selectDate(context);
         dateCtl.text =  '${currentDate.day}/${currentDate.month}/${currentDate.year}';
+        _addChildBloc.dob = /*'2021-10-07T14:47:21.470Z';*/TimeUtils.getDateInYyyyMmDd(currentDate);
       },
       child: IgnorePointer(
         child: TextFormField(
@@ -59,7 +62,7 @@ class _ChildFormState extends State<ChildForm> {
           validator: (val) => FormValidators.validateDob(val),
           onChanged: (val){
             setState(() {
-              _childBloc.dob = val;
+              _addChildBloc.dob = val;
             });
           },
         ),
@@ -73,7 +76,7 @@ class _ChildFormState extends State<ChildForm> {
       validator: (val) => FormValidators.validateName(val),
       onChanged: (val){
         setState(() {
-          _childBloc.schoolName = val;
+          _addChildBloc.schoolName = val;
         });
       },
     );
@@ -97,7 +100,7 @@ class _ChildFormState extends State<ChildForm> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _childBloc = CustomBlocProvider.getBloc<ChildBloc>();
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
   }
 
   @override
@@ -123,7 +126,7 @@ class _ChildFormState extends State<ChildForm> {
                 SizedBox(height: 24.0,),
                 GenderView(callback: (value){
                   print('gender is $value');
-                  return _childBloc.gender = value;
+                  return _addChildBloc.gender = value;
                 },),
                 SizedBox(height: 24.0,),
                 ActionButtonView(btnName: "Continue",onBtnHit: () {

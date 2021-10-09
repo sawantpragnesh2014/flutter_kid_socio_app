@@ -36,6 +36,25 @@ class Parent extends Equatable{
       address: json['userPersonal'],
     );
   }
+
+  Map toJson() => {
+      'userId': id ?? 0,
+      'uid': uid,
+      'emailId': email,
+      'firstName': firstName,
+      'lastName': lastName,
+      'gender': gender,
+      'mobileNo': phoneNo,
+      'isOtpVerified': true,
+      'userStatus': true,
+      'isUserBan': false,
+      'userType': 3,
+      'updatedBy': 0,
+      'parentImage': photoUrl,
+      'userPersonal': address,
+      'userCreatedDate': '2021-10-04T07:24:39.325Z',
+      'userModifiedDate': '2021-10-04T07:24:39.325Z',
+    };
 }
 
 class Address {
@@ -52,6 +71,18 @@ class Address {
       pinCode: json['zipCode'],
     );
   }
+
+  Map toJson() => {
+      'userId': id ?? 0,
+      'address': address,
+      'zipCode': pinCode,
+      'state': 'string',
+      'city': 'string',
+      'landmark': 'string',
+      'createdDate': '2021-10-04T07:24:39.325Z',
+      'updatedDate': '2021-10-04T07:24:39.325Z'
+    };
+
 }
 
 class ParentResponse{

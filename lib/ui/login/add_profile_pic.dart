@@ -53,9 +53,13 @@ class _AddProfilePicState extends State<AddProfilePic> {
                   return Loading();
                   break;
                 case Status.COMPLETED:
+                  print('create parent completed');
                   CustomBlocProvider.getBloc<AuthBloc>().getUser.id = snapshot.data.data;
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => HomeNew()));
+                  print('calling home screen now');
+                  Future.delayed(Duration.zero, () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => HomeNew()));
+                  });
                   break;
                 case Status.ERROR:
                   return ErrorPage(
@@ -67,7 +71,7 @@ class _AddProfilePicState extends State<AddProfilePic> {
             }
             return AddPic(
               onActionBtnHit: (val){
-                _loginBloc.photoUrl = val;
+                /*_loginBloc.photoUrl = val;*/
               _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser.uid));
                 /*Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) => HomeNew()));*/

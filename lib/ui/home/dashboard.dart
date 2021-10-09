@@ -26,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _childListView(widget.childList),
-        SizedBox(height: 8.0,),
+        SizedBox(height: 16.0,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -35,7 +35,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       TextSpan(text: 'Requests for ',style: AppStyles.blackTextBold18),
                       TextSpan(
-                        text: 'Jenny',
+                        text: '${widget.childList[currentPage]?.firstName}',
                         style: AppStyles.redTextBold18,),
                     ]
                 )
@@ -109,7 +109,7 @@ class _DashboardState extends State<Dashboard> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.0),
           image: DecorationImage(
-            image: AssetImage("assets/facebook_logo.png"),
+            image: AssetImage("assets/default_profile_picture.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -122,10 +122,12 @@ class _DashboardState extends State<Dashboard> {
                 borderRadius: BorderRadius.all(Radius.circular(24.0)),
               ),
               alignment: Alignment.bottomCenter,
-              child: Text(
-                '${child.name}',
-                style: AppStyles.whiteTextBold16,
-                textAlign: TextAlign.center,
+              child: Center(
+                child: Text(
+                  '${child.firstName}',
+                  style: AppStyles.whiteTextBold16,
+                  textAlign: TextAlign.center,
+                ),
               )),
         ),
       ),
@@ -196,6 +198,7 @@ class _DashboardState extends State<Dashboard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _tabBar,
+              SizedBox(height: 12.0,),
               _tabBarView
             ],
           ),
@@ -242,7 +245,7 @@ class _DashboardState extends State<Dashboard> {
           title: RichText(
               text: TextSpan(
                   children: [
-                    TextSpan(text: '${child.name}, ',style: AppStyles.blackTextBold16),
+                    TextSpan(text: '${child.firstName}, ',style: AppStyles.blackTextBold16),
                     TextSpan(
                         text: '2:36 p.m',
                         style: AppStyles.editTextStyle,),

@@ -165,7 +165,7 @@ class _OnBoardingState extends State<OnBoarding> {
             Expanded(
               flex: 1,
               child: ActionButtonView(btnName: "Login",onBtnHit: (){
-                Navigator.pushReplacement(context, MaterialPageRoute(
+                Navigator.push(context, MaterialPageRoute(
                     builder: (context) => Login()));
               },),
             ),

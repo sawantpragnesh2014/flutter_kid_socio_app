@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/models/child_hobbies.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
+import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
+import 'package:flutter_kid_socio_app/shared/hobbies_list_view.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
-typedef StringValue = String Function(String);
+typedef ChildHobbiesValue = void Function(List<ChildHobbies>);
 
 class InterestView extends StatefulWidget {
+  final ChildHobbiesValue callback;
+
+  InterestView({this.callback});
+
   @override
   _InterestViewState createState() => _InterestViewState();
 }
 
 class _InterestViewState extends State<InterestView> {
-  List<Map> interestsList = [];
+  AddChildBloc _addChildBloc;
+  List<ChildHobbies> childHobbiesList;
+  List<ChildHobbies> finalChildHobbiesList;
 
   @override
   void initState() {
     super.initState();
-    interestsList.add({'name':'Football','isSelected':false});
+    /*interestsList.add({'name':'Football','isSelected':false});
     interestsList.add({'name':'Basketball','isSelected':false});
     interestsList.add({'name':'Cricket','isSelected':false});
     interestsList.add({'name':'Tennis','isSelected':false});
@@ -34,53 +48,59 @@ class _InterestViewState extends State<InterestView> {
     interestsList.add({'name':'Movies','isSelected':false});
     interestsList.add({'name':'Video Games','isSelected':false});
     interestsList.add({'name':'Music','isSelected':false});
-    interestsList.add({'name':'Baby Sitting','isSelected':false});
+    interestsList.add({'name':'Baby Sitting','isSelected':false});*/
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    _addChildBloc.fetchChildHobbiesMaster();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        spacing: 10.0,
-        children: interestsButtonList(interestsList),
-      ),
+    return StreamBuilder<ApiResponse<List<ChildHobbies>>>(
+        stream: _addChildBloc.childInterestsStream,
+        builder: (context, snapshot) {
+          print('Hobbies master stream called');
+          if(snapshot.hasData){
+            switch(snapshot.data.status){
+              case Status.LOADING:
+                return Loading();
+                break;
+              case Status.COMPLETED:
+                childHobbiesList = snapshot.data.data ?? [];
+                 return Column(
+                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                   children: [
+                     Text(
+                         'Enter your child\'s interests',
+                         style: AppStyles.kSubTitleStyle
+                     ),
+                     SizedBox(height: 20.0,),
+                     Expanded(
+                         flex: 1,
+                         child: SingleChildScrollView(
+                             child: HobbiesListView(childHobbiesList: childHobbiesList,)
+                         )
+                     ),
+                     SizedBox(height: 20.0,),
+                     ActionButtonView(btnName: "Continue",onBtnHit: () async {
+                       finalChildHobbiesList = childHobbiesList.where((i) => i.isSelected).toList();
+                       widget.callback(finalChildHobbiesList);
+                       print('finalChildHobbiesList is $finalChildHobbiesList');
+                     },buttonStyle: AppStyles.stylePinkButton,),
+                     SizedBox(height: 30.0,),
+                   ],
+                 );
+                break;
+              case Status.ERROR:
+                return ErrorPage(
+                  errorMessage: snapshot.data.message,
+                  onRetryPressed: () => _addChildBloc.fetchChildHobbiesMaster(),
+                );
+                break;
+            }
+          }
+          return Loading();
+    }
     );
-  }
-
-  Widget interestsButton(Map interestsMap){
-    return Container(
-      width: 150.0,
-      height: 150.0,
-      child: GestureDetector(
-        onTap: (){
-          setState(() {
-            interestsMap['isSelected'] = !interestsMap['isSelected'];
-            print('interests for callback ${interestsMap['name']}');
-            // widget.callback(interestsMap['name'].toString());
-          });
-        },
-        child: Card(
-          margin: EdgeInsets.all(10.0),
-          color: interestsMap['isSelected']?AppColors.color16499f:AppColors.colorf3f3f3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32), // <-- Radius
-          ),
-          child: Center(
-              child: Text(
-                interestsMap['name'].toString(),
-                style: interestsMap['isSelected']?AppStyles.interestSelected:AppStyles.genderTextStyle,
-              )
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> interestsButtonList(List<Map> interestsList){
-    return new List<Widget>.generate(interestsList.length, (int index) {
-      return interestsButton(interestsList[index]);
-    });
   }
 }
 

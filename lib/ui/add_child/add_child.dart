@@ -8,6 +8,7 @@ import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/add_pic.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -24,6 +25,7 @@ class AddChild extends StatefulWidget {
 class _AddChildState extends State<AddChild> {
   Parent user;
   ChildBloc _childBloc;
+  AddChildBloc _addChildBloc;
   TextEditingController dateCtl = TextEditingController();
 
   Widget _addChildView(Type type){
@@ -37,68 +39,71 @@ class _AddChildState extends State<AddChild> {
         return _addProfilePic;
       case Type.SCHEDULE:
         return _addSchedule;
+      case Type.LOADING:
+        return Loading();
       default:
         return Container();
     }
   }
 
   Widget get _addSchedule {
-   return AddSchedule(onActionBtnHit: (val){
-     _childBloc.addChild();
+   return AddSchedule(onActionBtnHit: (val) async {
+     _addChildBloc.finalscheduleDaysList = val;
+
+     _addChildBloc.childViewSink.add(Type.LOADING);
+
+     Child child = await _addChildBloc.addChild(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0);
+      print('Child inserted ${child.id}');
+     if(child != null) {
+       _addChildBloc.childId = child.id;
+     }
+     _addChildBloc.setChildIdInFinalScheduleDaysList();
+
+     await _addChildBloc.addChildHobbies();
+     await _addChildBloc.addChildTimings();
+
+     _childBloc.getAllChildren(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0);
      Navigator.pop(context);
-   },child: Child(id: 0),);
-  }
-
-
-  Widget get _childForm{
-    return ChildForm(callback: (){
-      print('Form callback');
-      CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.PROFILE);
-    },);
+   });
   }
 
   Widget get _interests{
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-            'Enter your child\'s interests',
-            style: AppStyles.kSubTitleStyle
-        ),
-        SizedBox(height: 20.0,),
-        Expanded(
-            flex: 1,
-            child: SingleChildScrollView(child: InterestView())
-        ),
-        SizedBox(height: 20.0,),
-        ActionButtonView(btnName: "Continue",onBtnHit: (){
-          CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.SCHEDULE);
-        },buttonStyle: AppStyles.stylePinkButton,),
-        SizedBox(height: 30.0,),
-      ],
-    );
+    return InterestView(callback: (val){
+      _addChildBloc.selectedHobbiesList = val;
+       _addChildBloc.childViewSink.add(Type.SCHEDULE);
+    },);
+  }
+
+  Widget get _childForm{
+    return ChildForm(callback: () async {
+      print('Form callback');
+      _addChildBloc.childViewSink.add(Type.PROFILE);
+    },);
   }
 
   Widget get _addProfilePic{
     return AddPic(btnStyle: AppStyles.stylePinkButton,onActionBtnHit: (val){
-      print('child bloc $_childBloc');
-      _childBloc.photoUrl = val;
-      CustomBlocProvider.getBloc<AddChildBloc>().childListSink.add(Type.INTEREST);
+      print('child bloc $_addChildBloc');
+      /*_addChildBloc.photoUrl = val;*/
+      _addChildBloc.childViewSink.add(Type.INTEREST);
     },);
   }
 
   @override
   void initState() {
     super.initState();
-    CustomBlocProvider.setBloc(AddChildBloc());
+    _childBloc = CustomBlocProvider.getBloc<ChildBloc>();
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    if(_addChildBloc == null){
+      CustomBlocProvider.setBloc(AddChildBloc());
+      _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    }
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
-    _childBloc = CustomBlocProvider.getBloc<ChildBloc>();
   }
 
   @override
@@ -106,7 +111,7 @@ class _AddChildState extends State<AddChild> {
     print('hello');
     return StreamBuilder(
       initialData: Type.FORM,
-      stream: CustomBlocProvider.getBloc<AddChildBloc>().childListStream,
+      stream: _addChildBloc.childViewStream,
       builder: (context, snapshot) {
         Type type = snapshot.data;
         return SafeArea(
@@ -127,7 +132,7 @@ class _AddChildState extends State<AddChild> {
   void dispose() {
     print('Dispose called');
     super.dispose();
-    CustomBlocProvider.getBloc<AddChildBloc>().dispose();
+    _addChildBloc.dispose();
   }
 
 }

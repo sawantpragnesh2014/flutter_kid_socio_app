@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/child_timings.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
@@ -9,20 +12,19 @@ import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 
-typedef StringValue = void Function(String);
+typedef StringValue = void Function(List<ChildTimings>);
 
 class AddSchedule extends StatefulWidget {
   final StringValue onActionBtnHit;
-  final Child child;
 
-  AddSchedule({this.onActionBtnHit,this.child});
+  AddSchedule({this.onActionBtnHit});
 
   @override
   _AddScheduleState createState() => _AddScheduleState();
 }
 
 class _AddScheduleState extends State<AddSchedule> {
-
+  AddChildBloc _addChildBloc;
   List<ChildTimings> scheduleDaysList;
   List<ChildTimings> finalscheduleDaysList;
   Map<String,ChildTimings> timeMap;
@@ -30,7 +32,8 @@ class _AddScheduleState extends State<AddSchedule> {
   bool _agree = true;
   int _value = 10;
   /*TimeOfDay selectedTime = TimeOfDay.now();*/
-  TimeOfDay initialTime;
+  /*TimeOfDay initialTime;*/
+  int initialTimeSpan;
 
 
   // DateTime currentDate = DateTime.now();
@@ -46,7 +49,7 @@ class _AddScheduleState extends State<AddSchedule> {
     );
   }
 
-  Future<TimeOfDay> _selectTime(BuildContext context) async {
+  Future<int> _selectTime(BuildContext context) async {
     final TimeOfDay pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(), builder: (BuildContext context, Widget child) {
@@ -57,7 +60,13 @@ class _AddScheduleState extends State<AddSchedule> {
 
       pickedTime.replacing(hour: pickedTime.hourOfPeriod);
 
-      return pickedTime;
+    final now = new DateTime.now();
+     DateTime dateTime = DateTime(now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
+
+     print('dateTime millisecondsSinceEpoch ${dateTime.millisecondsSinceEpoch}');
+
+
+      return /*TimeSpan(totalMilliseconds: (*/dateTime.millisecondsSinceEpoch /*).toDouble())*/;
   }
 
   scheduleDaysListView(ChildTimings childTimings) {
@@ -128,7 +137,7 @@ class _AddScheduleState extends State<AddSchedule> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(TimeUtils.getDisplayTime(childTimings.toTime),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
+            child: Text(TimeUtils.getDisplayTime(childTimings.toTime.toInt()),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
           ),
       ),
     );
@@ -202,18 +211,22 @@ class _AddScheduleState extends State<AddSchedule> {
   @override
   void initState() {
     super.initState();
+
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+
     DateTime newDate = DateTime.now();
     DateTime formatedDate = newDate.subtract(Duration(hours: newDate.hour, minutes: newDate.minute, seconds: newDate.second, milliseconds: newDate.millisecond, microseconds: newDate.microsecond));
-    initialTime = TimeOfDay.fromDateTime(formatedDate);
+    /*initialTime = TimeOfDay.fromDateTime(formatedDate);*/
+    initialTimeSpan = /*TimeSpan(totalMilliseconds: (*/formatedDate.millisecondsSinceEpoch /*).toDouble())*/;
 
     scheduleDaysList = [
-      ChildTimings(childId: widget.child.id,day: 'Monday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Tuesday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Wednesday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Thursday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Friday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Saturday',fromTime: initialTime,toTime: initialTime),
-      ChildTimings(childId: widget.child.id,day: 'Sunday',fromTime: initialTime,toTime: initialTime)
+      ChildTimings(childId: _addChildBloc.childId,day: 'Monday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Tuesday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Wednesday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Thursday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Friday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Saturday',fromTime: initialTimeSpan,toTime: initialTimeSpan),
+      ChildTimings(childId: _addChildBloc.childId,day: 'Sunday',fromTime: initialTimeSpan,toTime: initialTimeSpan)
     ];
 
     /*timeMap = {
@@ -273,8 +286,8 @@ class _AddScheduleState extends State<AddSchedule> {
             ActionButtonView(
               btnName: 'Continue',
               onBtnHit: (){
-                widget.onActionBtnHit('');
                 finalscheduleDaysList = scheduleDaysList.where((i) => i.isSelected).toList();
+                widget.onActionBtnHit(finalscheduleDaysList);
                 print('finalscheduleDaysList is $finalscheduleDaysList');
               },
               buttonStyle: AppStyles.stylePinkButton,

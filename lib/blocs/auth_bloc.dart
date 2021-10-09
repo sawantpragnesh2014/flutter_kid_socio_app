@@ -25,7 +25,6 @@ class AuthBloc extends Bloc{
 
   @override
   void dispose() {
-    // TODO: implement dispose
   }
 
 }

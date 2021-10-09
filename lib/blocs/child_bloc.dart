@@ -1,75 +1,37 @@
 import 'dart:async';
 
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/child_hobbies.dart';
+import 'package:flutter_kid_socio_app/models/child_timings.dart';
 import 'package:flutter_kid_socio_app/repositories/child_repository.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
 
 import 'bloc.dart';
 
 class ChildBloc extends Bloc{
 
-  String _firstName;
-  String _lastName;
-  String _schoolName;
-  String _email;
-  String _gender;
-  String _dob;
-  String _photoUrl;
+  final ChildRepository childRepository = ChildRepository();
 
-final ChildRepository childRepository = ChildRepository();
+StreamController childController = StreamController<ApiResponse<List<Child>>>.broadcast();
 
-StreamController childController = StreamController<List<Child>>.broadcast();
+Stream<ApiResponse<List<Child>>> get childListStream => childController.stream;
 
-Stream get childListStream => childController.stream;
+StreamSink<ApiResponse<List<Child>>> get childListSink => childController.sink;
 
-  List<Child> childList = [];
+List<Child> childList = [];
 
-  void addChild(){
-    Child child = Child(name: _firstName,dob: _dob,schoolName: _schoolName,photoUrl: _photoUrl,gender: _gender);
-    childList.add(child);
-    /*childList.add(child);
-    childList.add(child);
-    childList.add(child);*/
-    getAllChildren();
+getAllChildren(int parentId) async {
+  childListSink.add(ApiResponse.loading('message'));
+  try{
+    childList = await childRepository.fetchAllChildByParentId(parentId.toString());
+    childListSink.add(ApiResponse.completed(childList));
+  }catch(e){
+    childListSink.add(ApiResponse.error('Error'));
   }
-
-  void addChildData(Child child){
-
-  }
-
-getAllChildren(){
-  childController.sink.add(childList);
 }
 
   @override
   void dispose() {
     childController.close();
-  }
-
-  set dob(String value) {
-    _dob = value;
-  }
-
-  set gender(String value) {
-    _gender = value;
-  }
-
-  set email(String value) {
-    _email = value;
-  }
-
-  set schoolName(String value) {
-    _schoolName = value;
-  }
-
-  set lastName(String value) {
-    _lastName = value;
-  }
-
-  set firstName(String value) {
-    _firstName = value;
-  }
-
-  set photoUrl(String value) {
-    _photoUrl = value;
   }
 }

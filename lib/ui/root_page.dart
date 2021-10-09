@@ -85,7 +85,7 @@ class RootPage extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           print('data loading');
-          return SplashScreen();
+          return Loading();
         } else {
           if (snapshot.hasData) {
             print('data found');
