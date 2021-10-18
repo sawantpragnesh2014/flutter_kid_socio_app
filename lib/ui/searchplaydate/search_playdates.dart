@@ -9,9 +9,9 @@ import 'package:flutter_kid_socio_app/ui/searchplaydate/preference.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class SearchPlayDates extends StatefulWidget {
-  final Child child;
-  final List<Child> friendList;
-  final List<Child> recentPlayDateList;
+  final Child? child;
+  final List<Child>? friendList;
+  final List<Child>? recentPlayDateList;
 
   SearchPlayDates({this.child,this.friendList,this.recentPlayDateList});
 
@@ -42,7 +42,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
       width: 60.0,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+          image: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
           fit: BoxFit.contain,
         ),
         borderRadius: BorderRadius.all( Radius.circular(30.0)),
@@ -59,7 +59,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBarView(height: 150.0,),
+      appBar: AppBarView(height: 130.0,),
       body: Padding(
         padding: AppStyles.getPadding,
         child: Column(
@@ -73,20 +73,20 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
                 btnName: "Search Playdates",
                 onBtnHit: (){
                   Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Preference(child: widget.child,nearbyPlayDateList: widget.recentPlayDateList,)));
+                      context, MaterialPageRoute(builder: (context) => Preference(child: widget.child!,nearbyPlayDateList: widget.recentPlayDateList ?? [],)));
                 },
                 buttonStyle: AppStyles.stylePinkButton,
                 ),
             SizedBox(height: 12.0,),
             Text('Friends available',style: AppStyles.blackTextBold18,),
             SizedBox(height: 12.0,),
-            _friendsList(widget.friendList),
+            _friendsList(widget.friendList!),
             SizedBox(height: 12.0,),
             Text('Recent Playdates',style: AppStyles.blackTextBold18,),
             SizedBox(height: 12.0,),
             Expanded(
                 flex: 3,
-                child: _recentPlayDatesList(widget.recentPlayDateList)
+                child: _recentPlayDatesList(widget.recentPlayDateList ?? [])
             )
 
           ],
@@ -106,13 +106,13 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
     );
   }
 
-  Widget _recentPlayDatesView(Child child) {
+  Widget _recentPlayDatesView(Child? child) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.0,horizontal: 4.0),
       child: Card(
         child: ListTile(
           contentPadding: EdgeInsets.all(8.0),
-          title: Text('${child.firstName}, ',style: AppStyles.blackTextBold16),
+          title: Text('${child?.firstName}, ',style: AppStyles.blackTextBold16),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
             backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),

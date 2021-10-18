@@ -6,7 +6,7 @@ import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
-import 'login/login.dart';
+import 'login/login_page.dart';
 
 //https://www.youtube.com/watch?v=8eRQyE2PN7w refer for design
 class OnBoarding extends StatefulWidget {
@@ -166,7 +166,7 @@ class _OnBoardingState extends State<OnBoarding> {
               flex: 1,
               child: ActionButtonView(btnName: "Login",onBtnHit: (){
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Login()));
+                    builder: (context) => LoginPage()));
               },),
             ),
             SizedBox(height: 30.0),

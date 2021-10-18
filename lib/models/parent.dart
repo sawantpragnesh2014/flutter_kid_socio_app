@@ -9,9 +9,9 @@ class Parent extends Equatable{
   String email;
   String photoUrl;
   String gender;
-  Address address;
+  Address? address;
 
-  Parent({this.id,this.uid,this.firstName,this.lastName,this.email,this.phoneNo,this.photoUrl,this.gender,this.address});
+  Parent({this.id = 0,required this.uid,required this.firstName,required this.lastName,required this.email,required this.phoneNo, this.photoUrl = '',this.gender = '', this.address});
 
 
   @override
@@ -38,7 +38,7 @@ class Parent extends Equatable{
   }
 
   Map toJson() => {
-      'userId': id ?? 0,
+      'userId': id,
       'uid': uid,
       'emailId': email,
       'firstName': firstName,
@@ -62,7 +62,7 @@ class Address {
   final String address;
   final String pinCode;
 
-  Address({this.id,this.address,this.pinCode});
+  Address({this.id = 0,this.address = '',this.pinCode = ''});
 
   static Address fromJson(dynamic json){
     return Address(
@@ -73,7 +73,7 @@ class Address {
   }
 
   Map toJson() => {
-      'userId': id ?? 0,
+      'userId': id,
       'address': address,
       'zipCode': pinCode,
       'state': 'string',
@@ -86,7 +86,7 @@ class Address {
 }
 
 class ParentResponse{
-  List<Parent> results;
+  late List<Parent> results;
 
   ParentResponse.fromJson(dynamic json){
     results = <Parent>[];
@@ -96,14 +96,5 @@ class ParentResponse{
         results.add(Parent.fromJson(v));
       });
     }
-  }
-}
-
-class ParentResponsee{
-  List<int> results;
-
-  ParentResponsee.fromJson(dynamic json){
-    results = <int>[];
-    var totalResults = json['userId'];
   }
 }

@@ -44,7 +44,7 @@ class ConnectFacebookGoogle extends StatelessWidget {
   }
 
 
-  ConnectFacebookGoogle({this.itemClick});
+  ConnectFacebookGoogle({required this.itemClick});
 
   final VoidCallback itemClick;
 

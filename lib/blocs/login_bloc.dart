@@ -6,18 +6,18 @@ import 'package:flutter_kid_socio_app/repositories/parent_repository.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
 
 class LoginBloc extends Bloc {
-  ParentRepository _parentRepository;
-  String _firstName;
-  String _lastName;
-  String _email;
-  String _gender;
-  String _phoneNo;
-  String _photoUrl;
-  String _pinCode;
-  String _addressName;
-  Parent _parent;
+  late ParentRepository _parentRepository;
+  late String _firstName;
+  late String _lastName;
+  late String _email;
+  late String _gender;
+  late String _phoneNo;
+  late String _photoUrl;
+  late String _pinCode;
+  late String _addressName;
+  Parent? _parent;
 
-  StreamController _parentController = StreamController<ApiResponse<int>>.broadcast();
+  late StreamController<ApiResponse<int>> _parentController;
 
   StreamSink<ApiResponse<int>> get parentSink =>
       _parentController.sink;
@@ -27,6 +27,7 @@ class LoginBloc extends Bloc {
 
 LoginBloc(){
   _parentRepository = ParentRepository();
+  _parentController = StreamController<ApiResponse<int>>.broadcast();
 }
 
   set firstName(String value) {
@@ -57,7 +58,7 @@ fetchParent(String uid) async{
 }
 */
 
-Future<Parent> fetchParent(String uid) async{
+Future<Parent?> fetchParent(String uid) async{
     try {
       return _parentRepository.fetchParent(uid: uid);
     } catch (e){
@@ -93,6 +94,8 @@ Future<Parent> fetchParent(String uid) async{
   }
 
 
+  String get photoUrl => _photoUrl;
+
   set pinCode(String value) {
     _pinCode = value;
   }
@@ -106,7 +109,9 @@ Future<Parent> fetchParent(String uid) async{
     _addressName = value;
   }
 
-  set parent(Parent value) {
+  set parent(Parent? value) {
     _parent = value;
   }
+
+  Parent? get parent => _parent;
 }

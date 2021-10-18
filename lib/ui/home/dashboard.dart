@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -9,9 +12,9 @@ import 'package:flutter_kid_socio_app/ui/home/send_request_panel.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class Dashboard extends StatefulWidget {
-  final List<Child> childList;
+  late final List<Child> childList;
 
-  Dashboard({this.childList});
+  Dashboard({required this.childList});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -35,7 +38,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       TextSpan(text: 'Requests for ',style: AppStyles.blackTextBold18),
                       TextSpan(
-                        text: '${widget.childList[currentPage]?.firstName}',
+                        text: '${widget.childList[currentPage].firstName}',
                         style: AppStyles.redTextBold18,),
                     ]
                 )
@@ -199,7 +202,17 @@ class _DashboardState extends State<Dashboard> {
             children: <Widget>[
               _tabBar,
               SizedBox(height: 12.0,),
-              _tabBarView
+              _tabBarView,
+              SizedBox(height: 16.0,),
+              ActionButtonView(
+                btnName: 'Logout',
+                onBtnHit: () async {
+                  await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
+                  Navigator.pop(context);
+                },
+                buttonStyle: AppStyles.stylePinkButton,
+              ),
+              SizedBox(height: 30.0,),
             ],
           ),
         )
@@ -219,7 +232,9 @@ class _DashboardState extends State<Dashboard> {
             });
           },
           itemBuilder: (context, position) {
-            if (position == childList.length) return null;
+            /*if (position == childList.length) {
+              return null;
+            }*/
             return Container(
               height: 300.0,
               child: ListView.builder(
@@ -254,7 +269,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+            backgroundImage: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Image.asset('assets/icon_msg.png', fit: BoxFit.cover),

@@ -17,23 +17,23 @@ typedef StringValue = void Function(List<ChildTimings>);
 class AddSchedule extends StatefulWidget {
   final StringValue onActionBtnHit;
 
-  AddSchedule({this.onActionBtnHit});
+  AddSchedule({required this.onActionBtnHit});
 
   @override
   _AddScheduleState createState() => _AddScheduleState();
 }
 
 class _AddScheduleState extends State<AddSchedule> {
-  AddChildBloc _addChildBloc;
-  List<ChildTimings> scheduleDaysList;
-  List<ChildTimings> finalscheduleDaysList;
-  Map<String,ChildTimings> timeMap;
+  late AddChildBloc _addChildBloc;
+  late List<ChildTimings> scheduleDaysList;
+  List<ChildTimings>? finalScheduleDaysList;
+  /*Map<String,ChildTimings> timeMap;*/
 
   bool _agree = true;
   int _value = 10;
   /*TimeOfDay selectedTime = TimeOfDay.now();*/
   /*TimeOfDay initialTime;*/
-  int initialTimeSpan;
+  late int initialTimeSpan;
 
 
   // DateTime currentDate = DateTime.now();
@@ -50,15 +50,15 @@ class _AddScheduleState extends State<AddSchedule> {
   }
 
   Future<int> _selectTime(BuildContext context) async {
-    final TimeOfDay pickedTime = await showTimePicker(
+    final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.now(), builder: (BuildContext context, Widget child) {
+        initialTime: TimeOfDay.now(), builder: (BuildContext? context, Widget? child) {
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-        child: child,
+        data: MediaQuery.of(context!).copyWith(alwaysUse24HourFormat: false),
+        child: child!,
       );});
 
-      pickedTime.replacing(hour: pickedTime.hourOfPeriod);
+      pickedTime!.replacing(hour: pickedTime.hourOfPeriod);
 
     final now = new DateTime.now();
      DateTime dateTime = DateTime(now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
@@ -153,8 +153,8 @@ class _AddScheduleState extends State<AddSchedule> {
               children: <Widget>[
                 Checkbox(
                   value: state.value,
-                  onChanged: (bool val) => setState(() {
-                    _agree = val;
+                  onChanged: (bool? val) => setState(() {
+                    _agree = val!;
                     state.didChange(val);
                   }),
                   activeColor: AppColors.color7059E1,
@@ -163,8 +163,7 @@ class _AddScheduleState extends State<AddSchedule> {
                 Text('Use saved address',style: AppStyles.blackTextMedium14,)
               ],
             ),
-            state.errorText == null
-                ? Text("") : Text(state.errorText, style: TextStyle(color: Colors.red)),
+            if (state.errorText == null) Text("") else Text(state.errorText!, style: TextStyle(color: Colors.red)),
           ],
         );
       },
@@ -173,7 +172,7 @@ class _AddScheduleState extends State<AddSchedule> {
     );
   }
 
-  String _validateTerms(bool agree) {
+  String? _validateTerms(bool agree) {
     return agree?null:"You must agree before proceeding";
   }
 
@@ -181,7 +180,7 @@ class _AddScheduleState extends State<AddSchedule> {
     return TextFormField(
       /*initialValue: user?.firstName,*/
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           // _loginBloc.firstName = val;
@@ -212,7 +211,7 @@ class _AddScheduleState extends State<AddSchedule> {
   void initState() {
     super.initState();
 
-    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>()!;
 
     DateTime newDate = DateTime.now();
     DateTime formatedDate = newDate.subtract(Duration(hours: newDate.hour, minutes: newDate.minute, seconds: newDate.second, milliseconds: newDate.millisecond, microseconds: newDate.microsecond));
@@ -286,9 +285,9 @@ class _AddScheduleState extends State<AddSchedule> {
             ActionButtonView(
               btnName: 'Continue',
               onBtnHit: (){
-                finalscheduleDaysList = scheduleDaysList.where((i) => i.isSelected).toList();
-                widget.onActionBtnHit(finalscheduleDaysList);
-                print('finalscheduleDaysList is $finalscheduleDaysList');
+                finalScheduleDaysList = scheduleDaysList.where((i) => i.isSelected).toList();
+                widget.onActionBtnHit(finalScheduleDaysList!);
+                print('finalscheduleDaysList is $finalScheduleDaysList');
               },
               buttonStyle: AppStyles.stylePinkButton,
             ),

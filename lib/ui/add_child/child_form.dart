@@ -11,7 +11,7 @@ import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 class ChildForm extends StatefulWidget {
   final VoidCallback callback;
 
-  ChildForm({this.callback});
+  ChildForm({required this.callback});
 
   @override
   _ChildFormState createState() => _ChildFormState();
@@ -22,12 +22,12 @@ class _ChildFormState extends State<ChildForm> {
   TextEditingController dateCtl = TextEditingController();
   DateTime currentDate = DateTime.now();
 
-  AddChildBloc _addChildBloc;
+  late AddChildBloc _addChildBloc;
 
   Widget get _firstName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _addChildBloc.firstName = val;
@@ -39,7 +39,7 @@ class _ChildFormState extends State<ChildForm> {
   Widget get _lastName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _addChildBloc.lastName = val;
@@ -59,7 +59,7 @@ class _ChildFormState extends State<ChildForm> {
         child: TextFormField(
           controller: dateCtl,
           decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Date of birth',suffixIcon: Icon(Icons.calendar_today_sharp),),
-          validator: (val) => FormValidators.validateDob(val),
+          validator: (val) => FormValidators.validateDob(val!),
           onChanged: (val){
             setState(() {
               _addChildBloc.dob = val;
@@ -73,7 +73,7 @@ class _ChildFormState extends State<ChildForm> {
   Widget get _schoolName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'School'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _addChildBloc.schoolName = val;
@@ -83,7 +83,7 @@ class _ChildFormState extends State<ChildForm> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime pickedDate = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: currentDate,
         firstDate: DateTime(2005),
@@ -100,7 +100,7 @@ class _ChildFormState extends State<ChildForm> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>()!;
   }
 
   @override
@@ -130,10 +130,11 @@ class _ChildFormState extends State<ChildForm> {
                 },),
                 SizedBox(height: 24.0,),
                 ActionButtonView(btnName: "Continue",onBtnHit: () {
-                  if (formKey.currentState.validate()) {
+                  if (formKey.currentState!.validate()) {
                     widget.callback();
                   }
                 },buttonStyle: AppStyles.stylePinkButton,),
+                SizedBox(height: 24.0,),
               ],
             )
         )

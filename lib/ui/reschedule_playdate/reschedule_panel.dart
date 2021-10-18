@@ -9,16 +9,16 @@ import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 class ReschedulePanel extends StatefulWidget {
   final Child child;
 
-  ReschedulePanel({this.child});
+  ReschedulePanel({required this.child});
 
   @override
   _ReschedulePanelState createState() => _ReschedulePanelState();
 }
 
 class _ReschedulePanelState extends State<ReschedulePanel> {
-  TimeOfDay initialTime;
-  int initialTimeSpan;
-  ChildTimings childTimings;
+  late TimeOfDay initialTime;
+  late int initialTimeSpan;
+  late ChildTimings childTimings;
 
   @override
   void initState() {
@@ -126,15 +126,15 @@ class _ReschedulePanelState extends State<ReschedulePanel> {
   }
 
   Future<int> _selectTime(BuildContext context) async {
-    final TimeOfDay pickedTime = await showTimePicker(
+    final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.now(), builder: (BuildContext context, Widget child) {
+        initialTime: TimeOfDay.now(), builder: (BuildContext? context, Widget? child) {
       return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-        child: child,
+        data: MediaQuery.of(context!).copyWith(alwaysUse24HourFormat: false),
+        child: child!,
       );});
 
-    pickedTime.replacing(hour: pickedTime.hourOfPeriod);
+    pickedTime!.replacing(hour: pickedTime.hourOfPeriod);
 
     final now = new DateTime.now();
     DateTime dateTime = DateTime(now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);

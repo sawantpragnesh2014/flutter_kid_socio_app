@@ -6,7 +6,7 @@ import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 import 'colors.dart';
 
 class ChildInfoTwo extends StatefulWidget {
-  final Child child;
+  final Child? child;
 
   ChildInfoTwo({this.child});
 

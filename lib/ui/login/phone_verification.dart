@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
@@ -20,20 +21,20 @@ class PhoneVerification extends StatefulWidget {
 
 class _PhoneVerificationState extends State<PhoneVerification> {
   final formKey = GlobalKey<FormState>();
-  Parent user;
+  User? user;
 
-  LoginBloc _loginBloc;
-  AuthBloc _authBloc;
+  late LoginBloc _loginBloc;
+  late AuthBloc _authBloc;
 
   Widget get _phoneNumber {
     return TextFormField(
-      initialValue: user?.phoneNo,
+      initialValue: user?.phoneNumber,
       keyboardType: TextInputType.number,
       inputFormatters: [
         LengthLimitingTextInputFormatter(10),
       ],
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Phone No.',prefixIcon: Padding(padding: EdgeInsets.all(15), child: Text('+91 ',style: AppStyles.editTextStyle,)),),
-      validator: (val) => FormValidators.validateMobile(val),
+      validator: (val) => FormValidators.validateMobile(val!),
       onChanged: (val){
         setState(() {
           _loginBloc.phoneNo = val;
@@ -66,7 +67,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                SizedBox(height: 20.0,),
                ActionButtonView(btnName: "Continue",onBtnHit: (){
                  print('Action btn hit');
-                 if(formKey.currentState.validate()) {
+                 if(formKey.currentState!.validate()) {
                    Navigator.pushReplacement(context, MaterialPageRoute(
                        builder: (context) => OtpScreenNew()));
                  }
@@ -83,8 +84,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('didChangeDependencies');
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
     user = _authBloc.getUser;
   }
 

@@ -37,7 +37,7 @@ class _PaymentState extends State<Payment> {
             SizedBox(height: 20.0,),
             TextFormField(
               decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Valid Card Number'),
-              validator: (val) => val.isEmpty?'Enter a card number':null,
+              validator: (val) => val!.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
                   cardNumber = val;
@@ -63,7 +63,7 @@ class _PaymentState extends State<Payment> {
                       width: 100,
                       child: TextFormField(
                         decoration: AppStyles.textInputDecoration.copyWith(hintText: 'MM/YY'),
-                        validator: (val) => val.isEmpty?'Enter month year':null,
+                        validator: (val) => val!.isEmpty?'Enter month year':null,
                         onChanged: (val){
                           setState(() {
                             cardNumber = val;
@@ -89,7 +89,7 @@ class _PaymentState extends State<Payment> {
                       width: 100,
                       child: TextFormField(
                         decoration: AppStyles.textInputDecoration.copyWith(hintText: 'CVC'),
-                        validator: (val) => val.isEmpty?'Enter CVC':null,
+                        validator: (val) => val!.isEmpty?'Enter CVC':null,
                         onChanged: (val){
                           setState(() {
                             cardNumber = val;
@@ -112,7 +112,7 @@ class _PaymentState extends State<Payment> {
             SizedBox(height: 20.0,),
             TextFormField(
               decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Card Owner Name'),
-              validator: (val) => val.isEmpty?'Enter a card number':null,
+              validator: (val) => val!.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {
                   cardNumber = val;

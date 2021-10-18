@@ -18,23 +18,23 @@ import 'package:flutter_kid_socio_app/ui/searchplaydate/nearby_playdates.dart';
 class Preference extends StatefulWidget {
   final Child child;
   final List<Child> nearbyPlayDateList;
-  List<ChildHobbies> childHobbiesList;
+  List<ChildHobbies>? childHobbiesList;
 
-  Preference({this.child, this.nearbyPlayDateList});
+  Preference({required this.child, required this.nearbyPlayDateList});
 
   @override
   _PreferenceState createState() => _PreferenceState();
 }
 
 class _PreferenceState extends State<Preference> {
-  PreferenceBloc _preferenceBloc;
-  List<ChildHobbies> childHobbiesList;
+  late PreferenceBloc _preferenceBloc;
+  List<ChildHobbies>? childHobbiesList;
 
   @override
   void initState() {
     super.initState();
     CustomBlocProvider.setBloc(PreferenceBloc());
-    _preferenceBloc = CustomBlocProvider.getBloc<PreferenceBloc>();
+    _preferenceBloc = CustomBlocProvider.getBloc<PreferenceBloc>()!;
     _preferenceBloc.fetchChildHobbiesMaster();
   }
 
@@ -42,7 +42,7 @@ class _PreferenceState extends State<Preference> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBarView(height: 150.0,),
+        appBar: AppBarView(height: 130.0,),
     body: Padding(
     padding: AppStyles.getPadding,
     child: StreamBuilder<ApiResponse<List<ChildHobbies>>>(
@@ -50,12 +50,11 @@ class _PreferenceState extends State<Preference> {
     builder: (context, snapshot) {
       print('Hobbies master stream called');
       if (snapshot.hasData) {
-        switch (snapshot.data.status) {
+        switch (snapshot.data!.status) {
           case Status.LOADING:
             return Loading();
-            break;
           case Status.COMPLETED:
-            childHobbiesList = snapshot.data.data ?? [];
+            childHobbiesList = snapshot.data!.data ?? [];
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -87,10 +86,10 @@ class _PreferenceState extends State<Preference> {
                   ),
                 ]
             );
-            break;
           case Status.ERROR:
+            default:
             return ErrorPage(
-              errorMessage: snapshot.data.message,
+              errorMessage: snapshot.data!.message,
               onRetryPressed: () => _preferenceBloc.fetchChildHobbiesMaster(),
             );
             break;

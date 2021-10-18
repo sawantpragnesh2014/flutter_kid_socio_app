@@ -13,10 +13,10 @@ class OtpScreenNew extends StatefulWidget {
 }
 
 class _OtpScreenNewState extends State<OtpScreenNew> {
-  int _firstDigit;
-  int _secondDigit;
-  int _thirdDigit;
-  int _fourthDigit;
+  int? _firstDigit;
+  int? _secondDigit;
+  int? _thirdDigit;
+  int? _fourthDigit;
 
   Widget get _otpScreen{
     return Padding(
@@ -48,8 +48,17 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
               SizedBox(height: 30.0,),
               ActionButtonView(btnName: "Continue",onBtnHit: (){
                 print('Action btn hit $_firstDigit$_secondDigit$_thirdDigit$_fourthDigit');
+                if(_validateOtp) {
                 Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => AddProfilePic()));
+                builder: (context) => AddProfilePic()));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Enter correct otp.'),
+                    ),
+                  );
+                  print('Wrong otp');
+                }
                 /*_loginBloc.createParent(_authBloc.getUser);*/
               },),
             ],
@@ -57,6 +66,10 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
         ),
       ),
     );
+  }
+
+  bool get _validateOtp {
+    return (_firstDigit != null && _secondDigit != null && _thirdDigit != null && _fourthDigit != null);
   }
 
   Widget otp(int pos) {
@@ -70,7 +83,7 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
           LengthLimitingTextInputFormatter(1),
         ],
         decoration: AppStyles.textInputDecoration.copyWith(),
-        validator: (val) => FormValidators.validateMobile(val),
+        validator: (val) => FormValidators.validateMobile(val!),
         onChanged: (val) {
           print('Value on key hit $val ${val.isEmpty}');
           if(val.isEmpty) {

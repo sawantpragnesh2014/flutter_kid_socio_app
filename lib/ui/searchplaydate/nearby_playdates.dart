@@ -12,7 +12,7 @@ class NearbyPlayDates extends StatefulWidget {
   final List<Child> nearbyPlayDatesList;
   final Child child;
 
-  NearbyPlayDates({this.child,this.nearbyPlayDatesList});
+  NearbyPlayDates({required this.child,required this.nearbyPlayDatesList});
 
   @override
   _NearbyPlayDatesState createState() => _NearbyPlayDatesState();
@@ -23,7 +23,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBarView(height: 150.0,),
+      appBar: AppBarView(height: 130.0,),
       body: Padding(
         padding: AppStyles.getPadding,
         child: Column(
@@ -79,7 +79,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
           ),
           subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+            backgroundImage: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Image.asset('assets/img_apartment.png', fit: BoxFit.cover),

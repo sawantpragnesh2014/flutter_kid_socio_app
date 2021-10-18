@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
@@ -17,24 +18,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Parent user;
+  Parent? user;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
+    user = CustomBlocProvider.getBloc<LoginBloc>()!.parent;
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ApiResponse<List<Child>>>(
-      stream: CustomBlocProvider.getBloc<ChildBloc>().childListStream,
+    return StreamBuilder<ApiResponse<List<Child>>?>(
+      stream: CustomBlocProvider.getBloc<ChildBloc>()!.childListStream,
       builder: (context, snapshot) {
-        List<Child> childList = snapshot.data ?? [];
+        List<Child>? childList = snapshot.data as List<Child>? ?? [];
         return SafeArea(
           child: Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBarView(height: 150.0,),
+              appBar: AppBarView(height: 130.0,),
               body: Padding(
               padding: AppStyles.getPadding,
               child: Column(
@@ -71,7 +72,7 @@ class _HomeState extends State<Home> {
                   SizedBox(height: 20.0,),
                   TextButton(
                     onPressed: () async {
-                      await CustomBlocProvider.getBloc<AuthBloc>().signOut();
+                      await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
                     },
                     child: Text('Logout',style: AppStyles.facebookTextStyle,),
                     style: TextButton.styleFrom(
@@ -99,7 +100,7 @@ class _HomeState extends State<Home> {
             contentPadding: EdgeInsets.all(8.0),
             title: Text('${child.firstName}',style: AppStyles.genderTextStyle,),
             leading: CircleAvatar(
-              backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+              backgroundImage: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
               radius: 40.0,
             ),
           ),

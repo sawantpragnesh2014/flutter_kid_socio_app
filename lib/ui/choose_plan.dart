@@ -1,3 +1,4 @@
+/*
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
@@ -23,7 +24,7 @@ class ChoosePlan extends StatefulWidget {
 
 class _ChoosePlanState extends State<ChoosePlan> {
   String email = "";
-  Widget cardView(String txt1, String txt2, String txt3, Color color) {
+  Widget cardView(String txt1, String txt2, String txt3, Color? color) {
     return Container(
       height: 150,
       width: 150,
@@ -53,7 +54,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset : false,
-        appBar: AppBarView(height: 150.0,),
+        appBar: AppBarView(height: 130.0,),
         body: Padding(
           padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
           child: Container(
@@ -89,7 +90,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
               ),
               TextFormField(
                 decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Have a coupon?'),
-                validator: (val) => val.isEmpty?'Enter a valid coupon':null,
+                validator: (val) => val!.isEmpty?'Enter a valid coupon':null,
                 onChanged: (val){
                   setState(() {
                     email = val;
@@ -107,3 +108,4 @@ class _ChoosePlanState extends State<ChoosePlan> {
     );
   }
 }
+*/

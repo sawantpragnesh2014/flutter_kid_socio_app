@@ -5,9 +5,9 @@ import 'package:flutter_kid_socio_app/services/api_client.dart';
 
 class ParentRepository {
   final ApiClient apiClient = ApiClient();
-  List<Parent> results;
+  List<Parent>? results;
 
-  Future<Parent> fetchParent({String uid}) async {
+  Future<Parent?> fetchParent({required String uid}) async {
     final response = await apiClient.getDataByPostCall('/api/UserMaster/GetById',uid);
     // final response = await apiClient.getData('/api/UserMaster/GetById');
     return ParentResponse
@@ -36,10 +36,10 @@ class ParentRepository {
     return data;
   }
 
-  Future<String> updateParent(Parent parent) async {
+  Future<String?> updateParent(Parent parent) async {
     print('Parent is $parent');
     /*Map<String, dynamic> parentMap = convertToDto(parent);*/
 
-    return apiClient.addData(parent, '/api/UserMaster/Update');
+    return apiClient.addData(parent, '/api/UserMaster/Update') as String?;
   }
 }

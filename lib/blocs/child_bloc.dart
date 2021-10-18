@@ -9,16 +9,20 @@ import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'bloc.dart';
 
 class ChildBloc extends Bloc{
+late ChildRepository childRepository;
 
-  final ChildRepository childRepository = ChildRepository();
+late StreamController<ApiResponse<List<Child>>?> childController;
 
-StreamController childController = StreamController<ApiResponse<List<Child>>>.broadcast();
+Stream<ApiResponse<List<Child>>?> get childListStream => childController.stream;
 
-Stream<ApiResponse<List<Child>>> get childListStream => childController.stream;
+StreamSink<ApiResponse<List<Child>>?> get childListSink => childController.sink;
 
-StreamSink<ApiResponse<List<Child>>> get childListSink => childController.sink;
+List<Child>? childList;
 
-List<Child> childList = [];
+ChildBloc(){
+  childController = StreamController<ApiResponse<List<Child>>>.broadcast();
+  childRepository = ChildRepository();
+}
 
 getAllChildren(int parentId) async {
   childListSink.add(ApiResponse.loading('message'));

@@ -14,7 +14,7 @@ import 'package:flutter_kid_socio_app/ui/home/home.dart';
 import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
 import 'package:flutter_kid_socio_app/ui/home/home_new.dart';
 import 'package:flutter_kid_socio_app/ui/add_child/interest_view.dart';
-import 'package:flutter_kid_socio_app/ui/login/login.dart';
+import 'package:flutter_kid_socio_app/ui/login/login_page.dart';
 import 'package:flutter_kid_socio_app/ui/on_boarding.dart';
 import 'package:flutter_kid_socio_app/ui/login/otp_screen.dart';
 import 'package:flutter_kid_socio_app/ui/login/otp_screen_new.dart';

@@ -12,7 +12,7 @@ class ReschedulePlayDate extends StatefulWidget {
 
   final Child child;
 
-  ReschedulePlayDate({this.child});
+  ReschedulePlayDate({required this.child});
 
   @override
   _ReschedulePlayDateState createState() => _ReschedulePlayDateState();

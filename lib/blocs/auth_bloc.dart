@@ -7,13 +7,13 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 class AuthBloc extends Bloc{
   final auth = Auth();
 
-  Parent get getUser => auth.getUser;
+  User? get getUser => auth.getUser;
 
-  Future<Parent> handleSignIn() async => auth.handleSignIn();
+  Future<User?> handleSignIn() async => auth.handleSignIn();
 
-  Stream<Parent> get onAuthStateChanged => auth.onAuthStateChanged;
+  Stream<User?> get onAuthStateChanged => auth.onAuthStateChanged;
 
-  void setUser(Parent data) => auth.setUser(data);
+  void setUser(User? data) => auth.setUser(data);
 
   Future<bool> loginFromFaceBook() async {
      return auth.loginFromFaceBook();

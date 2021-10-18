@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
@@ -12,19 +13,19 @@ import 'package:flutter_kid_socio_app/ui/home/home_new.dart';
 import 'package:flutter_kid_socio_app/ui/login/registration_form.dart';
 import 'home/home.dart';
 
-import 'login/login.dart';
+import 'login/login_page.dart';
 import 'on_boarding.dart';
 
 class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final Auth auth = AuthProvider.of(context).auth;
-    return StreamBuilder<Parent>(
-        stream: CustomBlocProvider.getBloc<AuthBloc>().onAuthStateChanged,
-        builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
+    return StreamBuilder<User?>(
+        stream: CustomBlocProvider.getBloc<AuthBloc>()!.onAuthStateChanged,
+        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final bool isLoggedIn = snapshot.hasData;
-            CustomBlocProvider.getBloc<AuthBloc>().setUser(snapshot.data);
+            CustomBlocProvider.getBloc<AuthBloc>()!.setUser(snapshot.data);
             print('Auth changed $isLoggedIn');
 
             return isLoggedIn ? handleLoggedInState() : OnBoarding();
@@ -71,12 +72,12 @@ class RootPage extends StatelessWidget {
   }*/
 
   handleLoggedInState() {
-    print('uid of user is ${CustomBlocProvider.getBloc<AuthBloc>().getUser.uid}');
+    print('uid of user is ${CustomBlocProvider.getBloc<AuthBloc>()!.getUser!.uid}');
 
-    return FutureBuilder<Parent>(
+    return FutureBuilder<Parent?>(
 
-      future: CustomBlocProvider.getBloc<LoginBloc>()
-          .fetchParent(CustomBlocProvider.getBloc<AuthBloc>().getUser.uid),
+      future: CustomBlocProvider.getBloc<LoginBloc>()!
+          .fetchParent(CustomBlocProvider.getBloc<AuthBloc>()!.getUser!.uid),
 
       builder: (context, snapshot) {
 
@@ -89,9 +90,9 @@ class RootPage extends StatelessWidget {
         } else {
           if (snapshot.hasData) {
             print('data found');
-            Parent parent = snapshot.data;
+            Parent? parent = snapshot.data;
             print('parent is ${parent}');
-            CustomBlocProvider.getBloc<AuthBloc>().setUser(parent);
+            CustomBlocProvider.getBloc<LoginBloc>()!.parent = parent!;
             return HomeNew();
           } else if (snapshot.hasError) {
             return ErrorPage(

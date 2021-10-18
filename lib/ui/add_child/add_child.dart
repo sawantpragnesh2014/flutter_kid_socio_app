@@ -4,6 +4,7 @@ import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
@@ -23,9 +24,9 @@ class AddChild extends StatefulWidget {
 }
 
 class _AddChildState extends State<AddChild> {
-  Parent user;
-  ChildBloc _childBloc;
-  AddChildBloc _addChildBloc;
+  Parent? user;
+  late ChildBloc? _childBloc;
+  late AddChildBloc? _addChildBloc;
   TextEditingController dateCtl = TextEditingController();
 
   Widget _addChildView(Type type){
@@ -48,62 +49,57 @@ class _AddChildState extends State<AddChild> {
 
   Widget get _addSchedule {
    return AddSchedule(onActionBtnHit: (val) async {
-     _addChildBloc.finalscheduleDaysList = val;
+     _addChildBloc!.finalscheduleDaysList = val;
 
-     _addChildBloc.childViewSink.add(Type.LOADING);
+     _addChildBloc!.childViewSink.add(Type.LOADING);
 
-     Child child = await _addChildBloc.addChild(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0);
-      print('Child inserted ${child.id}');
-     if(child != null) {
-       _addChildBloc.childId = child.id;
-     }
-     _addChildBloc.setChildIdInFinalScheduleDaysList();
+     Child? child = await _addChildBloc!.addChild(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id);
+      print('Child inserted ${child!.id}');
+      _addChildBloc!.childId = child.id;
+     _addChildBloc!.setChildIdInFinalScheduleDaysList();
 
-     await _addChildBloc.addChildHobbies();
-     await _addChildBloc.addChildTimings();
+     await _addChildBloc!.addChildHobbies();
+     await _addChildBloc!.addChildTimings();
 
-     _childBloc.getAllChildren(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0);
+     _childBloc!.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id);
      Navigator.pop(context);
    });
   }
 
   Widget get _interests{
     return InterestView(callback: (val){
-      _addChildBloc.selectedHobbiesList = val;
-       _addChildBloc.childViewSink.add(Type.SCHEDULE);
+      _addChildBloc!.selectedHobbiesList = val;
+       _addChildBloc!.childViewSink.add(Type.SCHEDULE);
     },);
   }
 
   Widget get _childForm{
     return ChildForm(callback: () async {
       print('Form callback');
-      _addChildBloc.childViewSink.add(Type.PROFILE);
+      _addChildBloc!.childViewSink.add(Type.PROFILE);
     },);
   }
 
   Widget get _addProfilePic{
     return AddPic(btnStyle: AppStyles.stylePinkButton,onActionBtnHit: (val){
       print('child bloc $_addChildBloc');
-      /*_addChildBloc.photoUrl = val;*/
-      _addChildBloc.childViewSink.add(Type.INTEREST);
+      /*_addChildBloc!.photoUrl = val;*/
+      _addChildBloc!.childViewSink.add(Type.INTEREST);
     },);
   }
 
   @override
   void initState() {
     super.initState();
+    CustomBlocProvider.setBloc(AddChildBloc());
     _childBloc = CustomBlocProvider.getBloc<ChildBloc>();
     _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
-    if(_addChildBloc == null){
-      CustomBlocProvider.setBloc(AddChildBloc());
-      _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
-    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
+    user = CustomBlocProvider.getBloc<LoginBloc>()!.parent;
   }
 
   @override
@@ -111,9 +107,9 @@ class _AddChildState extends State<AddChild> {
     print('hello');
     return StreamBuilder(
       initialData: Type.FORM,
-      stream: _addChildBloc.childViewStream,
+      stream: _addChildBloc!.childViewStream,
       builder: (context, snapshot) {
-        Type type = snapshot.data;
+        Type type = snapshot.data as Type;
         return SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -132,7 +128,7 @@ class _AddChildState extends State<AddChild> {
   void dispose() {
     print('Dispose called');
     super.dispose();
-    _addChildBloc.dispose();
+    _addChildBloc!.dispose();
   }
 
 }

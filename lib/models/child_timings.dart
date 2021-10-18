@@ -8,7 +8,7 @@ class ChildTimings extends Equatable{
   int toTime;
   bool isSelected;
 
-  ChildTimings({this.childId,this.day,this.fromTime,this.toTime,this.isSelected = false});
+  ChildTimings({required this.childId,required this.day,required this.fromTime,required this.toTime,this.isSelected = false});
 
 
   @override
@@ -59,7 +59,7 @@ class ChildTimingsList {
 }
 
 class ChildTimingsResponse{
-  List<ChildTimings> results;
+  late List<ChildTimings> results;
 
   ChildTimingsResponse.fromJson(dynamic json){
     results = <ChildTimings>[];

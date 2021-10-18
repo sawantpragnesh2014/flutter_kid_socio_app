@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,16 +28,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
 
   bool _agree = true;
-  Parent user;
+  User? user;
 
-  LoginBloc _loginBloc;
-  AuthBloc _authBloc;
+  late LoginBloc _loginBloc;
+  late AuthBloc _authBloc;
 
     Widget get _lastName {
     return TextFormField(
-      initialValue: user?.lastName,
+      initialValue: user?.displayName?.split(' ')[1] ?? '',
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _loginBloc.lastName = val;
@@ -47,9 +48,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _firstName {
     return TextFormField(
-      initialValue: user?.firstName,
+      initialValue: user?.displayName?.split(' ')[0] ?? '',
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _loginBloc.firstName = val;
@@ -73,13 +74,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _pinCode {
     return TextFormField(
-      initialValue: user?.phoneNo,
+      initialValue: user?.phoneNumber,
       keyboardType: TextInputType.number,
       inputFormatters: [
         LengthLimitingTextInputFormatter(6),
       ],
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Pincode'),
-      validator: (val) => FormValidators.validatePinCode(val),
+      validator: (val) => FormValidators.validatePinCode(val!),
       onChanged: (val){
         setState(() {
           _loginBloc.pinCode = val;
@@ -90,11 +91,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _address {
     return TextFormField(
-      initialValue: user?.phoneNo,
       keyboardType: TextInputType.multiline,
       maxLines: null,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address'),
-      validator: (val) => FormValidators.validateName(val),
+      validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
           _loginBloc.addressName = val;
@@ -114,8 +114,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
               children: <Widget>[
                 Checkbox(
                   value: state.value,
-                  onChanged: (bool val) => setState(() {
-                    _agree = val;
+                  onChanged: (bool? val) => setState(() {
+                    _agree = val!;
                     state.didChange(val);
                   }),
                   activeColor: AppColors.color7059E1,
@@ -149,9 +149,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 )
               ],
             ),
-            state.errorText == null
-                ? Text("")
-                : Text(state.errorText, style: TextStyle(color: Colors.red)),
+            Text(state.errorText ?? '', style: TextStyle(color: Colors.red)),
           ],
         );
       },
@@ -164,13 +162,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('didChangeDependencies');
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
     user = _authBloc.getUser;
-    _loginBloc.firstName =  user?.firstName;
-    _loginBloc.lastName =  user?.lastName;
-    _loginBloc.email =  user?.email;
-    _loginBloc.gender =  user?.gender?? 'Male';
+    _loginBloc.firstName =  user?.displayName?.split(' ')[0] ?? '';
+    _loginBloc.lastName =  user?.displayName?.split(' ')[1] ?? '';
+    _loginBloc.email =  user?.email ?? '';
+    _loginBloc.gender = 'Male';
   }
 
   @override
@@ -244,7 +242,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ActionButtonView(
                       btnName: "Continue",
                       onBtnHit: (){
-                        if(formKey.currentState.validate()) {
+                        if(formKey.currentState!.validate()) {
                           Navigator.push(context, MaterialPageRoute(
                               builder: (context) => PhoneVerification()));
                         }
@@ -269,8 +267,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
-  String _validateTerms(bool agree) {
-    return agree?null:"You must agree before proceeding";
+  String? _validateTerms(bool agree) {
+    return agree ? null:"You must agree before proceeding";
   }
 
 

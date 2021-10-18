@@ -4,9 +4,9 @@ import 'package:flutter_kid_socio_app/shared/styles.dart';
 class ActionButtonView extends StatelessWidget {
   final VoidCallback onBtnHit;
   final String btnName;
-  final ButtonStyle buttonStyle;
+  final ButtonStyle? buttonStyle;
 
-  ActionButtonView({this.btnName,this.onBtnHit,this.buttonStyle});
+  ActionButtonView({required this.btnName,required this.onBtnHit,this.buttonStyle});
 
   @override
   Widget build(BuildContext context) {

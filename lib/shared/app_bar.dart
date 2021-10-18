@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class AppBarView extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
+  final double? height;
 
   AppBarView({this.height});
 
   @override
   Widget build(BuildContext context) {
-    Parent user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
+    Parent? user = CustomBlocProvider.getBloc<LoginBloc>()!.parent;
     return Container(
       decoration: BoxDecoration(
           color: AppColors.color7059E1,

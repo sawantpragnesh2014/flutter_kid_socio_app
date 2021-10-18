@@ -18,12 +18,12 @@ class AddPic extends StatefulWidget {
   @override
   _AddPicState createState() => _AddPicState();
 
-  AddPic({this.btnStyle,this.onActionBtnHit,this.photoUrl});
+  AddPic({required this.btnStyle,required this.onActionBtnHit,this.photoUrl = ''});
 }
 
 class _AddPicState extends State<AddPic> {
   final _picker = ImagePicker();
-  File _image;
+  File? _image;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,7 +53,7 @@ class _AddPicState extends State<AddPic> {
                 width: 300.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: _image != null ? FileImage(_image) : widget.photoUrl != null ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/facebook_logo.png'),
+                    image: (_image != null ? FileImage(_image!) : widget.photoUrl.isNotEmpty ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/facebook_logo.png')) as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.all( Radius.circular(180.0)),
@@ -67,7 +67,7 @@ class _AddPicState extends State<AddPic> {
             SizedBox(height: 80.0,),
             ActionButtonView(btnName: "Continue",onBtnHit: (){
               print('Action btn hit');
-              widget.onActionBtnHit(_upload());
+              widget.onActionBtnHit(_upload()??'');
             },buttonStyle: widget.btnStyle,),
           ],
         ),
@@ -108,7 +108,7 @@ class _AddPicState extends State<AddPic> {
 
   _imgFromCamera() async {
     final pickedFile = await _picker.getImage(source: ImageSource.camera,);
-    final File image = File(pickedFile.path);
+    final File image = File(pickedFile!.path);
 
     setState(() {
       _image = image;
@@ -117,16 +117,16 @@ class _AddPicState extends State<AddPic> {
 
   _imgFromGallery() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery,);
-    final File image = File(pickedFile.path);
+    final File image = File(pickedFile!.path);
     setState(() {
       _image = image;
     });
   }
 
-  String _upload() {
+  String? _upload() {
     if (_image == null) return null;
-    String base64Image = base64Encode(_image.readAsBytesSync());
-    String fileName = _image.path.split("/").last;
+    String base64Image = base64Encode(_image!.readAsBytesSync());
+/*    String fileName = _image.path.split("/").last;*/
     return base64Image;
   }
 }

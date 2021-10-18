@@ -7,7 +7,7 @@ class AppBarNew extends StatelessWidget implements PreferredSizeWidget {
 
   final double height;
 
-  AppBarNew({this.height});
+  AppBarNew({required this.height});
 
   @override
   Widget build(BuildContext context) {

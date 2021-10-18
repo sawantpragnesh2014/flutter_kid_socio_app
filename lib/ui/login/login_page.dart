@@ -11,14 +11,14 @@ import 'package:flutter_kid_socio_app/shared/styles.dart';
 
 import '../home/home.dart';
 
-class Login extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   bool loading = false;
 
   @override
-  _LoginState createState() => _LoginState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
 
 
   @override
@@ -55,9 +55,9 @@ class _LoginState extends State<Login> {
         );
   }
 
-  Future<Parent> onGoogleSignIn(BuildContext context) async {
-    Parent user = await CustomBlocProvider.getBloc<AuthBloc>().handleSignIn();
-    print(user.uid);
+  Future<User> onGoogleSignIn(BuildContext context) async {
+    User? user = await CustomBlocProvider.getBloc<AuthBloc>()!.handleSignIn();
+    print(user!.uid);
     /*Parent user = bloc.getUser();
     var userSignedIn = Navigator.push(
         context,
@@ -74,7 +74,7 @@ class _LoginState extends State<Login> {
             widget.loading = true;
           });
           if(btnText.contains("Facebook")){
-              await CustomBlocProvider.getBloc<AuthBloc>().loginFromFaceBook();
+              await CustomBlocProvider.getBloc<AuthBloc>()!.loginFromFaceBook();
           }else if(btnText.contains("Google")){
              await onGoogleSignIn(context);
           }

@@ -10,35 +10,43 @@ import 'bloc.dart';
 
 class AddChildBloc extends Bloc{
 
-  int _childId;
+  late int _childId;
 
-  String _firstName;
-  String _lastName;
-  String _schoolName;
-  String _gender;
-  String _dob;
-  String _photoUrl;
-  List<String> hobbies;
-  List<ChildTimings> finalscheduleDaysList;
-  List<ChildHobbies> _selectedHobbiesList;
+  late String _firstName;
+  late String _lastName;
+  late String _schoolName;
+  late String _gender;
+  late String _dob;
+  late String _photoUrl;
+  late List<String> hobbies;
+  late List<ChildTimings> finalscheduleDaysList;
+  late List<ChildHobbies> _selectedHobbiesList;
 
-  final ChildRepository childRepository = ChildRepository();
- StreamController childViewController = StreamController<Type>.broadcast();
+  late ChildRepository childRepository;
 
+ late StreamController childViewController;
   Stream get childViewStream => childViewController.stream;
+
   StreamSink get childViewSink => childViewController.sink;
+  late StreamController<ApiResponse<List<ChildHobbies>>> childInterestsController;
 
-
-  StreamController childInterestsController = StreamController<ApiResponse<List<ChildHobbies>>>.broadcast();
 
   Stream<ApiResponse<List<ChildHobbies>>> get childInterestsStream => childInterestsController.stream;
+
   StreamSink<ApiResponse<List<ChildHobbies>>> get childInterestsSink => childInterestsController.sink;
+
+  AddChildBloc(){
+    print('AddChildBloc called');
+    childInterestsController = StreamController<ApiResponse<List<ChildHobbies>>>.broadcast();
+     childViewController = StreamController<Type>.broadcast();
+    childRepository = ChildRepository();
+  }
 
   fetchChildHobbiesMaster() async{
     print('fetch hobbies master');
    childInterestsSink.add(ApiResponse.loading('Registering Parent'));
    try{
-     List<ChildHobbies> resultData = await childRepository.fetchHobbiesMaster();
+     List<ChildHobbies>? resultData = await childRepository.fetchHobbiesMaster();
      childInterestsSink.add(ApiResponse.completed(resultData));
 
    } catch (e) {
@@ -50,7 +58,7 @@ class AddChildBloc extends Bloc{
     _selectedHobbiesList = value;
   }
 
-  Future<Child> addChild(int parentId) async {
+  Future<Child?> addChild(int parentId) async {
     try {
       Child child = Child(firstName: _firstName,
           lastName: _lastName,
@@ -58,7 +66,7 @@ class AddChildBloc extends Bloc{
           dob: _dob,
           schoolName: _schoolName,
           photoUrl: _photoUrl,
-          gender: _gender?? "Male");
+          gender: _gender);
       return childRepository.createChild(child);
     } catch(e){
       print(e);
@@ -83,12 +91,11 @@ class AddChildBloc extends Bloc{
 
   }
 
-  Future<void> addChildTimings(){
+  Future<void> addChildTimings() async {
     try {
       return childRepository.createChildTimings(finalscheduleDaysList);
     } catch(e){
       print(e);
-      return null;
     }
   }
 

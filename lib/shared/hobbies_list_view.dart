@@ -5,7 +5,7 @@ import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'colors.dart';
 
 class HobbiesListView extends StatefulWidget {
-  final List<ChildHobbies> childHobbiesList;
+  final List<ChildHobbies>? childHobbiesList;
 
   HobbiesListView({this.childHobbiesList});
 
@@ -54,8 +54,8 @@ class _HobbiesListViewState extends State<HobbiesListView> {
     );
   }
 
-  List<Widget> interestsButtonList(List<ChildHobbies> interestsList){
-    return new List<Widget>.generate(interestsList.length, (int index) {
+  List<Widget> interestsButtonList(List<ChildHobbies>? interestsList){
+    return new List<Widget>.generate(interestsList!.length, (int index) {
       return interestsButton(interestsList[index]);
     });
   }

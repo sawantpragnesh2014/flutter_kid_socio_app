@@ -9,7 +9,7 @@ class Auth{
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final fb = FacebookLogin();
   bool isUserSignedIn = false;
-  Parent parent;
+  User? firebaseUser;
 
   Future<void> signOut() async{
     try{
@@ -23,7 +23,6 @@ class Auth{
         fb.logOut();
       }
        _auth.signOut();
-       parent = null;
        isUserSignedIn = false;
     }catch(e){
       print(e.toString());
@@ -31,7 +30,7 @@ class Auth{
     }
   }
 
-  Future<Parent> handleSignIn() async {
+  Future<User?> handleSignIn() async {
     // hold the instance of the authenticated user
     // flag to check whether we're signed in already
     bool isSignedIn = await googleSignIn.isSignedIn();
@@ -39,13 +38,13 @@ class Auth{
 
     if (isSignedIn) {
       // if so, return the current user
-      parent = _userFromFireBaseUser(_auth.currentUser as User);
+      // firebaseUser = _userFromFireBaseUser(_auth.currentUser as User);
+      firebaseUser = _auth.currentUser as User;
     }
     else {
-      final GoogleSignInAccount googleUser =
-      await googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
       // get the credentials to (access / id token)userSignedIn
       // to sign in via Firebase Authentication
       final AuthCredential credential =
@@ -53,15 +52,16 @@ class Auth{
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken
       );
-      parent = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+      // firebaseUser = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+      firebaseUser = (await _auth.signInWithCredential(credential)).user;
       isSignedIn = await googleSignIn.isSignedIn();
       isUserSignedIn = isSignedIn;
     }
 
-    return parent;
+    return firebaseUser;
   }
 
-  Parent _userFromFireBaseUser(User user){
+  /*Parent _userFromFireBaseUser(User user){
     return user != null?
     Parent(uid: user.uid,
       firstName: user.displayName?.split(' ')?.length > 0?user?.displayName?.split(' ')[0]:'',
@@ -71,27 +71,32 @@ class Auth{
       photoUrl: user.photoURL
     )
         : null;
-  }
+  }*/
 
   //auth change user stream
-  Stream<Parent> get onAuthStateChanged{
+  /*Stream<Parent> get onAuthStateChanged{
     return _auth.authStateChanges()
         .map(_userFromFireBaseUser);
+  }*/
+
+  Stream<User?> get onAuthStateChanged{
+    return _auth.authStateChanges();
   }
 
-  Parent get getUser => parent;
+  User? get getUser => firebaseUser;
 
-  void setUser(Parent data) {
-    parent = data;
+  void setUser(User? data) {
+    firebaseUser = data;
   }
 
-  Future<Parent> signInWithCredential(AuthCredential credential) async {
-    parent = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
-    return parent;
+  Future<User?> signInWithCredential(AuthCredential credential) async {
+    // firebaseUser = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
+    firebaseUser = (await _auth.signInWithCredential(credential)).user;
+    return firebaseUser;
   }
 
   Future<bool> loginFromFaceBook() async {
-    Parent result;
+    User? result;
     final res = await fb.logIn(
         permissions: [
           FacebookPermission.publicProfile,
@@ -100,10 +105,10 @@ class Auth{
     );
 
     switch(res.status){
-      case FacebookLoginStatus.Success:
+      case FacebookLoginStatus.success:
         print('Login successful');
         //Get token
-        final String fbToken = res.accessToken.token;
+        final String fbToken = res.accessToken!.token;
 
         //Convert to AuthCredential
         final AuthCredential credential = FacebookAuthProvider.credential(fbToken);
@@ -112,10 +117,10 @@ class Auth{
         result = await signInWithCredential(credential);
         print('Facebook Login successful');
         break;
-      case FacebookLoginStatus.Cancel:
+      case FacebookLoginStatus.cancel:
         print('Login cancelled');
         break;
-      case FacebookLoginStatus.Error:
+      case FacebookLoginStatus.error:
         print('Login Error');
         break;
     }

@@ -5,9 +5,9 @@ import 'package:flutter_kid_socio_app/services/api_client.dart';
 
 class ChildRepository{
   final ApiClient apiClient = ApiClient();
-  List<Child> results;
+  List<Child>? results;
 
-  Future<Child> fetchChild({String childId}) async {
+  Future<Child?> fetchChild({required String childId}) async {
     final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
     return ChildResponse
         .fromJson(response)
@@ -17,7 +17,7 @@ class ChildRepository{
         .results[0];
   }
 
-  Future<List<Child>> fetchAllChildByParentId(String parentId) async {
+  Future<List<Child>?> fetchAllChildByParentId(String parentId) async {
     final response = await apiClient.getData('/api/ChildMaster/GetAllChildParent?UserId=$parentId');
     try {
       return ChildResponse
@@ -32,7 +32,7 @@ class ChildRepository{
     }
   }
 
-  Future<List<ChildHobbies>> fetchHobbiesMaster() async {
+  Future<List<ChildHobbies>?> fetchHobbiesMaster() async {
     final response = await apiClient.getData('/api/hobbieslist');
     return ChildHobbiesResponse
         .fromJson(response)
@@ -42,7 +42,7 @@ class ChildRepository{
         .results;
   }
 
-  Future<Child> createChild(Child child) async {
+  Future<Child?> createChild(Child child) async {
     print('Child is $child');
     /*Map<String, dynamic> childMap = convertToDto(child);*/
 
@@ -67,21 +67,21 @@ class ChildRepository{
     apiClient.addData(ChildTimingsList(childTimingsList), '/api/ChildTimings/Create');
   }
 
-  Future<String> updateChild(Child child) async {
+  Future<String?> updateChild(Child child) async {
     print('Child is $child');
     /*Map<String, dynamic> childMap = convertToDto(child);*/
 
-    return apiClient.addData(child, '/api/UserMaster/Update');
+    return apiClient.addData(child, '/api/UserMaster/Update') as String?;
   }
 
-  Future<String> updateChildHobbies(ChildHobbies childHobbies) async {
+  Future<String?> updateChildHobbies(ChildHobbies childHobbies) async {
     print('Child is $childHobbies');
     /*Map<String, dynamic> childMap = convertToChildHobbiesDto(childHobbies);*/
 
-    return apiClient.addData(childHobbies, '/api/ChildHobbies/Update');
+    return apiClient.addData(childHobbies, '/api/ChildHobbies/Update') as String?;
   }
 
-  Future<List<Child>> fetchChildRequestsList(String childId) async {
+  Future<List<Child>?> fetchChildRequestsList(String childId) async {
     final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
     return ChildResponse
         .fromJson(response)
@@ -91,7 +91,7 @@ class ChildRepository{
         .results;
   }
 
-  Future<List<Child>> fetchRecentPlaydatesList(String childId) async {
+  Future<List<Child>?> fetchRecentPlaydatesList(String childId) async {
     final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
     return ChildResponse
         .fromJson(response)
@@ -101,7 +101,7 @@ class ChildRepository{
         .results;
   }
 
-  Future<List<Child>> fetchNearbyPlaydatesList(String childId) async {
+  Future<List<Child>?> fetchNearbyPlaydatesList(String childId) async {
     final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
     return ChildResponse
         .fromJson(response)
@@ -111,7 +111,7 @@ class ChildRepository{
         .results;
   }
 
-  Future<List<Child>> fetchFriendsList(String childId) async {
+  Future<List<Child>?> fetchFriendsList(String childId) async {
     final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
     return ChildResponse
         .fromJson(response)
@@ -134,7 +134,7 @@ class ChildRepository{
 
   Map<String, dynamic> convertToDto(Child child) {
     Map<String, dynamic> childMap = {
-      'childId': child.id ?? 0,
+      'childId': child.id,
       'parentId': child.parentId,
       'firstName': child.firstName,
       'lastName': child.lastName,

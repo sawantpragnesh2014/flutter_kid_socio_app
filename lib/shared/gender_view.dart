@@ -8,7 +8,7 @@ typedef StringValue = String Function(String);
 class GenderView extends StatefulWidget {
   final StringValue callback;
 
-  GenderView({this.callback});
+  GenderView({required this.callback});
 
   @override
   _GenderViewState createState() => _GenderViewState();

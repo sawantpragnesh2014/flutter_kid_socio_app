@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
@@ -46,3 +47,4 @@ class BottomNav extends StatelessWidget {
   final VoidCallback onNavHit;
 
 }
+*/

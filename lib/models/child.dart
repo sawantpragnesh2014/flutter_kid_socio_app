@@ -3,15 +3,15 @@ import 'package:flutter_kid_socio_app/models/parent.dart';
 
 class Child extends Equatable{
   final int id;
-  final int parentId;
-  final String firstName;
-  final String lastName;
-  final String photoUrl;
-  final String schoolName;
-  final String dob;
-  final String gender;
+  late final int parentId;
+  late final String firstName;
+  late final String lastName;
+  late final String photoUrl;
+  late final String schoolName;
+  late final String dob;
+  late final String gender;
 
-  Child({this.id,this.parentId,this.firstName,this.lastName,this.photoUrl,this.schoolName,this.dob,this.gender});
+  Child({this.id = 0,required this.parentId,required this.firstName,required this.lastName,required this.photoUrl,required this.schoolName,required this.dob,required this.gender});
 
   @override
   List get props => [id,parentId,firstName,lastName,photoUrl,schoolName,dob,gender];
@@ -30,7 +30,7 @@ class Child extends Equatable{
   }
   
   Map toJson() => {
-    'childId': id ?? 0,
+    'childId': id,
     'parentId': parentId,
     'firstname': firstName,
     'lastname': lastName,
@@ -44,7 +44,7 @@ class Child extends Equatable{
 }
 
 class ChildResponse{
-  List<Child> results;
+  late List<Child> results;
 
   ChildResponse.fromJson(dynamic json){
     results = <Child>[];

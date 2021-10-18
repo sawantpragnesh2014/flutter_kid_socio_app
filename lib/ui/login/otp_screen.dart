@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
@@ -12,7 +13,7 @@ class OTPScreen extends StatefulWidget {
 
 class _OTPScreenState extends State<OTPScreen> {
 
-  LoginBloc _loginBloc;
+  late LoginBloc _loginBloc;
   AuthBloc _authBloc;
 
   // logic to validate otp return [null] when success else error [String]
@@ -52,3 +53,4 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 }
+*/

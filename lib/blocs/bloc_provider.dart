@@ -40,11 +40,11 @@ class CustomBlocProvider {
   static Map<Type, Bloc> _singletonBlocMap = {};
   static Map<Type, Map<String, Bloc>> _blocMap = {};
 
-  static setBloc<T extends Bloc>(T bloc, {String identifier}) {
+  static setBloc<T extends Bloc>(T bloc, {String? identifier}) {
     if (identifier == null) {
       _singletonBlocMap[T] = bloc;
     } else {
-      Map<String, Bloc> blocIdentifierMap = _blocMap[T];
+      Map<String, Bloc>? blocIdentifierMap = _blocMap[T];
       if (blocIdentifierMap == null) {
         blocIdentifierMap = {};
         _blocMap[T] = blocIdentifierMap;
@@ -53,13 +53,13 @@ class CustomBlocProvider {
     }
   }
 
-  static T getBloc<T extends Bloc>({String identifier}) {
+  static T? getBloc<T extends Bloc>({String? identifier}) {
     if (identifier == null) {
-      return _singletonBlocMap[T];
+      return _singletonBlocMap[T] as T;
     } else {
-      Map<String, Bloc> blocIdentifierMap = _blocMap[T];
+      Map<String, Bloc>? blocIdentifierMap = _blocMap[T];
       if (blocIdentifierMap != null) {
-        return blocIdentifierMap[identifier];
+        return blocIdentifierMap[identifier] as T;
       }
     }
     return null;

@@ -8,10 +8,10 @@ import 'package:flutter_kid_socio_app/ui/reschedule_playdate/reschedule_playdate
 
 class SendRequestPanel extends StatefulWidget {
 
-  final Child child;
+  late final Child child;
   final String panelType;
 
-  SendRequestPanel({this.child,this.panelType});
+  SendRequestPanel({required this.child,required this.panelType});
 
   @override
   _SendRequestPanelState createState() => _SendRequestPanelState();

@@ -15,16 +15,16 @@ typedef ChildHobbiesValue = void Function(List<ChildHobbies>);
 class InterestView extends StatefulWidget {
   final ChildHobbiesValue callback;
 
-  InterestView({this.callback});
+  InterestView({required this.callback});
 
   @override
   _InterestViewState createState() => _InterestViewState();
 }
 
 class _InterestViewState extends State<InterestView> {
-  AddChildBloc _addChildBloc;
-  List<ChildHobbies> childHobbiesList;
-  List<ChildHobbies> finalChildHobbiesList;
+  late AddChildBloc _addChildBloc;
+  List<ChildHobbies>? childHobbiesList;
+  List<ChildHobbies>? finalChildHobbiesList;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _InterestViewState extends State<InterestView> {
     interestsList.add({'name':'Video Games','isSelected':false});
     interestsList.add({'name':'Music','isSelected':false});
     interestsList.add({'name':'Baby Sitting','isSelected':false});*/
-    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>();
+    _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>()!;
     _addChildBloc.fetchChildHobbiesMaster();
   }
 
@@ -60,12 +60,12 @@ class _InterestViewState extends State<InterestView> {
         builder: (context, snapshot) {
           print('Hobbies master stream called');
           if(snapshot.hasData){
-            switch(snapshot.data.status){
+            switch(snapshot.data!.status){
               case Status.LOADING:
                 return Loading();
                 break;
               case Status.COMPLETED:
-                childHobbiesList = snapshot.data.data ?? [];
+                childHobbiesList = snapshot.data!.data ?? [];
                  return Column(
                    crossAxisAlignment: CrossAxisAlignment.stretch,
                    children: [
@@ -82,20 +82,20 @@ class _InterestViewState extends State<InterestView> {
                      ),
                      SizedBox(height: 20.0,),
                      ActionButtonView(btnName: "Continue",onBtnHit: () async {
-                       finalChildHobbiesList = childHobbiesList.where((i) => i.isSelected).toList();
-                       widget.callback(finalChildHobbiesList);
+                       finalChildHobbiesList = childHobbiesList!.where((i) => i.isSelected).toList();
+                       widget.callback(finalChildHobbiesList!);
                        print('finalChildHobbiesList is $finalChildHobbiesList');
                      },buttonStyle: AppStyles.stylePinkButton,),
                      SizedBox(height: 30.0,),
                    ],
                  );
-                break;
+
               case Status.ERROR:
+              default:
                 return ErrorPage(
-                  errorMessage: snapshot.data.message,
+                  errorMessage: snapshot.data!.message ?? 'Some error occured',
                   onRetryPressed: () => _addChildBloc.fetchChildHobbiesMaster(),
                 );
-                break;
             }
           }
           return Loading();

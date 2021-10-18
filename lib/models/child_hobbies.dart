@@ -5,7 +5,7 @@ class ChildHobbies extends Equatable{
   final String name;
   bool isSelected;
 
-  ChildHobbies({this.id,this.name,this.isSelected = false});
+  ChildHobbies({this.id = 0,required this.name,this.isSelected = false});
 
   static ChildHobbies fromJson(dynamic json){
     return ChildHobbies(
@@ -18,10 +18,13 @@ class ChildHobbies extends Equatable{
   String toString() {
     return 'ChildHobbies{id: $id, name: $name, isSelected: $isSelected}';
   }
+
+  @override
+  List<Object?> get props => [id,name,isSelected];
 }
 
 class ChildHobbiesResponse{
-  List<ChildHobbies> results;
+  late List<ChildHobbies> results;
 
   ChildHobbiesResponse.fromJson(dynamic json){
     results = <ChildHobbies>[];
@@ -39,7 +42,7 @@ class ChildHobbiesDto extends Equatable{
   final List hobbies;
   final String hobbiesName;
 
-  ChildHobbiesDto({this.childId,this.hobbies,this.hobbiesName});
+  ChildHobbiesDto({required this.childId,required this.hobbies,required this.hobbiesName});
 
   @override
   List get props => [childId,hobbies,hobbiesName];

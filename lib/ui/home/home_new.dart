@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
@@ -17,52 +18,51 @@ class HomeNew extends StatefulWidget {
 }
 
 class _HomeNewState extends State<HomeNew> {
-  Parent user;
+  late Parent user;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    user = CustomBlocProvider.getBloc<AuthBloc>().getUser;
+    user = CustomBlocProvider.getBloc<LoginBloc>()!.parent!;
   }
 
   @override
   void initState() {
     super.initState();
     CustomBlocProvider.setBloc(ChildBloc());
-    CustomBlocProvider.getBloc<ChildBloc>().getAllChildren(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0);
+    CustomBlocProvider.getBloc<ChildBloc>()!.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id);
   }
 
   @override
   void dispose() {
     super.dispose();
-    CustomBlocProvider.getBloc<ChildBloc>().dispose();
+    CustomBlocProvider.getBloc<ChildBloc>()!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ApiResponse<List<Child>>>(
-        stream: CustomBlocProvider.getBloc<ChildBloc>().childListStream,
+    return StreamBuilder<ApiResponse<List<Child>>?>(
+        stream: CustomBlocProvider.getBloc<ChildBloc>()!.childListStream,
         builder: (context, snapshot) {
           if(snapshot.hasData){
-            switch(snapshot.data.status){
+            switch(snapshot.data!.status){
               case Status.LOADING:
                 return Loading();
-                break;
               case Status.COMPLETED:
-                print('child list is ${snapshot.data.data}');
-                List<Child> childList = snapshot.data.data ?? [];
+                print('child list is ${snapshot.data!.data}');
+                List<Child> childList = snapshot.data!.data ?? [];
                 return SafeArea(
                   child: Scaffold(
                     resizeToAvoidBottomInset: false,
-                    appBar: AppBarView(height: 150.0,),
+                    appBar: AppBarView(height: 130.0,),
                     body: childList.isEmpty? DashboardEmpty():Dashboard(childList: childList,),
                   ),
                 );
-                break;
               case Status.ERROR:
+              default:
                 return ErrorPage(
-                  errorMessage: snapshot.data.message,
-                  onRetryPressed: () => CustomBlocProvider.getBloc<ChildBloc>().getAllChildren(CustomBlocProvider.getBloc<AuthBloc>().getUser.id ?? 0),
+                  errorMessage: snapshot.data!.message,
+                  onRetryPressed: () => CustomBlocProvider.getBloc<ChildBloc>()!.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id),
                 );
                 break;
             }

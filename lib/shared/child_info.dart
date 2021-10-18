@@ -6,7 +6,7 @@ import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 import 'colors.dart';
 
 class ChildInfo extends StatefulWidget {
-  final Child child;
+  final Child? child;
 
   ChildInfo({this.child});
 
@@ -39,7 +39,7 @@ class _ChildInfoState extends State<ChildInfo> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(flex:1 ,child: Text('${widget.child.firstName}',style: AppStyles.redTextBoldLarge,)),
+              Expanded(flex:1 ,child: Text('${widget.child!.firstName}',style: AppStyles.redTextBoldLarge,)),
               Expanded(
                 flex: 1,
                 child: RichText(

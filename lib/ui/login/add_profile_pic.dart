@@ -29,14 +29,14 @@ class AddProfilePic extends StatefulWidget {
 
 class _AddProfilePicState extends State<AddProfilePic> {
 
-  LoginBloc _loginBloc;
-  AuthBloc _authBloc;
+  late LoginBloc _loginBloc;
+  late AuthBloc _authBloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>();
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>();
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
   }
 
   @override
@@ -48,13 +48,12 @@ class _AddProfilePicState extends State<AddProfilePic> {
           stream: _loginBloc.parentStream,
           builder: (context, snapshot) {
             if(snapshot.hasData){
-              switch(snapshot.data.status){
+              switch(snapshot.data!.status){
                 case Status.LOADING:
                   return Loading();
-                  break;
                 case Status.COMPLETED:
                   print('create parent completed');
-                  CustomBlocProvider.getBloc<AuthBloc>().getUser.id = snapshot.data.data;
+                  _loginBloc.parent!.id = snapshot.data!.data!;
                   print('calling home screen now');
                   Future.delayed(Duration.zero, () {
                     Navigator.pushReplacement(context, MaterialPageRoute(
@@ -63,21 +62,26 @@ class _AddProfilePicState extends State<AddProfilePic> {
                   break;
                 case Status.ERROR:
                   return ErrorPage(
-                    errorMessage: snapshot.data.message,
-                    onRetryPressed: () => _loginBloc.createParent(_authBloc.getUser),
+                    errorMessage: snapshot.data!.message,
+                    onRetryPressed: () => _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid)),
                   );
-                  break;
+                default:
+                  return ErrorPage(
+                    errorMessage: 'Some error occured',
+                    onRetryPressed: () => _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid)),
+                  );
               }
             }
             return AddPic(
               onActionBtnHit: (val){
                 /*_loginBloc.photoUrl = val;*/
-              _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser.uid));
+              _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid));
                 /*Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) => HomeNew()));*/
 
               },
-              photoUrl: CustomBlocProvider.getBloc<AuthBloc>().getUser?.photoUrl,);
+              photoUrl: _loginBloc.photoUrl,
+            btnStyle: AppStyles.stylePinkButton,);
           }
       ),
     );

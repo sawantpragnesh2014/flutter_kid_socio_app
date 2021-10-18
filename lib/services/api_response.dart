@@ -1,7 +1,7 @@
 class ApiResponse<T> {
-  Status status;
-  T data;
-  String message;
+  Status? status;
+  T? data;
+  String? message;
 
   //Named constructors
   ApiResponse.loading(this.message) { status = Status.LOADING;}

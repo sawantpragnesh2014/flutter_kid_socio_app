@@ -78,7 +78,7 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
               ActionButtonView(
                 btnName: 'Logout',
                 onBtnHit: () async {
-                  await CustomBlocProvider.getBloc<AuthBloc>().signOut();
+                  await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
                   Navigator.pop(context);
                 },
                 buttonStyle: AppStyles.stylePinkButton,
