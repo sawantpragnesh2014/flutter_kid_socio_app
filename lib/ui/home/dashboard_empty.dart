@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
-import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
@@ -75,15 +73,6 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
                 buttonStyle: AppStyles.stylePinkButton,
               ),
               SizedBox(height: 16.0,),
-              ActionButtonView(
-                btnName: 'Logout',
-                onBtnHit: () async {
-                  await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
-                  Navigator.pop(context);
-                },
-                buttonStyle: AppStyles.stylePinkButton,
-              ),
-              SizedBox(height: 30.0,),
               /*Stack(
                           children: [
                             Positioned(

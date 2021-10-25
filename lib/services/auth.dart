@@ -11,22 +11,24 @@ class Auth{
   bool isUserSignedIn = false;
   User? firebaseUser;
 
+  static String? verificationId1;
+  /*late String verificationId1;*/
+
   Future<void> signOut() async{
     try{
       bool isGoogleSignedIn = await googleSignIn.isSignedIn();
       bool isFbSignedIn = await fb.isLoggedIn;
       if(isGoogleSignedIn){
-        print('google signed out');
         googleSignIn.signOut();
+        print('google signed out');
       }else if(isFbSignedIn){
-        print('fb signed out');
         fb.logOut();
+        print('fb signed out');
       }
        _auth.signOut();
        isUserSignedIn = false;
     }catch(e){
       print(e.toString());
-      return null;
     }
   }
 
@@ -53,7 +55,8 @@ class Auth{
           idToken: googleAuth.idToken
       );
       // firebaseUser = _userFromFireBaseUser((await _auth.signInWithCredential(credential)).user);
-      firebaseUser = (await _auth.signInWithCredential(credential)).user;
+      /*firebaseUser = (await _auth.signInWithCredential(credential)).user;*/
+      signInWithCredential(credential);
       isSignedIn = await googleSignIn.isSignedIn();
       isUserSignedIn = isSignedIn;
     }
@@ -124,6 +127,57 @@ class Auth{
         print('Login Error');
         break;
     }
+    return result == null;
+  }
+
+  //Phone verification
+
+  Future<void> verifyPhoneNumber(String phoneNumber) async {
+      return await _auth.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          timeout: const Duration(seconds: 5),
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+  PhoneCodeSent codeSent = (String verificationId, [int? forceResendingToken]) async {
+    print('Please check your phone for the verification code.');
+    verificationId1 = verificationId;
+  };
+
+  PhoneVerificationFailed verificationFailed =
+      (FirebaseAuthException authException) {
+    print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+  };
+
+  PhoneVerificationCompleted verificationCompleted =
+      (PhoneAuthCredential phoneAuthCredential) async {
+    /*await _auth.signInWithCredential(phoneAuthCredential);*/
+    print("Phone number automatically verified and user signed in:");
+  };
+
+  PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout = (String verificationId) {
+    print("verification code: " + verificationId);
+    verificationId1 = verificationId;
+  };
+
+
+  Future<bool> signInWithPhoneNumber(String otp) async {
+      final AuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId1 ?? '',
+        smsCode: otp,
+      );
+      print('otp credential is $credential');
+      return await linkWithCurrentUser(credential);
+      print("Successfully got phone credentials:");
+  }
+
+  Future<bool> linkWithCurrentUser(AuthCredential credential) async {
+    UserCredential result = await _auth.currentUser!.linkWithCredential(credential);
+    print('user link result is $result');
+
     return result == null;
   }
 }

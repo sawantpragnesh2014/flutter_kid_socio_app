@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/otp_verification_bloc.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 
@@ -17,6 +22,11 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
   int? _secondDigit;
   int? _thirdDigit;
   int? _fourthDigit;
+  int? _fifthDigit;
+  int? _sixthDigit;
+  late OtpVerificationBloc _otpVerificationBloc;
+
+  String? _otp;
 
   Widget get _otpScreen{
     return Padding(
@@ -43,14 +53,17 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
                   Expanded(flex:1,child: otp(1)),
                   Expanded(flex:1,child: otp(2)),
                   Expanded(flex:1,child: otp(3)),
+                  Expanded(flex:1,child: otp(4)),
+                  Expanded(flex:1,child: otp(5)),
                 ],
               ),
               SizedBox(height: 30.0,),
               ActionButtonView(btnName: "Continue",onBtnHit: (){
-                print('Action btn hit $_firstDigit$_secondDigit$_thirdDigit$_fourthDigit');
+                print('Action btn hit $_firstDigit$_secondDigit$_thirdDigit$_fourthDigit$_fifthDigit$_sixthDigit');
                 if(_validateOtp) {
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) => AddProfilePic()));
+                /*Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) => AddProfilePic()));*/
+                  _otpVerificationBloc.verifyOtp(_otp!);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -69,12 +82,16 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
   }
 
   bool get _validateOtp {
-    return (_firstDigit != null && _secondDigit != null && _thirdDigit != null && _fourthDigit != null);
+     if(_firstDigit != null && _secondDigit != null && _thirdDigit != null && _fourthDigit != null && _fifthDigit != null && _sixthDigit != null){
+       _otp = '$_firstDigit$_secondDigit$_thirdDigit$_fourthDigit$_fifthDigit$_sixthDigit';
+       return true;
+     }
+     return false;
   }
 
   Widget otp(int pos) {
     return Container(
-      margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+      margin: EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 0.0),
       child: TextFormField(
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
@@ -112,6 +129,12 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
       case 3:
         _fourthDigit = null;
         break;
+      case 4:
+        _fifthDigit = null;
+        break;
+      case 5:
+        _sixthDigit = null;
+        break;
     }
   }
 
@@ -129,15 +152,60 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
       case 3:
         _fourthDigit = currentDigit;
         break;
+      case 4:
+        _fifthDigit = currentDigit;
+        break;
+      case 5:
+        _sixthDigit = currentDigit;
+        break;
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    CustomBlocProvider.setBloc(OtpVerificationBloc());
+    _otpVerificationBloc = CustomBlocProvider.getBloc<OtpVerificationBloc>()!;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBarNew(height: 120.0,),
-      body: _otpScreen
+      body: StreamBuilder<ApiResponse<void>>(
+          stream: _otpVerificationBloc.otpVerificationStream,
+          builder: (context, snapshot) {
+            if(snapshot.hasData){
+              switch(snapshot.data!.status) {
+                case Status.LOADING:
+                  return Loading();
+
+                case Status.COMPLETED:
+                  Future.delayed(Duration.zero, () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => AddProfilePic()));
+                  });
+                  break;
+
+                case Status.ERROR:
+                default:
+                  return ErrorPage(
+                    errorMessage: snapshot.data!.message ?? 'Some error occured',
+                    onRetryPressed: () => _otpVerificationBloc.verifyOtp(_otp!),
+                  );
+              }
+            }
+            return _otpScreen;
+          }
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _otpVerificationBloc.dispose();
   }
 }

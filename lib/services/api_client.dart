@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'app_exception.dart';
 
 class ApiClient{
-  final String _baseUrl = 'https://kidsocio.azurewebsites.net';
+  final String _baseUrl = 'http://kidzoo-dev.us-east-1.elasticbeanstalk.com';
 
   Future<dynamic> getData(String url) async {
     var responseJson;
@@ -43,6 +43,7 @@ class ApiClient{
   Future<dynamic>  addData(dynamic requestBody,String url) async {
     var responseJson;
     try {
+      print('URL is ${_baseUrl+url}');
     final Response response = await post(Uri.parse('${_baseUrl + url}'),headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     }, body: jsonEncode(requestBody));

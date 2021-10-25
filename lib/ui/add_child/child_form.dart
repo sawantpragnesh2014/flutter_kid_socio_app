@@ -98,8 +98,8 @@ class _ChildFormState extends State<ChildForm> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _addChildBloc = CustomBlocProvider.getBloc<AddChildBloc>()!;
   }
 

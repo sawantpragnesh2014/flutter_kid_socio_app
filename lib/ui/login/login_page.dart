@@ -55,9 +55,9 @@ class _LoginPageState extends State<LoginPage> {
         );
   }
 
-  Future<User> onGoogleSignIn(BuildContext context) async {
+  Future<User?> onGoogleSignIn(BuildContext context) async {
     User? user = await CustomBlocProvider.getBloc<AuthBloc>()!.handleSignIn();
-    print(user!.uid);
+    print('User is $user');
     /*Parent user = bloc.getUser();
     var userSignedIn = Navigator.push(
         context,

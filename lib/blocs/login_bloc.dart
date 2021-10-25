@@ -12,7 +12,7 @@ class LoginBloc extends Bloc {
   late String _email;
   late String _gender;
   late String _phoneNo;
-  late String _photoUrl;
+  String? _photoUrl;
   late String _pinCode;
   late String _addressName;
   Parent? _parent;
@@ -89,25 +89,30 @@ Future<Parent?> fetchParent(String uid) async{
     _phoneNo = value;
   }
 
-  set photoUrl(String value) {
+  String get phoneNo => _phoneNo;
+
+  set photoUrl(String? value) {
     _photoUrl = value;
   }
 
 
-  String get photoUrl => _photoUrl;
+  String? get photoUrl => _photoUrl;
 
   set pinCode(String value) {
     _pinCode = value;
   }
 
   Parent generateParentObject(String uid) {
-
-    return Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode));
+    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation());
+    return parent!;
   }
 
   set addressName(String value) {
     _addressName = value;
   }
+
+
+  String get addressName => _addressName;
 
   set parent(Parent? value) {
     _parent = value;

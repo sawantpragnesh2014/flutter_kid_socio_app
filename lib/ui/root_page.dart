@@ -25,10 +25,22 @@ class RootPage extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final bool isLoggedIn = snapshot.hasData;
-            CustomBlocProvider.getBloc<AuthBloc>()!.setUser(snapshot.data);
             print('Auth changed $isLoggedIn');
 
-            return isLoggedIn ? handleLoggedInState() : OnBoarding();
+            if(isLoggedIn){
+              CustomBlocProvider.getBloc<AuthBloc>()!.setUser(snapshot.data);
+              return handleLoggedInState();
+            }else if (snapshot.hasError) {
+              print('Firebase error ${snapshot.error.toString()}');
+              return ErrorPage(
+                errorMessage: snapshot.error.toString(),
+              );
+            }else {
+              return OnBoarding();
+            }
+
+
+            /*return isLoggedIn ? handleLoggedInState() : OnBoarding();*/
           }
           return SplashScreen();
         });
@@ -93,7 +105,10 @@ class RootPage extends StatelessWidget {
             Parent? parent = snapshot.data;
             print('parent is ${parent}');
             CustomBlocProvider.getBloc<LoginBloc>()!.parent = parent!;
-            return HomeNew();
+            Future.delayed(Duration.zero, () {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => HomeNew()));
+            });
           } else if (snapshot.hasError) {
             return ErrorPage(
               errorMessage: snapshot.error.toString(),
@@ -101,9 +116,13 @@ class RootPage extends StatelessWidget {
             );
           } else {
             print('data empty ${snapshot.data}');
-            return RegistrationForm();
+            Future.delayed(Duration.zero, () {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => RegistrationForm()));
+            });
           }
         }
+        return Loading();
       },
     );
   }

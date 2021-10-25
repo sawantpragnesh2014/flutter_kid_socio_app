@@ -5,15 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
-import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
-import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
 import 'package:flutter_kid_socio_app/ui/login/privacy_policy.dart';
 
@@ -74,7 +73,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _pinCode {
     return TextFormField(
-      initialValue: user?.phoneNumber,
       keyboardType: TextInputType.number,
       inputFormatters: [
         LengthLimitingTextInputFormatter(6),
@@ -159,11 +157,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('didChangeDependencies');
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
     user = _authBloc.getUser;
     _loginBloc.firstName =  user?.displayName?.split(' ')[0] ?? '';
     _loginBloc.lastName =  user?.displayName?.split(' ')[1] ?? '';
@@ -243,8 +246,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       btnName: "Continue",
                       onBtnHit: (){
                         if(formKey.currentState!.validate()) {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => PhoneVerification()));
+                          if(user!.phoneNumber == null) {
+                            Navigator.pushReplacement(context, MaterialPageRoute(
+                                builder: (context) => PhoneVerification()));
+                          } else{
+                            _loginBloc.phoneNo = user!.phoneNumber!.replaceAll('+91', '');
+                            Navigator.pushReplacement(context, MaterialPageRoute(
+                                builder: (context) => AddProfilePic()));
+                          }
                         }
                       }
                   ),

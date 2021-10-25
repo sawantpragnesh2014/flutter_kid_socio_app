@@ -4,15 +4,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
-import 'package:flutter_kid_socio_app/models/parent.dart';
+import 'package:flutter_kid_socio_app/blocs/phone_verification_bloc.dart';
+import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
-import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/login/otp_screen.dart';
 import 'package:flutter_kid_socio_app/ui/login/otp_screen_new.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class PhoneVerification extends StatefulWidget {
   @override
@@ -21,14 +23,18 @@ class PhoneVerification extends StatefulWidget {
 
 class _PhoneVerificationState extends State<PhoneVerification> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final SmsAutoFill _autoFill = SmsAutoFill();
   User? user;
 
   late LoginBloc _loginBloc;
   late AuthBloc _authBloc;
+  late PhoneVerificationBloc _phoneVerificationBloc;
 
   Widget get _phoneNumber {
     return TextFormField(
-      initialValue: user?.phoneNumber,
+      /*controller: _phoneNumberController,*/
+      initialValue: user?.phoneNumber ?? '',
       keyboardType: TextInputType.number,
       inputFormatters: [
         LengthLimitingTextInputFormatter(10),
@@ -43,7 +49,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
     );
   }
 
-  get _phoneVerificationView {
+  Widget get _phoneVerificationView {
    return Padding(
      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
      child: Form(
@@ -65,11 +71,10 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                SizedBox(height: 20.0,),
                _phoneNumber,
                SizedBox(height: 20.0,),
-               ActionButtonView(btnName: "Continue",onBtnHit: (){
+               ActionButtonView(btnName: "Continue",onBtnHit: () async {
                  print('Action btn hit');
                  if(formKey.currentState!.validate()) {
-                   Navigator.pushReplacement(context, MaterialPageRoute(
-                       builder: (context) => OtpScreenNew()));
+                   _phoneVerificationBloc.verifyPhoneNo(_loginBloc.phoneNo);
                  }
                },),
              ],
@@ -81,11 +86,18 @@ class _PhoneVerificationState extends State<PhoneVerification> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    CustomBlocProvider.setBloc(PhoneVerificationBloc());
+    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
+    _phoneVerificationBloc = CustomBlocProvider.getBloc<PhoneVerificationBloc>()!;
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('didChangeDependencies');
-    _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
-    _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
     user = _authBloc.getUser;
   }
 
@@ -95,7 +107,38 @@ class _PhoneVerificationState extends State<PhoneVerification> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBarNew(height: 120.0,),
-      body: _phoneVerificationView,
+      body: StreamBuilder<ApiResponse<void>>(
+          stream: _phoneVerificationBloc.phoneVerificationStream,
+          builder: (context, snapshot) {
+            if(snapshot.hasData){
+              switch(snapshot.data!.status) {
+                case Status.LOADING:
+                  return Loading();
+
+                case Status.COMPLETED:
+                Future.delayed(Duration.zero, () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (context) => OtpScreenNew()));
+                });
+                  break;
+
+                case Status.ERROR:
+                default:
+                  return ErrorPage(
+                    errorMessage: snapshot.data!.message ?? 'Some error occured',
+                    onRetryPressed: () => _phoneVerificationBloc.verifyPhoneNo(_loginBloc.phoneNo),
+                  );
+              }
+            }
+            return _phoneVerificationView;
+          }
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _phoneVerificationBloc.dispose();
   }
 }

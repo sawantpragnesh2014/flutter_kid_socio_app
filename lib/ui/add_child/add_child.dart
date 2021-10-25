@@ -113,7 +113,7 @@ class _AddChildState extends State<AddChild> {
         return SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: AppBarView(height: 150.0),
+            appBar: AppBarView(height: 130.0),
             body: Padding(
               padding: AppStyles.getPadding,
               child: _addChildView(type),

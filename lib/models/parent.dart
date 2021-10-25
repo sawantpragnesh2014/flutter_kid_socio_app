@@ -7,20 +7,21 @@ class Parent extends Equatable{
   String lastName;
   String phoneNo;
   String email;
-  String photoUrl;
+  String? photoUrl;
   String gender;
   Address? address;
+  UserLocation? userLocation;
 
-  Parent({this.id = 0,required this.uid,required this.firstName,required this.lastName,required this.email,required this.phoneNo, this.photoUrl = '',this.gender = '', this.address});
+  Parent({this.id = 0,required this.uid,required this.firstName,required this.lastName,required this.email,required this.phoneNo, this.photoUrl,this.gender = '', this.address, this.userLocation});
 
 
   @override
   String toString() {
-    return 'Parent{id: $id, uid: $uid, firstName: $firstName, lastName: $lastName, phoneNo: $phoneNo, email: $email, gender: $gender, address: $address}';
+    return 'Parent{id: $id, uid: $uid, firstName: $firstName, lastName: $lastName, phoneNo: $phoneNo, email: $email, gender: $gender, address: $address, userLocation: $userLocation}';
   }
 
   @override
-  List get props => [id,uid,firstName,lastName,email,phoneNo,photoUrl,gender,address];
+  List get props => [id,uid,firstName,lastName,email,phoneNo,photoUrl,gender,address,userLocation];
 
   static Parent fromJson(dynamic json) {
     print('json $json');
@@ -30,10 +31,11 @@ class Parent extends Equatable{
       firstName: json['firstName'],
       lastName: json['lastName'],
       phoneNo: json['mobileNo'],
-      email: json['emailId'],
-      photoUrl: json['parentImage'],
+      email: json['emailId'] ?? '',
+      photoUrl: json['parentImage'] ?? '',
       gender: json['gender'],
       address: json['userPersonal'],
+      userLocation: json['userLocation'],
     );
   }
 
@@ -52,6 +54,7 @@ class Parent extends Equatable{
       'updatedBy': 0,
       'parentImage': photoUrl,
       'userPersonal': address,
+      'userLocation': userLocation,
       'userCreatedDate': '2021-10-04T07:24:39.325Z',
       'userModifiedDate': '2021-10-04T07:24:39.325Z',
     };
@@ -81,6 +84,29 @@ class Address {
       'landmark': 'string',
       'createdDate': '2021-10-04T07:24:39.325Z',
       'updatedDate': '2021-10-04T07:24:39.325Z'
+    };
+
+}
+
+class UserLocation {
+  final int id;
+  final int latitude;
+  final int longitude;
+
+  UserLocation({this.id = 0,this.latitude = 0,this.longitude = 0});
+
+  static UserLocation fromJson(dynamic json){
+    return UserLocation(
+      id: json['userId'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+    );
+  }
+
+  Map toJson() => {
+      'userId': id,
+      'latitude': latitude,
+      'longitude': longitude,
     };
 
 }

@@ -9,8 +9,10 @@ import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
+import 'package:flutter_kid_socio_app/shared/side_drawer.dart';
 import 'package:flutter_kid_socio_app/ui/home/dashboard.dart';
 import 'package:flutter_kid_socio_app/ui/home/dashboard_empty.dart';
+import 'package:flutter_kid_socio_app/ui/root_page.dart';
 
 class HomeNew extends StatefulWidget {
   @override
@@ -55,6 +57,14 @@ class _HomeNewState extends State<HomeNew> {
                   child: Scaffold(
                     resizeToAvoidBottomInset: false,
                     appBar: AppBarView(height: 130.0,),
+                    drawer: SideDrawer(callback: (val){
+                      if(val.contains('logout')){
+                        Future.delayed(Duration.zero, () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                              builder: (context) => RootPage()));
+                        });
+                      }
+                    },),
                     body: childList.isEmpty? DashboardEmpty():Dashboard(childList: childList,),
                   ),
                 );
@@ -64,7 +74,6 @@ class _HomeNewState extends State<HomeNew> {
                   errorMessage: snapshot.data!.message,
                   onRetryPressed: () => CustomBlocProvider.getBloc<ChildBloc>()!.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id),
                 );
-                break;
             }
           }
           return Loading();

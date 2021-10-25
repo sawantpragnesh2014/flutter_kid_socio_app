@@ -6,7 +6,7 @@ class Child extends Equatable{
   late final int parentId;
   late final String firstName;
   late final String lastName;
-  late final String photoUrl;
+  final String? photoUrl;
   late final String schoolName;
   late final String dob;
   late final String gender;
@@ -22,10 +22,10 @@ class Child extends Equatable{
       parentId: json['parentId'],
       firstName: json['firstname'],
       lastName: json['lastname'],
-      photoUrl: json['image'],
+      photoUrl: json['image'] ?? '',
       schoolName: json['schoolName'],
       dob: json['dob'],
-      gender: json['gender']
+      gender: json['gender'] ?? ''
     );
   }
   

@@ -1,24 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
-import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
-import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/add_pic.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
 import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/home/home.dart';
 import 'package:flutter_kid_socio_app/ui/home/home_new.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../shared/app_bar.dart';
-
 
 class AddProfilePic extends StatefulWidget {
 
@@ -33,8 +24,8 @@ class _AddProfilePicState extends State<AddProfilePic> {
   late AuthBloc _authBloc;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
     _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
   }
@@ -74,13 +65,19 @@ class _AddProfilePicState extends State<AddProfilePic> {
             }
             return AddPic(
               onActionBtnHit: (val){
+
+              Image image = Image.memory(base64Decode(val));
+
+              print('image is $image');
+
+
                 /*_loginBloc.photoUrl = val;*/
               _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid));
                 /*Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) => HomeNew()));*/
 
               },
-              photoUrl: _loginBloc.photoUrl,
+              photoUrl: _loginBloc.photoUrl ?? '',
             btnStyle: AppStyles.stylePinkButton,);
           }
       ),

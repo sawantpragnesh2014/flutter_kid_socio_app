@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/child_timings.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/form_validators.dart';
@@ -74,15 +76,19 @@ class _AddScheduleState extends State<AddSchedule> {
       padding: const EdgeInsets.fromLTRB(0,16.0,0,0),
       child: Row(
         children: [
+          Checkbox(
+            value: childTimings.isSelected,
+            onChanged: (bool? val) => setState(() {
+              setState(() {
+                childTimings.isSelected = !childTimings.isSelected;
+              });
+            }),
+            activeColor: AppColors.color7059E1,
+            checkColor: Colors.white,
+          ),
           Expanded(
               flex: 1,
-              child: InkWell(
-                  onTap: (){
-                    setState(() {
-                      childTimings.isSelected = !childTimings.isSelected;
-                    });
-                  },
-                  child: Text(childTimings.day,style: childTimings.isSelected ? AppStyles.redTextBold18 : AppStyles.blackTextBold18,))
+              child: Text(childTimings.day,style: childTimings.isSelected ? AppStyles.redTextBold18 : AppStyles.blackTextBold18,)
           ),
           Expanded(
             flex: 2,
@@ -104,10 +110,28 @@ class _AddScheduleState extends State<AddSchedule> {
   Widget _fromTime(ChildTimings childTimings) {
     return GestureDetector(
       onTap: () async{
-        childTimings.fromTime = await _selectTime(context);
+        /*childTimings.fromTime = await _selectTime(context);
         print('time is ${childTimings.fromTime}');
         setState(() {
-        });
+        });*/
+
+
+        int selectedTime = await _selectTime(context);
+        print('time is $selectedTime');
+
+        if(childTimings.toTime != initialTimeSpan && selectedTime > childTimings.toTime ){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Enter proper schedule time.'),
+            ),
+          );
+          return;
+        } else {
+          childTimings.fromTime = selectedTime;
+          setState(() {
+          });
+        }
+
       },
       child: DecoratedBox(
           decoration: const BoxDecoration(
@@ -125,10 +149,21 @@ class _AddScheduleState extends State<AddSchedule> {
   Widget _toTime(ChildTimings childTimings) {
     return GestureDetector(
       onTap: () async{
-        childTimings.toTime = await _selectTime(context);
-        print('time is ${childTimings.toTime}');
-        setState(() {
-        });
+        int selectedTime = await _selectTime(context);
+        print('time is $selectedTime');
+
+        if( selectedTime < childTimings.fromTime ){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Enter proper schedule time.'),
+            ),
+          );
+          return;
+        } else {
+          childTimings.toTime = selectedTime;
+          setState(() {
+          });
+        }
       },
       child: DecoratedBox(
           decoration: const BoxDecoration(
@@ -177,8 +212,9 @@ class _AddScheduleState extends State<AddSchedule> {
   }
 
   get _addressPicker {
+    Address? address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
     return TextFormField(
-      /*initialValue: user?.firstName,*/
+      initialValue: address == null ? null : address.address,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){

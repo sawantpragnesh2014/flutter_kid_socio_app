@@ -10,14 +10,14 @@ import 'bloc.dart';
 
 class AddChildBloc extends Bloc{
 
-  late int _childId;
+  int? _childId;
 
   late String _firstName;
   late String _lastName;
   late String _schoolName;
   late String _gender;
   late String _dob;
-  late String _photoUrl;
+  String? _photoUrl;
   late List<String> hobbies;
   late List<ChildTimings> finalscheduleDaysList;
   late List<ChildHobbies> _selectedHobbiesList;
@@ -37,6 +37,7 @@ class AddChildBloc extends Bloc{
 
   AddChildBloc(){
     print('AddChildBloc called');
+    _gender = 'Male';
     childInterestsController = StreamController<ApiResponse<List<ChildHobbies>>>.broadcast();
      childViewController = StreamController<Type>.broadcast();
     childRepository = ChildRepository();
@@ -80,7 +81,7 @@ class AddChildBloc extends Bloc{
   Future<void> addChildHobbies() async {
     List<int> hobbiesId = fetchHobbiesId();
     String hobbiesName = fetchHobbiesName();
-    ChildHobbiesDto childHobbiesDto = ChildHobbiesDto(childId: _childId,hobbies: hobbiesId,hobbiesName: hobbiesName);
+    ChildHobbiesDto childHobbiesDto = ChildHobbiesDto(childId: _childId ?? 0,hobbies: hobbiesId,hobbiesName: hobbiesName);
 
     try {
       return childRepository.createChildHobbies(childHobbiesDto);
@@ -144,7 +145,7 @@ class AddChildBloc extends Bloc{
     _childId = value;
   }
 
-  int get childId => _childId;
+  int get childId => _childId ?? 0;
 
   @override
   void dispose() {
@@ -158,7 +159,7 @@ class AddChildBloc extends Bloc{
 
   void setChildIdInFinalScheduleDaysList() {
     for(int i = 0; i < finalscheduleDaysList.length; i++){
-      finalscheduleDaysList[i].childId = _childId;
+      finalscheduleDaysList[i].childId = _childId!;
     }
   }
 }

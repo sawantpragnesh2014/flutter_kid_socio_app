@@ -204,15 +204,6 @@ class _DashboardState extends State<Dashboard> {
               SizedBox(height: 12.0,),
               _tabBarView,
               SizedBox(height: 16.0,),
-              ActionButtonView(
-                btnName: 'Logout',
-                onBtnHit: () async {
-                  await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
-                  Navigator.pop(context);
-                },
-                buttonStyle: AppStyles.stylePinkButton,
-              ),
-              SizedBox(height: 30.0,),
             ],
           ),
         )
