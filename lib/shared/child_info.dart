@@ -39,21 +39,18 @@ class _ChildInfoState extends State<ChildInfo> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(flex:1 ,child: Text('${widget.child!.firstName}',style: AppStyles.redTextBoldLarge,)),
-              Expanded(
-                flex: 1,
-                child: RichText(
-                    text: TextSpan(
-                        children: [
-                          TextSpan(text: 'Playdates ',style: AppStyles.blackTextMedium14),
-                          TextSpan(
-                            text: '20',
-                            style: AppStyles.blackTextBold16,),
-                        ]
-                    )
-                ),
+              Text('${widget.child!.firstName}',style: AppStyles.redTextBoldLarge,),
+              RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: 'Playdates ',style: AppStyles.blackTextMedium14),
+                        TextSpan(
+                          text: '20',
+                          style: AppStyles.blackTextBold16,),
+                      ]
+                  )
               ),
-              Expanded(flex:1,child: Text('100',style: AppStyles.blackTextBold24,)),
+              Text('100',style: AppStyles.blackTextBold24,),
             ],
           )
 

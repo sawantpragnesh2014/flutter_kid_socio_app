@@ -42,18 +42,23 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
               flex: 1,
                 child: Icon(Icons.notifications_none,color: Colors.white,)
             ),
-            Container(
-              height: 80.0,
-              width: 80.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
-                  fit: BoxFit.contain,
-                ),
-                borderRadius: BorderRadius.all( Radius.circular(60.0)),
-                border: Border.all(
-                  color: AppColors.colorFFC107,
-                  width: 8.0,
+            InkWell(
+              onTap: (){
+                Scaffold.of(context).openDrawer();
+              },
+              child: Container(
+                height: 80.0,
+                width: 80.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+                    fit: BoxFit.contain,
+                  ),
+                  borderRadius: BorderRadius.all( Radius.circular(60.0)),
+                  border: Border.all(
+                    color: AppColors.colorFFC107,
+                    width: 8.0,
+                  ),
                 ),
               ),
             ),

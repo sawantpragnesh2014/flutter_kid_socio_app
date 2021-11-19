@@ -67,6 +67,8 @@ class _AddPicState extends State<AddPic> {
             SizedBox(height: 80.0,),
             ActionButtonView(btnName: "Continue",onBtnHit: (){
               print('Action btn hit');
+              String? s = _upload();
+              /*_image =*/
               widget.onActionBtnHit(_upload()??'');
             },buttonStyle: widget.btnStyle,),
           ],
@@ -84,8 +86,8 @@ class _AddPicState extends State<AddPic> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
+                      leading: Icon(Icons.photo_library),
+                      title: Text('Photo Library'),
                       onTap: () {
                         _imgFromGallery();
                         Navigator.of(context).pop();
@@ -129,4 +131,16 @@ class _AddPicState extends State<AddPic> {
 /*    String fileName = _image.path.split("/").last;*/
     return base64Image;
   }
+
+  /*void writeFile(String imageAnalysed) async {
+    final decodedBytes = base64Decode(imageAnalysed);
+    final directory = await getApplicationDocumentsDirectory();
+    fileImg = File('${directory.path}/testImage.png');
+    print(fileImg.path);
+    fileImg.writeAsBytesSync(List.from(decodedBytes));
+
+    setState(() {
+      isLoading = false;
+    });
+  }*/
 }

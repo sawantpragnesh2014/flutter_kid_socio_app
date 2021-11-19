@@ -52,6 +52,7 @@ class ApiClient{
     print('req body  ${jsonEncode(requestBody)}');
 
     print('response.statusCode ${response.statusCode}');
+    print('response body ${response.body.toString()}');
 
     /*if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
@@ -64,6 +65,22 @@ class ApiClient{
       throw Exception('Failed to create parent.');
     }*/
     responseJson = _returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+    return responseJson;
+  }
+
+  Future<dynamic> addDataByQueryParam(String url) async {
+    var responseJson;
+    try {
+      // final response = await get(Uri.https('$_baseUrl','$url'));
+      print('URL is ${_baseUrl+url}');
+      final Response response = await post(Uri.parse('${_baseUrl+url}'),headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+      print('response.statusCode ${response.statusCode}');
+      responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }

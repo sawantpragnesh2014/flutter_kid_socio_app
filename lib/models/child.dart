@@ -1,17 +1,22 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_kid_socio_app/models/parent.dart';
 
 class Child extends Equatable{
   final int id;
-  late final int parentId;
-  late final String firstName;
-  late final String lastName;
+  final int parentId;
+  final String firstName;
+  final String lastName;
   final String? photoUrl;
-  late final String schoolName;
-  late final String dob;
-  late final String gender;
+  final String schoolName;
+  final String dob;
+  final String gender;
 
   Child({this.id = 0,required this.parentId,required this.firstName,required this.lastName,required this.photoUrl,required this.schoolName,required this.dob,required this.gender});
+
+
+  @override
+  String toString() {
+    return 'Child{id: $id, parentId: $parentId, firstName: $firstName, lastName: $lastName, photoUrl: $photoUrl, schoolName: $schoolName, dob: $dob, gender: $gender}';
+  }
 
   @override
   List get props => [id,parentId,firstName,lastName,photoUrl,schoolName,dob,gender];
@@ -40,6 +45,9 @@ class Child extends Equatable{
     'gender': gender,
     'schoolAddress':'string'
   };
+
+  @override
+  bool? get stringify => throw UnimplementedError();
 
 }
 

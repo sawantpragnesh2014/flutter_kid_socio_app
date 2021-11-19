@@ -30,7 +30,7 @@ getAllChildren(int parentId) async {
     childList = await childRepository.fetchAllChildByParentId(parentId.toString());
     childListSink.add(ApiResponse.completed(childList));
   }catch(e){
-    childListSink.add(ApiResponse.error('Error'));
+    childListSink.add(ApiResponse.error('Error $e'));
   }
 }
 

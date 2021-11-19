@@ -76,27 +76,30 @@ class _AddScheduleState extends State<AddSchedule> {
       padding: const EdgeInsets.fromLTRB(0,16.0,0,0),
       child: Row(
         children: [
-          Checkbox(
-            value: childTimings.isSelected,
-            onChanged: (bool? val) => setState(() {
-              setState(() {
-                childTimings.isSelected = !childTimings.isSelected;
-              });
-            }),
-            activeColor: AppColors.color7059E1,
-            checkColor: Colors.white,
+          Expanded(
+            flex: 1,
+            child: Checkbox(
+              value: childTimings.isSelected,
+              onChanged: (bool? val) => setState(() {
+                setState(() {
+                  childTimings.isSelected = !childTimings.isSelected;
+                });
+              }),
+              activeColor: AppColors.color7059E1,
+              checkColor: Colors.white,
+            ),
           ),
           Expanded(
-              flex: 1,
-              child: Text(childTimings.day,style: childTimings.isSelected ? AppStyles.redTextBold18 : AppStyles.blackTextBold18,)
+              flex: 3,
+              child: Text(childTimings.day,style: childTimings.isSelected ? AppStyles.redTextBold16 : AppStyles.blackTextBold16,)
           ),
           Expanded(
-            flex: 2,
+            flex: 6,
             child: Row(
               children: [
                 Expanded(flex: 1,child: _fromTime(childTimings)),
                 SizedBox(width: 8.0,),
-                Text('to',style: AppStyles.blackTextRegular16,),
+                Text('to',style: AppStyles.blackTextRegular14,),
                 SizedBox(width: 8.0,),
                 Expanded(flex:1,child: _toTime(childTimings)),
               ],
@@ -140,7 +143,7 @@ class _AddScheduleState extends State<AddSchedule> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(TimeUtils.getDisplayTime(childTimings.fromTime),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
+            child: Text(TimeUtils.getDisplayTime(childTimings.fromTime),style: AppStyles.blackTextRegular14,textAlign: TextAlign.center,),
           ),
       ),
     );
@@ -172,7 +175,7 @@ class _AddScheduleState extends State<AddSchedule> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(TimeUtils.getDisplayTime(childTimings.toTime.toInt()),style: AppStyles.blackTextRegular16,textAlign: TextAlign.center,),
+            child: Text(TimeUtils.getDisplayTime(childTimings.toTime.toInt()),style: AppStyles.blackTextRegular14,textAlign: TextAlign.center,),
           ),
       ),
     );
@@ -289,14 +292,14 @@ class _AddScheduleState extends State<AddSchedule> {
             Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 4,
                   child: Text(
                       'Day',
                       style: AppStyles.blackTextRegular16
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 6,
                   child: Text(
                       'Time',
                       style: AppStyles.blackTextRegular16

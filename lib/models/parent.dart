@@ -90,8 +90,8 @@ class Address {
 
 class UserLocation {
   final int id;
-  final int latitude;
-  final int longitude;
+  final double latitude;
+  final double longitude;
 
   UserLocation({this.id = 0,this.latitude = 0,this.longitude = 0});
 

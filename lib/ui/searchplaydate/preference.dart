@@ -18,7 +18,6 @@ import 'package:flutter_kid_socio_app/ui/searchplaydate/nearby_playdates.dart';
 class Preference extends StatefulWidget {
   final Child child;
   final List<Child> nearbyPlayDateList;
-  List<ChildHobbies>? childHobbiesList;
 
   Preference({required this.child, required this.nearbyPlayDateList});
 
@@ -66,7 +65,7 @@ class _PreferenceState extends State<Preference> {
                   Text('Preference', style: AppStyles.blackTextBold18,),
                   SizedBox(height: 12.0,),
                   Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: SingleChildScrollView(
                           child: HobbiesListView(
                             childHobbiesList: childHobbiesList,

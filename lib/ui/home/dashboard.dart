@@ -1,15 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/send_accept_request_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
+import 'package:flutter_kid_socio_app/models/playdate_request.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/error_page.dart';
+import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/add_child/add_child.dart';
 import 'package:flutter_kid_socio_app/ui/searchplaydate/search_playdates.dart';
 import 'package:flutter_kid_socio_app/ui/home/send_request_panel.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
+import 'package:skeletons/skeletons.dart';
 
 class Dashboard extends StatefulWidget {
   late final List<Child> childList;
@@ -36,7 +44,8 @@ class _DashboardState extends State<Dashboard> {
             RichText(
                 text: TextSpan(
                     children: [
-                      TextSpan(text: 'Requests for ',style: AppStyles.blackTextBold18),
+                      TextSpan(text: 'Requests for ',
+                          style: AppStyles.blackTextBold18),
                       TextSpan(
                         text: '${widget.childList[currentPage].firstName}',
                         style: AppStyles.redTextBold18,),
@@ -80,19 +89,21 @@ class _DashboardState extends State<Dashboard> {
 
   get _tabBarView {
     return Container(
-      height: SizeConfig.blockSizeVertical*60,
+      height: SizeConfig.blockSizeVertical * 60,
       /*color: Colors.purple,*/
       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
       child: TabBarView(children: <Widget>[
         _tabChildDashboard,
         Container(
           child: Center(
-            child: Text('Display Tab 2', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            child: Text('Display Tab 2',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           ),
         ),
         Container(
           child: Center(
-            child: Text('Display Tab 3', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            child: Text('Display Tab 3',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           ),
         ),
       ]
@@ -100,11 +111,16 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  int next(int min, int max) => min + Random().nextInt(max - min);
+
   Widget childItem(Child child) {
     return InkWell(
-      onTap: (){
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SearchPlayDates(child: child,friendList: widget.childList,recentPlayDateList: widget.childList,)));
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) =>
+            SearchPlayDates(child: child,
+              friendList: widget.childList,
+              recentPlayDateList: widget.childList,)));
       },
       child: Container(
         width: 180.0,
@@ -139,7 +155,7 @@ class _DashboardState extends State<Dashboard> {
 
   Widget _childListView(List<Child> childList) {
     return Container(
-      height: 180.0,
+      height: 160.0,
       child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(width: 8.0);
@@ -165,7 +181,7 @@ class _DashboardState extends State<Dashboard> {
         width: 180.0,
         height: 180.0,
         child: Card(
-          color: AppColors.color7059E1,
+          color: AppColors.colorFFC035,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24.0),
           ),
@@ -189,25 +205,37 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    CustomBlocProvider.setBloc(SendAcceptRequestBloc());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    CustomBlocProvider.getBloc<SendAcceptRequestBloc>()!.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Padding(
         padding: AppStyles.getPadding,
         child: SingleChildScrollView(
             child: DefaultTabController(
-          length: 3, // length of tabs
-          initialIndex: 0,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _tabBar,
-              SizedBox(height: 12.0,),
-              _tabBarView,
-              SizedBox(height: 16.0,),
-            ],
-          ),
+              length: 3, // length of tabs
+              initialIndex: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  _tabBar,
+                  SizedBox(height: 12.0,),
+                  _tabBarView,
+                  SizedBox(height: 16.0,),
+                ],
+              ),
+            )
         )
-      )
     );
   }
 
@@ -215,67 +243,109 @@ class _DashboardState extends State<Dashboard> {
     return Expanded(
       flex: 1,
       child: PageView.builder(
-          physics: ClampingScrollPhysics(),
-          controller: pageController,
-          onPageChanged: (int page){
-            setState(() {
-              currentPage = page;
-            });
-          },
-          itemBuilder: (context, position) {
-            /*if (position == childList.length) {
-              return null;
-            }*/
-            return Container(
-              height: 300.0,
-              child: ListView.builder(
-                  itemCount: childList.length,
-                  itemBuilder: (context,index){
-                    return childListView(childList[index]);
-                  }),
-            );
-          },
-          ),
+        itemCount: childList.length,
+        physics: ClampingScrollPhysics(),
+        controller: pageController,
+        onPageChanged: (int page) {
+          setState(() {
+            currentPage = page;
+          });
+        },
+        itemBuilder: (context, position) {
+          return FutureBuilder<List<PlayDateRequest>?>(
+
+              future: CustomBlocProvider.getBloc<SendAcceptRequestBloc>()!
+                  .getIncomingRequestList(childList[position].id),
+
+              builder: (context, snapshot) {
+                print('Connection state ${snapshot.connectionState}');
+                print('Connection snapshot.hasError for incoming ${snapshot.hasError}');
+                print('Connection snapshot.hasdata for incoming ${snapshot.hasData}');
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  print('data loading');
+                  return SkeletonListView();
+                } else {
+                  if (snapshot.hasData) {
+                    List<PlayDateRequest>? nearbyPlaydateList = snapshot.data;
+                    return Container(
+                      height: 300.0,
+                      child: ListView.builder(
+                          itemCount: nearbyPlaydateList!.length,
+                          itemBuilder: (context, index) {
+                            return childListView(nearbyPlaydateList[index],
+                                childList[currentPage]);
+                          }),
+                    );
+                  } else {
+                    return Center(child: Text('Empty',style: AppStyles.greyRegularSmall,textAlign: TextAlign.center,));
+                  }
+                }
+                return Center(child: Text('Empty',style: AppStyles.greyRegularSmall,textAlign: TextAlign.center,));
+              }
+          );
+        },
+      ),
     );
   }
 
-  Widget childListView(Child child) {
+  Widget childListView(PlayDateRequest incomingPlayDateRequest, Child child) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 1.0,horizontal: 4.0),
+      padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
       child: Card(
         child: ListTile(
-          onTap: (){
-            showAcceptRequestPanel(child);
+          onTap: () {
+            if (incomingPlayDateRequest.statusId == SendAcceptRequestBloc.PENDING) {
+              showAcceptRequestPanel(incomingPlayDateRequest, child);
+            }
           },
           contentPadding: EdgeInsets.all(8.0),
           title: RichText(
               text: TextSpan(
                   children: [
-                    TextSpan(text: '${child.firstName}, ',style: AppStyles.blackTextBold16),
+                    TextSpan(text: '${incomingPlayDateRequest.firstName}, ',
+                        style: AppStyles.blackTextBold16),
                     TextSpan(
-                        text: '2:36 p.m',
-                        style: AppStyles.editTextStyle,),
+                      text: '2:36 p.m',
+                      style: AppStyles.editTextStyle,),
                   ]
               )
           ),
-          subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
+          subtitle: Text(
+            'Breach Candy, Cumbala Hill', style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+            backgroundImage: incomingPlayDateRequest.photoUrl == null ? AssetImage(
+                'assets/google_logo.png') : AssetImage(
+                'assets/default_profile_picture.png'),
             radius: 40.0,
           ),
-          trailing: Image.asset('assets/icon_msg.png', fit: BoxFit.cover),
+          trailing: getApprovalStatusIcon(incomingPlayDateRequest.statusId),
         ),
       ),
     );
-  }
+}
 
-  void showAcceptRequestPanel(Child child) {
-    showModalBottomSheet(context: context, builder: (context){
-      return Container(
-        color: AppColors.colorF4F4F4,
-        padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 30.0),
-        child: SendRequestPanel(child: child,panelType: 'accept_request',),
-      );
-    });
-  }
+Icon? getApprovalStatusIcon(int statusId){
+    switch(statusId){
+      case SendAcceptRequestBloc.ACCEPT:
+        return Icon(Icons.check_circle,color: Colors.lightGreenAccent,);
+
+      case SendAcceptRequestBloc.REJECT:
+        return Icon(Icons.report_gmailerrorred_sharp,color: Colors.redAccent,);
+      case SendAcceptRequestBloc.PENDING:
+      default:
+        return null;
+    }
+}
+
+void showAcceptRequestPanel(PlayDateRequest incomingPlayDateRequest, Child child) {
+  showModalBottomSheet(context: context, builder: (context) {
+    return Container(
+      color: AppColors.colorF4F4F4,
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+      child: SendRequestPanel(
+        child: child, incomingPlayDateRequest: incomingPlayDateRequest, panelType: 'accept_request',),
+    );
+  });
+}
 }

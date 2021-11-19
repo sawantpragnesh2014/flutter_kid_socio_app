@@ -1,4 +1,5 @@
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
 import 'package:flutter_kid_socio_app/models/child_hobbies.dart';
 import 'package:flutter_kid_socio_app/models/child_timings.dart';
 import 'package:flutter_kid_socio_app/services/api_client.dart';
@@ -44,7 +45,6 @@ class ChildRepository{
 
   Future<Child?> createChild(Child child) async {
     print('Child is $child');
-    /*Map<String, dynamic> childMap = convertToDto(child);*/
 
     final dynamic response = await apiClient.addData(child, '/api/Child/Create');
 
@@ -101,12 +101,12 @@ class ChildRepository{
         .results;
   }
 
-  Future<List<Child>?> fetchNearbyPlaydatesList(String childId) async {
-    final response = await apiClient.getData('/api/ChildMaster/GetChild?ChildId=$childId');
-    return ChildResponse
+  Future<List<NearbyPlaydate>?> fetchNearbyPlaydatesList(String parentId,String childId) async {
+    final response = await apiClient.getData('/api/Requests/GetChildLists?ChildId=$childId&ParentId=$parentId');
+    return NearbyPlaydateResponse
         .fromJson(response)
         .results
-        .isEmpty ? null : ChildResponse
+        .isEmpty ? null : NearbyPlaydateResponse
         .fromJson(response)
         .results;
   }
@@ -146,21 +146,4 @@ class ChildRepository{
 
     return childMap;
   }
-
-  /*Map<String, dynamic> convertToChildHobbiesDto(ChildHobbies childHobbies) {
-    Map<String, dynamic> childHobbiesMap = {
-      'childId': childHobbies.childId,
-      'childHobby': childHobbies.hobbies,
-      'hobbiesName': childHobbies.hobbiesName
-    };
-
-    return childHobbiesMap;
-  }
-
-  Map<String, dynamic> convertToChildTimingsListDto(List<ChildTimings> childTimingsList) {
-    Map<String, dynamic> childTimingsListMap = {
-      'childTimings': childTimingsList,
-    };
-    return childTimingsListMap;
-  }*/
 }

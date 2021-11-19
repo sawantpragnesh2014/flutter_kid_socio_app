@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 
 class TimeAndHobbies extends StatelessWidget {
+
+  late final String  hobbiesName;
+  late final String  fromTime;
+  late final String  toTime;
+
+  TimeAndHobbies({required this.hobbiesName,required this.fromTime,required this.toTime,});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,9 +20,9 @@ class TimeAndHobbies extends StatelessWidget {
             flex: 1,
             child: Column(
               children: [
-                Text('2:36 p.m',style: AppStyles.greyBold16,),
+                Text('$fromTime',style: AppStyles.greyBold16,),
                 Text('to',style: AppStyles.editTextStyle,),
-                Text('4:36 p.m',style: AppStyles.greyBold16,),
+                Text('$toTime',style: AppStyles.greyBold16,),
               ],
             ),
           ),
@@ -25,7 +33,7 @@ class TimeAndHobbies extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Hobbies',style: AppStyles.purpleTextBold16,),
-                Text('Board Games, Outdoors, Park, Drawing',style: AppStyles.blackTextRegular14,),
+                Text('${hobbiesName}',style: AppStyles.blackTextRegular14,),
               ],
             ),
           ),

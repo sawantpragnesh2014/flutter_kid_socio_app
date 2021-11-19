@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/otp_verification_bloc.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
@@ -42,7 +43,7 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
               ),
               SizedBox(height: 20.0,),
               Text(
-                  "Please enter the verification code sent to +91*******918 ",
+                  "Please enter the verification code sent to +91*******${CustomBlocProvider.getBloc<LoginBloc>()!.phoneNo.substring(CustomBlocProvider.getBloc<LoginBloc>()!.phoneNo.length - 3)} ",
                   style: AppStyles.blackTextRegular16
               ),
               SizedBox(height: 20.0,),

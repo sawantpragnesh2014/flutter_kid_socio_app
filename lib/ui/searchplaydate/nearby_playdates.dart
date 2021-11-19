@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
+import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/nearby_playdates_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
 import 'package:flutter_kid_socio_app/services/api_response.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/child_info.dart';
@@ -30,11 +34,12 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
     super.initState();
     CustomBlocProvider.setBloc(NearbyPlaydatesBloc());
     _nearbyPlaydatesBloc = CustomBlocProvider.getBloc<NearbyPlaydatesBloc>()!;
+    _nearbyPlaydatesBloc.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id,widget.child.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ApiResponse<List<Child>>?>(
+    return StreamBuilder<ApiResponse<List<NearbyPlaydate>>?>(
         stream: _nearbyPlaydatesBloc.nearbyPlaydatesListStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -43,7 +48,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
                 return Loading();
               case Status.COMPLETED:
                 print('child list is ${snapshot.data!.data}');
-                List<Child> nearbyPlayDatesList = snapshot.data!.data ?? [];
+                List<NearbyPlaydate> nearbyPlayDatesList = snapshot.data!.data ?? [];
                 return Scaffold(
                   resizeToAvoidBottomInset: false,
                   appBar: AppBarView(
@@ -71,8 +76,8 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
                           height: 12.0,
                         ),
                         Expanded(
-                          flex: 3,
-                          child: _nearbyPlayDatesList(nearbyPlayDatesList),
+                          flex: 4,
+                          child: nearbyPlayDatesList.isEmpty ?Center(child: Text('Empty',style: AppStyles.greyRegularSmall,textAlign: TextAlign.center,)):_nearbyPlayDatesList(nearbyPlayDatesList),
                         )
                       ],
                     ),
@@ -82,7 +87,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
               default:
                 return ErrorPage(
                   errorMessage: snapshot.data!.message,
-                  onRetryPressed: () => _nearbyPlaydatesBloc.getAllChildren(/*CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id*/1),
+                  onRetryPressed: () => _nearbyPlaydatesBloc.getAllChildren(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id,widget.child.id),
                 );
             }
           }
@@ -90,7 +95,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
         });
   }
 
-  Widget _nearbyPlayDatesList(List<Child> recentPlayDateList) {
+  Widget _nearbyPlayDatesList(List<NearbyPlaydate> recentPlayDateList) {
     return Container(
       height: 300.0,
       child: ListView.builder(
@@ -101,13 +106,15 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
     );
   }
 
-  Widget _nearbyPlayDatesView(Child child) {
+  Widget _nearbyPlayDatesView(NearbyPlaydate child) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
       child: Card(
         child: ListTile(
           onTap: () {
-            showSendRequestPanel(child);
+            print('Nearby child is $child');
+            print('req sent by ${widget.child}');
+            showSendRequestPanel(child,widget.child);
           },
           contentPadding: EdgeInsets.all(8.0),
           title: RichText(
@@ -135,7 +142,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
     );
   }
 
-  void showSendRequestPanel(Child child) {
+  void showSendRequestPanel(NearbyPlaydate childAll, Child child) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -143,6 +150,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
             color: AppColors.colorF4F4F4,
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
             child: SendRequestPanel(
+              childAll: childAll,
               child: child,
               panelType: 'send_request',
             ),

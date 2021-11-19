@@ -56,7 +56,6 @@ class _HomeNewState extends State<HomeNew> {
                 return SafeArea(
                   child: Scaffold(
                     resizeToAvoidBottomInset: false,
-                    appBar: AppBarView(height: 130.0,),
                     drawer: SideDrawer(callback: (val){
                       if(val.contains('logout')){
                         Future.delayed(Duration.zero, () {
@@ -64,8 +63,9 @@ class _HomeNewState extends State<HomeNew> {
                               builder: (context) => RootPage()));
                         });
                       }
-                    },),
-                    body: childList.isEmpty? DashboardEmpty():Dashboard(childList: childList,),
+                    },userName : user.firstName),
+                    appBar: AppBarView(height: 130.0),
+                    body: childList.isEmpty? DashboardEmpty():Dashboard(childList: childList),
                   ),
                 );
               case Status.ERROR:

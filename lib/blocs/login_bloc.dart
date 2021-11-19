@@ -35,6 +35,10 @@ LoginBloc(){
   }
 
   createParent(Parent parent) async{
+  if(_parentController.isClosed){
+    _parentController = StreamController<ApiResponse<int>>.broadcast();
+  }
+
   parentSink.add(ApiResponse.loading('Registering Parent'));
   try{
     int resultData = await _parentRepository.createParent(parent);
@@ -103,7 +107,7 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
   Parent generateParentObject(String uid) {
-    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation());
+    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation(latitude: 18.96979, longitude: 72.819370));
     return parent!;
   }
 

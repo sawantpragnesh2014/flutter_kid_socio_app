@@ -264,6 +264,13 @@ class AppStyles {
     fontSize: 18.0,
   );
 
+  static const redTextBold16 = TextStyle(
+    color: AppColors.colorEB4C57,
+    fontFamily: m_plus_rounded,
+    fontWeight: bold,
+    fontSize: 16.0,
+  );
+
   static const greenTextBold16 = TextStyle(
     color: AppColors.color4CAF50,
     fontFamily: m_plus_rounded,

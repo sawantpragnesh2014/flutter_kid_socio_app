@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
+import 'package:flutter_kid_socio_app/models/playdate_request.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/child_info_two.dart';
@@ -10,9 +12,9 @@ import 'package:flutter_kid_socio_app/ui/reschedule_playdate/reschedule_panel.da
 
 class ReschedulePlayDate extends StatefulWidget {
 
-  final Child child;
+  final PlayDateRequest playDateRequest;
 
-  ReschedulePlayDate({required this.child});
+  ReschedulePlayDate({required this.playDateRequest});
 
   @override
   _ReschedulePlayDateState createState() => _ReschedulePlayDateState();
@@ -44,13 +46,13 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
                   Expanded(
                     flex: 1,
                     child: ChildInfoTwo(
-                      child: widget.child,
+                      playDateRequest: widget.playDateRequest,
                     ),
                   ),
                   SizedBox(height: 12.0,),
                   Expanded(
                       flex:1,
-                      child: TimeAndHobbies()
+                      child: TimeAndHobbies(hobbiesName: widget.playDateRequest.hobbiesName,fromTime: '2:36 p.m',toTime: '2:36 p.m',)
                   ),
                   SizedBox(height: 12.0,),
                   Expanded(
@@ -61,7 +63,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
                   ActionButtonView(
                     btnName: "Reschedule",
                     onBtnHit: (){
-                      showSendRequestPanel(widget.child);
+                      showSendRequestPanel(widget.playDateRequest);
                     },
                   ),
                   SizedBox(height: 12.0,),
@@ -78,7 +80,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
     );
   }
 
-  void showSendRequestPanel(Child child) {
+  void showSendRequestPanel(PlayDateRequest child) {
     showModalBottomSheet(context: context, builder: (context){
       return Container(
         color: AppColors.colorF4F4F4,

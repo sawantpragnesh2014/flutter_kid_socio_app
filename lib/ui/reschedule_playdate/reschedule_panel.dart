@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
+import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
 import 'package:flutter_kid_socio_app/models/child_timings.dart';
+import 'package:flutter_kid_socio_app/models/playdate_request.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/utils/time_utils.dart';
 
 class ReschedulePanel extends StatefulWidget {
-  final Child child;
+  final PlayDateRequest child;
 
   ReschedulePanel({required this.child});
 

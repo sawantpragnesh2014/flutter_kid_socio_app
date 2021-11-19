@@ -5,11 +5,13 @@ import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/child_info.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/ui/home/outgoing_request_view.dart';
 import 'package:flutter_kid_socio_app/ui/searchplaydate/preference.dart';
+import 'package:flutter_kid_socio_app/ui/upcomingplaydate/upcoming_playdates_view.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class SearchPlayDates extends StatefulWidget {
-  final Child? child;
+  final Child?  child;
   final List<Child>? friendList;
   final List<Child>? recentPlayDateList;
 
@@ -62,34 +64,49 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
       appBar: AppBarView(height: 130.0,),
       body: Padding(
         padding: AppStyles.getPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-                flex: 1,
-                child: ChildInfo(child: widget.child,),
-            ),
-            ActionButtonView(
-                btnName: "Search Playdates",
-                onBtnHit: (){
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Preference(child: widget.child!,nearbyPlayDateList: widget.recentPlayDateList ?? [],)));
-                },
-                buttonStyle: AppStyles.stylePinkButton,
-                ),
-            SizedBox(height: 12.0,),
-            Text('Friends available',style: AppStyles.blackTextBold18,),
-            SizedBox(height: 12.0,),
-            _friendsList(widget.friendList!),
-            SizedBox(height: 12.0,),
-            Text('Recent Playdates',style: AppStyles.blackTextBold18,),
-            SizedBox(height: 12.0,),
-            Expanded(
-                flex: 3,
-                child: _recentPlayDatesList(widget.recentPlayDateList ?? [])
-            )
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ChildInfo(child: widget.child,),
+              SizedBox(height: 12.0,),
+              ActionButtonView(
+                  btnName: "Search Playdates",
+                  onBtnHit: (){
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (context) => Preference(child: widget.child!,nearbyPlayDateList: widget.recentPlayDateList ?? [],)));
+                  },
+                  buttonStyle: AppStyles.stylePinkButton,
+                  ),
+              SizedBox(height: 12.0,),
+              ActionButtonView(
+                  btnName: "View sent requests",
+                  onBtnHit: (){
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => OutgoingRequest(childId: widget.child!.id,)));
+                  },
+                  buttonStyle: AppStyles.stylePinkButton,
+                  ),
+              SizedBox(height: 12.0,),
+              /*ActionButtonView(
+                  btnName: "Upcoming playdates",
+                  onBtnHit: (){
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => UpcomingPlaydateView(childId: widget.child!.id,)));
+                  },
+                  buttonStyle: AppStyles.stylePinkButton,
+                  ),
+              SizedBox(height: 12.0,),*/
+              /*Text('Friends available',style: AppStyles.blackTextBold18,),
+              SizedBox(height: 12.0,),
+              _friendsList(widget.friendList!),
+              SizedBox(height: 12.0,),*/
+              Text('Recent Playdates',style: AppStyles.blackTextBold18,),
+              SizedBox(height: 12.0,),
+              _recentPlayDatesList(widget.recentPlayDateList ?? [])
 
-          ],
+            ],
+          ),
         ),
       ),
     );
