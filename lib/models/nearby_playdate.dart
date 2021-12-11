@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 class NearbyPlaydate extends Equatable{
   final int parentId;
@@ -16,6 +18,14 @@ class NearbyPlaydate extends Equatable{
   final String matchedHobbiesName;
   final String? matchedWeekDay;
   final int weekDayCount;
+  File? _imgPath;
+
+
+  File? get imgPath => _imgPath;
+
+  set imgPath(File? value) {
+    _imgPath = value;
+  }
 
   NearbyPlaydate({this.childId = 0,required this.parentId,required this.firstName,required this.lastName,
     required this.photoUrl,

@@ -8,6 +8,7 @@ import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/error_page.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:skeletons/skeletons.dart';
 
 class OutgoingRequest extends StatefulWidget {
 
@@ -52,7 +53,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
                 if (snapshot.hasData) {
                   switch (snapshot.data!.status) {
                     case Status.LOADING:
-                      return Loading();
+                      return SkeletonListView();
                     case Status.COMPLETED:
                       outgoingPlayDateRequest = snapshot.data!.data ?? [];
                       return ListView.builder(

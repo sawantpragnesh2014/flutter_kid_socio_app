@@ -66,12 +66,10 @@ class _AddProfilePicState extends State<AddProfilePic> {
             return AddPic(
               onActionBtnHit: (val){
 
-              Image image = Image.memory(base64Decode(val));
+              /*Image image = Image.memory(base64Decode(val));*/
 
-              print('image is $image');
-
-
-                /*_loginBloc.photoUrl = val;*/
+              print('image is $val');
+                _loginBloc.photoUrl = val;
               _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid));
                 /*Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) => HomeNew()));*/

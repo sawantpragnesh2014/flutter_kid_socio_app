@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -114,6 +115,7 @@ class _DashboardState extends State<Dashboard> {
   int next(int min, int max) => min + Random().nextInt(max - min);
 
   Widget childItem(Child child) {
+    setFileImage2(child);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -128,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.0),
           image: DecorationImage(
-            image: AssetImage("assets/default_profile_picture.png"),
+            image: child.imgPath == null ?AssetImage("assets/default_profile_picture.png"): FileImage(child.imgPath!) as ImageProvider,
             fit: BoxFit.cover,
           ),
         ),
@@ -290,6 +292,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget childListView(PlayDateRequest incomingPlayDateRequest, Child child) {
+    setFileImage(incomingPlayDateRequest);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
       child: Card(
@@ -314,9 +317,8 @@ class _DashboardState extends State<Dashboard> {
           subtitle: Text(
             'Breach Candy, Cumbala Hill', style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: incomingPlayDateRequest.photoUrl == null ? AssetImage(
-                'assets/google_logo.png') : AssetImage(
-                'assets/default_profile_picture.png'),
+            backgroundImage: incomingPlayDateRequest.imgPath == null ? AssetImage(
+                'assets/default_profile_picture.png') : FileImage(incomingPlayDateRequest.imgPath!) as ImageProvider,
             radius: 40.0,
           ),
           trailing: getApprovalStatusIcon(incomingPlayDateRequest.statusId),
@@ -324,6 +326,30 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
 }
+
+  Future<void> setFileImage(PlayDateRequest user) async {
+    if(user.imgPath != null){
+      return;
+    }
+    user.imgPath = await ImageUtils.getTempFile('playDateRequest_${user.requestId}_img',user.photoUrl);
+    if(user.imgPath == null){
+      return;
+    }
+    setState(() {
+    });
+  }
+
+  Future<void> setFileImage2(Child child) async {
+    if(child.imgPath != null){
+      return;
+    }
+    child.imgPath = await ImageUtils.getFile('child_${child.id}_img',child.photoUrl);
+    if(child.imgPath == null){
+      return;
+    }
+    setState(() {
+    });
+  }
 
 Icon? getApprovalStatusIcon(int statusId){
     switch(statusId){

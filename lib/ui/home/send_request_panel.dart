@@ -31,12 +31,19 @@ class _SendRequestPanelState extends State<SendRequestPanel> {
     return TimeAndHobbies(hobbiesName: (widget.panelType.contains('accept_request')? widget.incomingPlayDateRequest!.hobbiesName: widget.childAll!.hobbiesName), fromTime: '2:36 p.m',toTime: '4:36 p.m',);
   }
 
-  Widget get _actionButtonView {
+Widget get _actionButtonView {
     if (widget.panelType.contains('send_request')) {
       return ActionButtonView(
         btnName: "Send Request",
         onBtnHit: () async {
           String? res = await _sendRequestBloc.sendRequest(widget.childAll!.childId, widget.child.id);
+          if(res != null) {
+           ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(res),
+              ),
+            );
+          }
           Navigator.pop(context);
         },
       );

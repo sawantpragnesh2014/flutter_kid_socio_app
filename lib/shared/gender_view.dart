@@ -49,9 +49,9 @@ class _GenderViewState extends State<GenderView> {
         },
         child: Card(
           elevation: 0.0,
-          color: genderMap['isSelected']?AppColors.color888E9A:AppColors.colorE5E5E5,
+          color: _getColor(genderMap),
           shape: RoundedRectangleBorder(
-            side: new BorderSide(color: genderMap['isSelected']?AppColors.color888E9A:AppColors.colorE5E5E5, width: 1.0),
+            side: new BorderSide(color: _getColor(genderMap), width: 1.0),
             borderRadius: BorderRadius.circular(32), // <-- Radius
           ),
           child: Padding(
@@ -67,6 +67,14 @@ class _GenderViewState extends State<GenderView> {
     return new List<Widget>.generate(genderList.length, (int index) {
       return genderButton(genderList[index]);
     });
+  }
+
+  Color _getColor(Map<dynamic, dynamic> genderMap) {
+    if(genderMap['isSelected']){
+        return AppColors.colorEB4C57;
+    }else{
+      return AppColors.colorE5E5E5;
+    }
   }
 }
 

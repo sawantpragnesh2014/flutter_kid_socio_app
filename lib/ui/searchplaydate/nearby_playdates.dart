@@ -107,6 +107,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
   }
 
   Widget _nearbyPlayDatesView(NearbyPlaydate child) {
+    setFileImage(child);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
       child: Card(
@@ -131,9 +132,9 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
             style: AppStyles.blackTextMedium11,
           ),
           leading: CircleAvatar(
-            backgroundImage: child.photoUrl == null
-                ? AssetImage('assets/google_logo.png')
-                : AssetImage('assets/default_profile_picture.png'),
+            backgroundImage: child.imgPath == null
+                ? AssetImage('assets/default_profile_picture.png')
+                : FileImage(child.imgPath!) as ImageProvider,
             radius: 40.0,
           ),
           trailing: Image.asset('assets/img_apartment.png', fit: BoxFit.cover),
@@ -156,5 +157,17 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
             ),
           );
         });
+  }
+
+  Future<void> setFileImage(NearbyPlaydate child) async {
+    if(child.imgPath != null){
+      return;
+    }
+    child.imgPath = await ImageUtils.getTempFile('nearbyPlaydate_${child.childId}_img',child.photoUrl);
+    if(child.imgPath == null){
+      return;
+    }
+    setState(() {
+    });
   }
 }

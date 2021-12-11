@@ -124,10 +124,14 @@ class _PhoneVerificationState extends State<PhoneVerification> {
 
                 case Status.ERROR:
                 default:
-                  return ErrorPage(
-                    errorMessage: snapshot.data!.message ?? 'Some error occured',
-                    onRetryPressed: () => _phoneVerificationBloc.verifyPhoneNo(_loginBloc.phoneNo),
+                Future.delayed(Duration.zero, ()
+                {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(snapshot.data!.message ?? 'Some error occured',style: AppStyles.errorText ,),
+                    ),
                   );
+                });
               }
             }
             return _phoneVerificationView;

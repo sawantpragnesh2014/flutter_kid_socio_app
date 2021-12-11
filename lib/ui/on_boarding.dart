@@ -18,6 +18,124 @@ class _OnBoardingState extends State<OnBoarding> {
   final int numPages = 3;
   int currentPage = 0;
   final PageController pageController = PageController(initialPage: 0);
+
+  Widget get _page1 {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 8,
+            child: Container(
+              child: Center(
+                child: Image(
+                  image: AssetImage("assets/onboarding11.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 2,
+            child: Text(
+              "Make PlayDates for your Kids",
+              style: AppStyles.blackTextSemiSemiBold36,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 1,
+            child: Text(
+              "Make PlayDates for your Kids, Make new Friends",
+              style: AppStyles.blackTextRegular16,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get _page2 {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 8,
+            child: Container(
+              child: Center(
+                child: Image(
+                  image: AssetImage("assets/onboarding11.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 2,
+            child: Text(
+              "Make PlayDates for your Kids",
+              style: AppStyles.blackTextSemiSemiBold36,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 1,
+            child: Text(
+              "Make PlayDates for your Kids, Make new Friends",
+              style: AppStyles.blackTextRegular16,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get _page3 {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 8,
+            child: Container(
+              child: Center(
+                child: Image(
+                  image: AssetImage("assets/onboarding11.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 2,
+            child: Text(
+              "Make PlayDates for your Kids",
+              style: AppStyles.blackTextSemiSemiBold36,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            flex: 1,
+            child: Text(
+              "Make PlayDates for your Kids, Make new Friends",
+              style: AppStyles.blackTextRegular16,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -42,114 +160,9 @@ class _OnBoardingState extends State<OnBoarding> {
                     });
                   },
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: Container(
-                            child: Center(
-                              child: Image(
-                                image: AssetImage("assets/onboarding11.png"),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            "Make PlayDates for your Kids",
-                            style: AppStyles.blackTextSemiSemiBold36,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "Make PlayDates for your Kids, Make new Friends",
-                            style: AppStyles.blackTextRegular16,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 8,
-                            child: Container(
-                              child: Center(
-                                child: Image(
-                                  image: AssetImage("assets/onboarding11.png"),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "Make PlayDates for your Kids",
-                              style: AppStyles.blackTextSemiSemiBold36,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Make PlayDates for your Kids, Make new Friends",
-                              style: AppStyles.blackTextRegular16,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0,0.0,40.0,0.0),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 8,
-                            child: Container(
-                              child: Center(
-                                child: Image(
-                                  image: AssetImage("assets/onboarding11.png"),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              "Make PlayDates for your Kids",
-                              style: AppStyles.blackTextSemiSemiBold36,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(height: 8.0),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "Make PlayDates for your Kids, Make new Friends",
-                              style: AppStyles.blackTextRegular16,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _page1,
+                    _page2,
+                    _page3
                   ],
                 ),
               ),

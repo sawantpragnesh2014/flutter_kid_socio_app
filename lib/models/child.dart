@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 class Child extends Equatable{
@@ -9,9 +11,16 @@ class Child extends Equatable{
   final String schoolName;
   final String dob;
   final String gender;
+  File? _imgPath;
 
   Child({this.id = 0,required this.parentId,required this.firstName,required this.lastName,required this.photoUrl,required this.schoolName,required this.dob,required this.gender});
 
+
+  File? get imgPath => _imgPath;
+
+  set imgPath(File? value) {
+    _imgPath = value;
+  }
 
   @override
   String toString() {

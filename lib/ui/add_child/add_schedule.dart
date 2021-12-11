@@ -216,8 +216,9 @@ class _AddScheduleState extends State<AddSchedule> {
 
   get _addressPicker {
     Address? address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
+    print('Address val $address');
     return TextFormField(
-      initialValue: address == null ? null : address.address,
+      initialValue: address == null ? null : (!_agree ? null : address.address),
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){

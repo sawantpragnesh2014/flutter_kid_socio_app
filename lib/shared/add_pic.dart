@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'action_button.dart';
@@ -24,6 +25,8 @@ class AddPic extends StatefulWidget {
 class _AddPicState extends State<AddPic> {
   final _picker = ImagePicker();
   File? _image;
+
+  File? fileImg;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,9 +70,9 @@ class _AddPicState extends State<AddPic> {
             SizedBox(height: 80.0,),
             ActionButtonView(btnName: "Continue",onBtnHit: (){
               print('Action btn hit');
-              String? s = _upload();
+              String? base64StringFromImage = ImageUtils.upload(_image);
               /*_image =*/
-              widget.onActionBtnHit(_upload()??'');
+              widget.onActionBtnHit(base64StringFromImage??'');
             },buttonStyle: widget.btnStyle,),
           ],
         ),
@@ -124,23 +127,4 @@ class _AddPicState extends State<AddPic> {
       _image = image;
     });
   }
-
-  String? _upload() {
-    if (_image == null) return null;
-    String base64Image = base64Encode(_image!.readAsBytesSync());
-/*    String fileName = _image.path.split("/").last;*/
-    return base64Image;
-  }
-
-  /*void writeFile(String imageAnalysed) async {
-    final decodedBytes = base64Decode(imageAnalysed);
-    final directory = await getApplicationDocumentsDirectory();
-    fileImg = File('${directory.path}/testImage.png');
-    print(fileImg.path);
-    fileImg.writeAsBytesSync(List.from(decodedBytes));
-
-    setState(() {
-      isLoading = false;
-    });
-  }*/
 }

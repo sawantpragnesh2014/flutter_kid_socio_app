@@ -30,6 +30,13 @@ class AppStyles {
       fontSize: 14.0
   );
 
+  static const errorText = TextStyle(
+      color: AppColors.colorEB4C57,
+      fontFamily: m_plus_rounded,
+      fontWeight: regular,
+      fontSize: 14.0
+  );
+
   static const redTextBoldLarge = TextStyle(
       color: AppColors.colorEB4C57,
       fontFamily: m_plus_rounded,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 class PlayDateRequest {
   final int requestId;
@@ -12,6 +14,7 @@ class PlayDateRequest {
   final String hobbiesName;
   final int fromTime;
   final int toTime;
+  File? _imgPath;
 
 
   PlayDateRequest(
@@ -27,6 +30,12 @@ class PlayDateRequest {
       required this.hobbiesName,
       required this.fromTime,
       required this.toTime});
+
+  File? get imgPath => _imgPath;
+
+  set imgPath(File? value) {
+    _imgPath = value;
+  }
 
   static PlayDateRequest fromJson(dynamic json){
     return PlayDateRequest(

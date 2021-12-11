@@ -73,17 +73,6 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
                 buttonStyle: AppStyles.stylePinkButton,
               ),
               SizedBox(height: 16.0,),
-              /*Stack(
-                          children: [
-                            Positioned(
-                            child: Image(image: AssetImage('assets/gift_bg.png')),
-                            ),
-                            Positioned(
-                            child: Image(image: AssetImage('assets/gift.png')),
-                            )
-                          ],
-                        ),*/
-
             ],
           ),
         )

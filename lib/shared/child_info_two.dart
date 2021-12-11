@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
@@ -23,13 +25,25 @@ class ChildInfoTwo extends StatefulWidget {
 class _ChildInfoTwoState extends State<ChildInfoTwo> {
   Address? address;
   late String firstName;
+  late int id;
+  late String type;
   String? photoUrl;
+  File? image;
+
   @override
   void initState() {
     super.initState();
     address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
     photoUrl = widget.childAll == null ? widget.playDateRequest!.photoUrl : widget.childAll!.photoUrl;
     firstName = widget.childAll == null ? widget.playDateRequest!.firstName : widget.childAll!.firstName;
+    id = widget.childAll == null ? widget.playDateRequest!.requestId : widget.childAll!.childId;
+    type = widget.childAll == null ? 'playDateRequest' : 'nearbyPlaydate';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setFileImage(photoUrl);
   }
 
   @override
@@ -43,7 +57,9 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
             width: 80.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+                image: image == null
+                    ? AssetImage('assets/default_profile_picture.png')
+                    : FileImage(image!) as ImageProvider,
                 fit: BoxFit.contain,
               ),
               borderRadius: BorderRadius.all( Radius.circular(60.0)),
@@ -56,7 +72,7 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('${firstName}',style: AppStyles.blackTextMedium36,),
+              Text('$firstName',style: AppStyles.blackTextMedium36,),
               Text(address == null ? '' : address!.address,style: AppStyles.blackTextMedium14),
               Text('6th, August - 2 hours ago',style: AppStyles.editTextStyle,),
             ],
@@ -65,5 +81,17 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
         ],
       ),
     );
+  }
+
+  Future<void> setFileImage(String? url) async {
+    if(image != null){
+      return;
+    }
+    image = await ImageUtils.getFile('${type}_${id}_img',url);
+    if(image == null){
+      return;
+    }
+    setState(() {
+    });
   }
 }

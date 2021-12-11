@@ -83,7 +83,7 @@ class _AddChildState extends State<AddChild> {
   Widget get _addProfilePic{
     return AddPic(btnStyle: AppStyles.stylePinkButton,onActionBtnHit: (val){
       print('child bloc $_addChildBloc');
-      /*_addChildBloc!.photoUrl = val;*/
+      _addChildBloc!.photoUrl = val;
       _addChildBloc!.childViewSink.add(Type.INTEREST);
     },);
   }

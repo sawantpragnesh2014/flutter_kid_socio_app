@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
@@ -7,14 +9,31 @@ import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
-class AppBarView extends StatelessWidget implements PreferredSizeWidget {
+class AppBarView extends StatefulWidget implements PreferredSizeWidget {
   final double? height;
 
   AppBarView({this.height});
 
   @override
+  State<AppBarView> createState() => _AppBarViewState();
+
+  @override
+  Size get preferredSize =>  Size.fromHeight(height??120.0);
+}
+
+class _AppBarViewState extends State<AppBarView> {
+  File? image;
+  Parent? user;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user = CustomBlocProvider.getBloc<LoginBloc>()!.parent;
+    setFileImage(user!);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Parent? user = CustomBlocProvider.getBloc<LoginBloc>()!.parent;
     return Container(
       decoration: BoxDecoration(
           color: AppColors.color7059E1,
@@ -32,7 +51,7 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('Hello, ${user?.firstName?? 'N.A'}', style: AppStyles.whiteTextBold16),
+                  Text('Hello, ${user!.firstName.length == 0 ? 'N.A': user!.firstName}', style: AppStyles.whiteTextBold16),
                   SizedBox(height: 8.0,),
                   Text('0/150 days',style: AppStyles.whiteTextMedium14,)
                 ],
@@ -51,7 +70,7 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
                 width: 80.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: user?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+                    image: image == null ?AssetImage('assets/default_profile_picture.png'):FileImage(image!) as ImageProvider,
                     fit: BoxFit.contain,
                   ),
                   borderRadius: BorderRadius.all( Radius.circular(60.0)),
@@ -66,6 +85,15 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  @override
-  Size get preferredSize =>  Size.fromHeight(height??120.0);
+  Future<void> setFileImage(Parent user) async {
+    if(image != null){
+      return;
+    }
+    image = await ImageUtils.getFile('parent_profile_pic',user.photoUrl);
+    if(image == null){
+      return;
+    }
+    setState(() {
+    });
+  }
 }
