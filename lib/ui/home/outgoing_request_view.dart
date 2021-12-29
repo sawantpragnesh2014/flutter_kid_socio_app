@@ -95,7 +95,7 @@ class _OutgoingRequestState extends State<OutgoingRequest> {
               )
           ),
           subtitle: Text(
-            'Breach Candy, Cumbala Hill', style: AppStyles.blackTextMedium11,),
+            '${outgoingPlayDateRequest.address}', style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
             backgroundImage: outgoingPlayDateRequest.photoUrl == null ? AssetImage(
                 'assets/google_logo.png') : AssetImage(

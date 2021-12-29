@@ -223,7 +223,7 @@ class _AddScheduleState extends State<AddSchedule> {
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
-          // _loginBloc.firstName = val;
+          _addChildBloc.address = val;
         });
       },
     );

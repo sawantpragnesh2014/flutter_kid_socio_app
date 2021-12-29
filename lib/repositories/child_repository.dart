@@ -146,4 +146,12 @@ class ChildRepository{
 
     return childMap;
   }
+
+  Future<void> uploadChildPic(int id, String photoUrl) {
+    return apiClient.addData(photoUrl, '/api/UserMaster/UploadParentImage?Id=$id');
+  }
+
+  Future<String?> fetchChildPic(int id) async {
+    return apiClient.getData('/api/UserMaster/UploadParentImage?Id=$id') as String?;
+  }
 }

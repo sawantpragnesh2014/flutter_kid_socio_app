@@ -29,7 +29,7 @@ class ImageUtils{
    return fileImg;
  }
 
- static Future<File?> getFile(String fileName, String? url) async {
+ static Future<File?> getFile(String fileName/*, String? url*/) async {
    final directory = await getApplicationDocumentsDirectory();
    File? fileImg = File('${directory.path}/$fileName.png');
    bool val = await fileImg.exists();
@@ -37,7 +37,18 @@ class ImageUtils{
    if(val){
      print('file val $fileImg');
      return fileImg;
-   } else if(!val && url != null && url.length != 0 ){
+   } /*else if(!val && url != null && url.length != 0 ){
+     fileImg = await writeFile(fileName,url);
+     print('file val $fileImg');
+     return fileImg;
+   }*/ else {
+     return null;
+   }
+ }
+
+ static Future<File?> getFileByUrl(String fileName, String? url) async {
+   File? fileImg;
+   if(url != null && url.length != 0 ){
      fileImg = await writeFile(fileName,url);
      print('file val $fileImg');
      return fileImg;
@@ -46,7 +57,7 @@ class ImageUtils{
    }
  }
 
- static Future<File?> getTempFile(String fileName, String? url) async {
+ static Future<File?> getTempFile(String fileName) async {
    final directory = await getTemporaryDirectory();
    File? fileImg = File('${directory.path}/$fileName.png');
    bool val = await fileImg.exists();
@@ -54,7 +65,18 @@ class ImageUtils{
    if(val){
      print('file val $fileImg');
      return fileImg;
-   } else if(!val && url != null && url.length != 0 ){
+   } /*else if(!val && url != null && url.length != 0 ){
+     fileImg = await writeFile(fileName,url);
+     print('file val $fileImg');
+     return fileImg;
+   } */else {
+     return null;
+   }
+ }
+
+ static Future<File?> getTempFileByUrl(String fileName, String? url) async {
+   File? fileImg;
+   if(url != null && url.length != 0 ){
      fileImg = await writeFile(fileName,url);
      print('file val $fileImg');
      return fileImg;

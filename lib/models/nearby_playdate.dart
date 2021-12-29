@@ -18,6 +18,7 @@ class NearbyPlaydate extends Equatable{
   final String matchedHobbiesName;
   final String? matchedWeekDay;
   final int weekDayCount;
+  final String address;
   File? _imgPath;
 
 
@@ -32,7 +33,7 @@ class NearbyPlaydate extends Equatable{
     required this.dob,required this.gender,required this.schoolAddress,
     required this.distance,required this.hobbiesId,required this.hobbiesName,
     required this.matchedHobbies,required this.hobbiesMatchedCount,required this.matchedHobbiesName,
-    required this.matchedWeekDay,required this.weekDayCount
+    required this.matchedWeekDay,required this.weekDayCount, required this.address
   });
 
 
@@ -65,6 +66,7 @@ class NearbyPlaydate extends Equatable{
         matchedHobbiesName: json['matchedHobbiesName'],
         matchedWeekDay: json['matchedWeekDay'],
         weekDayCount: json['weekDayCount'],
+        address: json['address'],
     );
   }
 

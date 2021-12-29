@@ -56,6 +56,7 @@ class _AddChildState extends State<AddChild> {
      Child? child = await _addChildBloc!.addChild(CustomBlocProvider.getBloc<LoginBloc>()!.parent!.id);
       print('Child inserted ${child!.id}');
       _addChildBloc!.childId = child.id;
+     await CustomBlocProvider.getBloc<AddChildBloc>()!.uploadChildPic(child.id,_addChildBloc!.photoUrl);
      _addChildBloc!.setChildIdInFinalScheduleDaysList();
 
      await _addChildBloc!.addChildHobbies();

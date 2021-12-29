@@ -86,6 +86,10 @@ class Address {
       'updatedDate': '2021-10-04T07:24:39.325Z'
     };
 
+  @override
+  String toString() {
+    return 'Address{address: $address, pinCode: $pinCode}';
+  }
 }
 
 class UserLocation {
@@ -109,6 +113,10 @@ class UserLocation {
       'longitude': longitude,
     };
 
+  @override
+  String toString() {
+    return 'UserLocation{latitude: $latitude, longitude: $longitude}';
+  }
 }
 
 class ParentResponse{

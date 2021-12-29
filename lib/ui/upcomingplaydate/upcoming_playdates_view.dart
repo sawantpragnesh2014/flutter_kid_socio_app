@@ -96,7 +96,7 @@ class _UpcomingPlaydateViewState extends State<UpcomingPlaydateView> {
               )
           ),
           subtitle: Text(
-            'Breach Candy, Cumbala Hill', style: AppStyles.blackTextMedium11,),
+            '${upcomingPlaydateList.address}', style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
             backgroundImage: upcomingPlaydateList.photoUrl == null ? AssetImage(
                 'assets/google_logo.png') : AssetImage(

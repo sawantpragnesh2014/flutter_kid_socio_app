@@ -38,8 +38,14 @@ class ParentRepository {
 
   Future<String?> updateParent(Parent parent) async {
     print('Parent is $parent');
-    /*Map<String, dynamic> parentMap = convertToDto(parent);*/
-
     return apiClient.addData(parent, '/api/UserMaster/Update') as String?;
+  }
+
+  Future<void> uploadParentPic(int id, String photoUrl) {
+     return apiClient.addData(photoUrl, '/api/UserMaster/UploadParentImage?Id=$id');
+  }
+
+  Future<String?> fetchParentPic(int id) async {
+     return apiClient.getData('/api/UserMaster/UploadParentImage?Id=$id') as String?;
   }
 }

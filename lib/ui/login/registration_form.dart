@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
+import 'package:flutter_kid_socio_app/repositories/location_repository.dart';
 import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar_new.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
 import 'package:flutter_kid_socio_app/ui/login/privacy_policy.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class RegistrationForm extends StatefulWidget {
   @override
@@ -244,16 +247,49 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   _buildAgreeToTermsField,
                   ActionButtonView(
                       btnName: "Continue",
-                      onBtnHit: (){
+                      onBtnHit: () async {
                         if(formKey.currentState!.validate()) {
-                          if(user!.phoneNumber == null) {
+                          UserLocationData? _userLocationData = await LocationRepository().getLocation();
+
+                          var status = await Permission.location.status;
+
+                          print('status.isDenied ${status.isDenied}');
+                          print('status.isDenied ${status.isPermanentlyDenied}');
+
+
+                          if(status.isGranted){
+                            print('lat ${_userLocationData!.locationData!.latitude}');
+                            print('lon ${_userLocationData.locationData!.longitude}');
+                            _loginBloc.lat = _userLocationData.locationData!.latitude!;
+                            _loginBloc.lon = _userLocationData.locationData!.longitude!;
+                            print('phone num ${user!.phoneNumber}');
+                            if(user!.phoneNumber == null || user!.phoneNumber!.isEmpty) {
                             Navigator.pushReplacement(context, MaterialPageRoute(
                                 builder: (context) => PhoneVerification()));
                           } else{
                             _loginBloc.phoneNo = user!.phoneNumber!.replaceAll('+91', '');
                             Navigator.pushReplacement(context, MaterialPageRoute(
                                 builder: (context) => AddProfilePic()));
+                            }
+                          }else if (status.isDenied){
+                            /*ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please provide location access to continue.'),
+                              ),
+                            );*/
+                            openAppSettings();
+                          }else {
+                            openAppSettings();
                           }
+                          /*if(_userLocationData == null || _userLocationData.permissionStatus == PermissionStatus.denied || _userLocationData.permissionStatus == PermissionStatus.deniedForever){
+                            openAppSettings();
+                            *//*ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please provide location access to continue.'),
+                              ),
+                            );*//*
+                            return;
+                          }*/
                         }
                       }
                   ),

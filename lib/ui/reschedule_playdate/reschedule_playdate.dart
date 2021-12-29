@@ -26,7 +26,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Location',style: AppStyles.greenTextBold16,),
-        Text('The Bombay Bronx Breach Candy, Cumballa Hill, Mumbai South, Mumbai',style: AppStyles.blackTextMedium14,),
+        Text('${widget.playDateRequest.address}',style: AppStyles.blackTextMedium14,),
       ],
     );
   }

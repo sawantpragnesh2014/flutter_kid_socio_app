@@ -89,7 +89,10 @@ class _AppBarViewState extends State<AppBarView> {
     if(image != null){
       return;
     }
-    image = await ImageUtils.getFile('parent_profile_pic',user.photoUrl);
+    image = await ImageUtils.getFile('parent_profile_pic');
+    if(image == null){
+      image = await ImageUtils.getFileByUrl('parent_profile_pic',await CustomBlocProvider.getBloc<LoginBloc>()!.fetchParentPic(user.id));
+    }
     if(image == null){
       return;
     }

@@ -128,7 +128,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
             ),
           ])),
           subtitle: Text(
-            'Breach Candy, Cumbala Hill',
+            '${child.address}',
             style: AppStyles.blackTextMedium11,
           ),
           leading: CircleAvatar(
@@ -163,7 +163,10 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
     if(child.imgPath != null){
       return;
     }
-    child.imgPath = await ImageUtils.getTempFile('nearbyPlaydate_${child.childId}_img',child.photoUrl);
+    child.imgPath = await ImageUtils.getTempFile('nearbyPlaydate_${child.childId}_img');
+    if(child.imgPath == null){
+      child.imgPath = await ImageUtils.getTempFileByUrl('nearbyPlaydate_${child.childId}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(child.childId));
+    }
     if(child.imgPath == null){
       return;
     }

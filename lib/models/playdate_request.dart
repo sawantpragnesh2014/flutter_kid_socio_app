@@ -15,6 +15,7 @@ class PlayDateRequest {
   final int fromTime;
   final int toTime;
   File? _imgPath;
+  final String address;
 
 
   PlayDateRequest(
@@ -29,7 +30,8 @@ class PlayDateRequest {
       required this.approvalDate,
       required this.hobbiesName,
       required this.fromTime,
-      required this.toTime});
+      required this.toTime,
+      required this.address});
 
   File? get imgPath => _imgPath;
 
@@ -51,6 +53,7 @@ class PlayDateRequest {
       hobbiesName: json['hobbiesName'] ?? 'Not available',
       fromTime: json['fromTime'],
       toTime: json['toTime'],
+      address: json['address'],
 
     );
   }

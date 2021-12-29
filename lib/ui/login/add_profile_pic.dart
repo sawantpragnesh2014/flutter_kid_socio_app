@@ -27,6 +27,7 @@ class _AddProfilePicState extends State<AddProfilePic> {
   void initState() {
     super.initState();
     _loginBloc = CustomBlocProvider.getBloc<LoginBloc>()!;
+    _loginBloc.startBroadCast();
     _authBloc = CustomBlocProvider.getBloc<AuthBloc>()!;
   }
 
@@ -41,15 +42,19 @@ class _AddProfilePicState extends State<AddProfilePic> {
             if(snapshot.hasData){
               switch(snapshot.data!.status){
                 case Status.LOADING:
+                  print('loading create parent');
                   return Loading();
                 case Status.COMPLETED:
                   print('create parent completed');
                   _loginBloc.parent!.id = snapshot.data!.data!;
-                  print('calling home screen now');
-                  Future.delayed(Duration.zero, () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => HomeNew()));
+
+                  _loginBloc.uploadParentPic(_loginBloc.parent!.id,_loginBloc.photoUrl ?? '').then((value) => {
+                    Future.delayed(Duration.zero, () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => HomeNew()));
+                    })
                   });
+                  print('calling home screen now');
                   break;
                 case Status.ERROR:
                   return ErrorPage(
@@ -85,6 +90,7 @@ class _AddProfilePicState extends State<AddProfilePic> {
   @override
   void dispose() {
     super.dispose();
+    print('dispose called add pro pic');
     _loginBloc.dispose();
   }
 }

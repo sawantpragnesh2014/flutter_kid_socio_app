@@ -17,6 +17,7 @@ class AddChildBloc extends Bloc{
   late String _schoolName;
   late String _gender;
   late String _dob;
+  late String _address;
   String? _photoUrl;
   late List<String> hobbies;
   late List<ChildTimings> finalscheduleDaysList;
@@ -66,8 +67,10 @@ class AddChildBloc extends Bloc{
           parentId: parentId,
           dob: _dob,
           schoolName: _schoolName,
-          photoUrl: _photoUrl,
-          gender: _gender);
+          photoUrl: /*_photoUrl*/null,
+          gender: _gender,
+        address: _address
+      );
       return childRepository.createChild(child);
     } catch(e){
       print(e);
@@ -76,6 +79,14 @@ class AddChildBloc extends Bloc{
     }
     /*getAllChildren();*/
 
+  }
+
+  Future<void> uploadChildPic(int id, String photoUrl) async {
+    await childRepository.uploadChildPic(id,photoUrl);
+  }
+
+  Future<String?> fetchChildPic(int id) async {
+    await childRepository.fetchChildPic(id);
   }
 
   Future<void> addChildHobbies() async {
@@ -144,6 +155,14 @@ class AddChildBloc extends Bloc{
   set childId(int value) {
     _childId = value;
   }
+
+
+  set address(String value) {
+    _address = value;
+  }
+
+
+  String get photoUrl => _photoUrl ?? '';
 
   int get childId => _childId ?? 0;
 

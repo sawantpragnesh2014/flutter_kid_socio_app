@@ -15,6 +15,8 @@ class LoginBloc extends Bloc {
   String? _photoUrl;
   late String _pinCode;
   late String _addressName;
+  late double _lat;
+  late double _lon;
   Parent? _parent;
 
   late StreamController<ApiResponse<int>> _parentController;
@@ -27,15 +29,21 @@ class LoginBloc extends Bloc {
 
 LoginBloc(){
   _parentRepository = ParentRepository();
-  _parentController = StreamController<ApiResponse<int>>.broadcast();
+  /*_parentController = StreamController<ApiResponse<int>>.broadcast();*/
 }
 
   set firstName(String value) {
     _firstName = value;
   }
 
+  startBroadCast(){
+    print('_parentController broadcast started');
+    _parentController = StreamController<ApiResponse<int>>.broadcast();
+  }
+
   createParent(Parent parent) async{
   if(_parentController.isClosed){
+    print('_parentController broadcast started again');
     _parentController = StreamController<ApiResponse<int>>.broadcast();
   }
 
@@ -100,6 +108,10 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
 
+  set lat(double value) {
+    _lat = double.parse(value.toStringAsFixed(5));
+  }
+
   String? get photoUrl => _photoUrl;
 
   set pinCode(String value) {
@@ -107,7 +119,7 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
   Parent generateParentObject(String uid) {
-    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: _photoUrl,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation(latitude: 18.96979, longitude: 72.819370));
+    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: null,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation(latitude: _lat, longitude: _lon));
     return parent!;
   }
 
@@ -123,4 +135,16 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
   Parent? get parent => _parent;
+
+  set lon(double value) {
+    _lon = double.parse(value.toStringAsFixed(5));
+  }
+
+  Future<void> uploadParentPic(int id, String photoUrl) async {
+    await _parentRepository.uploadParentPic(id,photoUrl);
+  }
+
+  Future<String?> fetchParentPic(int id) async {
+    await _parentRepository.fetchParentPic(id);
+  }
 }

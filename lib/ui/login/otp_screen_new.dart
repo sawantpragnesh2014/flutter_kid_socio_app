@@ -12,6 +12,7 @@ import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/loading.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
+import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
 
 class OtpScreenNew extends StatefulWidget {
   @override
@@ -194,7 +195,7 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
                 default:
                   return ErrorPage(
                     errorMessage: snapshot.data!.message ?? 'Some error occured',
-                    onRetryPressed: () => _otpVerificationBloc.verifyOtp(_otp!),
+                    onRetryPressed: () => callPhoneVerificationScreen(),
                   );
               }
             }
@@ -208,5 +209,12 @@ class _OtpScreenNewState extends State<OtpScreenNew> {
   void dispose() {
     super.dispose();
     _otpVerificationBloc.dispose();
+  }
+
+  callPhoneVerificationScreen() {
+    Future.delayed(Duration.zero, () {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => PhoneVerification()));
+    });
   }
 }

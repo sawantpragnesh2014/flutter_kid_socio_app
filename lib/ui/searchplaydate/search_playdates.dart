@@ -103,7 +103,7 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
               SizedBox(height: 12.0,),*/
               Text('Recent Playdates',style: AppStyles.blackTextBold18,),
               SizedBox(height: 12.0,),
-              _recentPlayDatesList(widget.recentPlayDateList ?? [])
+              /*_recentPlayDatesList(widget.recentPlayDateList ?? [])*/
 
             ],
           ),
@@ -130,9 +130,9 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
         child: ListTile(
           contentPadding: EdgeInsets.all(8.0),
           title: Text('${child?.firstName}, ',style: AppStyles.blackTextBold16),
-          subtitle: Text('Breach Candy, Cumbala Hill',style: AppStyles.blackTextMedium11,),
+          subtitle: Text('${child!.address}',style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
-            backgroundImage: child?.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
+            backgroundImage: child.photoUrl == null ?AssetImage('assets/google_logo.png'):AssetImage('assets/default_profile_picture.png'),
             radius: 40.0,
           ),
           trailing: Text('30 JUL,21',style: AppStyles.greyRegularSmall),

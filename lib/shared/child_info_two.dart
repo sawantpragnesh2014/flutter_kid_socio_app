@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
@@ -31,10 +32,11 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
   File? image;
 
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
     address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
-    photoUrl = widget.childAll == null ? widget.playDateRequest!.photoUrl : widget.childAll!.photoUrl;
+    // photoUrl = widget.childAll == null ? widget.playDateRequest!.photoUrl : widget.childAll!.photoUrl;
+    photoUrl = widget.childAll == null ? await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(widget.playDateRequest!.requestId) : await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(widget.childAll!.childId);
     firstName = widget.childAll == null ? widget.playDateRequest!.firstName : widget.childAll!.firstName;
     id = widget.childAll == null ? widget.playDateRequest!.requestId : widget.childAll!.childId;
     type = widget.childAll == null ? 'playDateRequest' : 'nearbyPlaydate';
@@ -87,7 +89,10 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
     if(image != null){
       return;
     }
-    image = await ImageUtils.getFile('${type}_${id}_img',url);
+    image = await ImageUtils.getFile('${type}_${id}_img');
+    if(image == null){
+      image = await ImageUtils.getFileByUrl('${type}_${id}_img',url);
+    }
     if(image == null){
       return;
     }

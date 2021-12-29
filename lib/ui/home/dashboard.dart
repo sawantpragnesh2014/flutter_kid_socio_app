@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
 import 'package:flutter_kid_socio_app/blocs/send_accept_request_bloc.dart';
@@ -315,7 +316,7 @@ class _DashboardState extends State<Dashboard> {
               )
           ),
           subtitle: Text(
-            'Breach Candy, Cumbala Hill', style: AppStyles.blackTextMedium11,),
+            '${incomingPlayDateRequest.address}', style: AppStyles.blackTextMedium11,),
           leading: CircleAvatar(
             backgroundImage: incomingPlayDateRequest.imgPath == null ? AssetImage(
                 'assets/default_profile_picture.png') : FileImage(incomingPlayDateRequest.imgPath!) as ImageProvider,
@@ -327,12 +328,15 @@ class _DashboardState extends State<Dashboard> {
     );
 }
 
-  Future<void> setFileImage(PlayDateRequest user) async {
-    if(user.imgPath != null){
+  Future<void> setFileImage(PlayDateRequest playDateRequest) async {
+    if(playDateRequest.imgPath != null){
       return;
     }
-    user.imgPath = await ImageUtils.getTempFile('playDateRequest_${user.requestId}_img',user.photoUrl);
-    if(user.imgPath == null){
+    playDateRequest.imgPath = await ImageUtils.getTempFile('playDateRequest_${playDateRequest.requestId}_img');
+    if(playDateRequest.imgPath == null){
+      playDateRequest.imgPath = await ImageUtils.getTempFileByUrl('playDateRequest_${playDateRequest.requestId}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(playDateRequest.requestId));
+    }
+    if(playDateRequest.imgPath == null){
       return;
     }
     setState(() {
@@ -343,7 +347,10 @@ class _DashboardState extends State<Dashboard> {
     if(child.imgPath != null){
       return;
     }
-    child.imgPath = await ImageUtils.getFile('child_${child.id}_img',child.photoUrl);
+    child.imgPath = await ImageUtils.getFile('child_${child.id}_img');
+    if(child.imgPath == null){
+      child.imgPath = await ImageUtils.getFileByUrl('child_${child.id}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(child.id));
+    }
     if(child.imgPath == null){
       return;
     }

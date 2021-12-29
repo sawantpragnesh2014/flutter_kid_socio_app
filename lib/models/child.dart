@@ -12,8 +12,9 @@ class Child extends Equatable{
   final String dob;
   final String gender;
   File? _imgPath;
+  final String address;
 
-  Child({this.id = 0,required this.parentId,required this.firstName,required this.lastName,required this.photoUrl,required this.schoolName,required this.dob,required this.gender});
+  Child({this.id = 0,required this.parentId,required this.firstName,required this.lastName,required this.photoUrl,required this.schoolName,required this.dob,required this.gender,required this.address});
 
 
   File? get imgPath => _imgPath;
@@ -24,7 +25,7 @@ class Child extends Equatable{
 
   @override
   String toString() {
-    return 'Child{id: $id, parentId: $parentId, firstName: $firstName, lastName: $lastName, photoUrl: $photoUrl, schoolName: $schoolName, dob: $dob, gender: $gender}';
+    return 'Child{id: $id, parentId: $parentId, firstName: $firstName, lastName: $lastName, photoUrl: $photoUrl, schoolName: $schoolName, dob: $dob, gender: $gender, address: $address}';
   }
 
   @override
@@ -39,7 +40,8 @@ class Child extends Equatable{
       photoUrl: json['image'] ?? '',
       schoolName: json['schoolName'],
       dob: json['dob'],
-      gender: json['gender'] ?? ''
+      gender: json['gender'] ?? '',
+      address: json['address'] ?? ''
     );
   }
   
@@ -52,7 +54,8 @@ class Child extends Equatable{
     'schoolName': schoolName,
     'dob': dob,
     'gender': gender,
-    'schoolAddress':'string'
+    'schoolAddress':'string',
+    'address': address
   };
 
   @override
