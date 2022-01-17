@@ -27,6 +27,7 @@ class _ChildFormState extends State<ChildForm> {
   Widget get _firstName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
+      textCapitalization: TextCapitalization.words,
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
@@ -39,6 +40,7 @@ class _ChildFormState extends State<ChildForm> {
   Widget get _lastName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
+      textCapitalization: TextCapitalization.words,
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
@@ -73,6 +75,7 @@ class _ChildFormState extends State<ChildForm> {
   Widget get _schoolName {
     return TextFormField(
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'School'),
+      textCapitalization: TextCapitalization.words,
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {

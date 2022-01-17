@@ -6,6 +6,7 @@ import 'package:flutter_kid_socio_app/shared/action_button.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/child_info_two.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
+import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
 import 'package:flutter_kid_socio_app/shared/time_and_hobbies.dart';
 import 'package:flutter_kid_socio_app/ui/reschedule_playdate/reschedule_panel.dart';
@@ -33,6 +34,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBarView(
@@ -43,21 +45,29 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: ChildInfoTwo(
-                      playDateRequest: widget.playDateRequest,
+                  Container(
+                    height: SizeConfig.blockSizeVertical*50,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ChildInfoTwo(
+                            playDateRequest: widget.playDateRequest,
+                          ),
+                        ),
+                        SizedBox(height: 12.0,),
+                        Expanded(
+                            flex:1,
+                            child: TimeAndHobbies(hobbiesName: widget.playDateRequest.hobbiesName,fromTime: '2:36 p.m',toTime: '2:36 p.m',)
+                        ),
+                        SizedBox(height: 12.0,),
+                        Expanded(
+                            flex: 1,
+                            child: _locationView
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 12.0,),
-                  Expanded(
-                      flex:1,
-                      child: TimeAndHobbies(hobbiesName: widget.playDateRequest.hobbiesName,fromTime: '2:36 p.m',toTime: '2:36 p.m',)
-                  ),
-                  SizedBox(height: 12.0,),
-                  Expanded(
-                      flex: 1,
-                      child: _locationView
                   ),
                   SizedBox(height: 12.0,),
                   ActionButtonView(
@@ -66,7 +76,7 @@ class _ReschedulePlayDateState extends State<ReschedulePlayDate> {
                       showSendRequestPanel(widget.playDateRequest);
                     },
                   ),
-                  SizedBox(height: 12.0,),
+                  SizedBox(height: 16.0,),
                   ActionButtonView(
                     btnName: "Cancel playdate",
                     onBtnHit: (){

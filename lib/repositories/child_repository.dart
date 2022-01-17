@@ -152,6 +152,9 @@ class ChildRepository{
   }
 
   Future<String?> fetchChildPic(int id) async {
-    return apiClient.getData('/api/UserMaster/UploadParentImage?Id=$id') as String?;
+    final dynamic response = await apiClient.getData('/api/ChildMaster/GetChildImage?Id=$id');
+    print('fetchChildPic response ${response['data']}');
+    var data = response['data'];
+    return data;
   }
 }

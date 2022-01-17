@@ -34,6 +34,15 @@ getAllChildren(int parentId) async {
   }
 }
 
+Future<String?> fetchChildPic(int id) async {
+  try {
+    await childRepository.fetchChildPic(id);
+  } catch(e){
+    print(e);
+    return null;
+  }
+}
+
   @override
   void dispose() {
     childController.close();

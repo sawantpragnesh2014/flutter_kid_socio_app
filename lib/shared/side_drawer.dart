@@ -14,12 +14,6 @@ class SideDrawer extends StatelessWidget {
 
   final items = [
     'Profile',
-    'Notifications',
-    'Plans',
-    'Faqs',
-    'Blog',
-    'Refer a friend',
-    'Settings',
     'Logout'
   ];
 
@@ -89,6 +83,9 @@ class SideDrawer extends StatelessWidget {
       case 'Logout':
         await CustomBlocProvider.getBloc<AuthBloc>()!.signOut();
         callback('logout');
+        break;
+      case 'Profile':
+        callback('Profile');
         break;
     }
   }

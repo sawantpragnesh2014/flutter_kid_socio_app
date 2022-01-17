@@ -13,6 +13,7 @@ import 'package:flutter_kid_socio_app/shared/side_drawer.dart';
 import 'package:flutter_kid_socio_app/ui/home/dashboard.dart';
 import 'package:flutter_kid_socio_app/ui/home/dashboard_empty.dart';
 import 'package:flutter_kid_socio_app/ui/root_page.dart';
+import 'package:flutter_kid_socio_app/ui/updateprofilepic/update_profile_pic.dart';
 
 class HomeNew extends StatefulWidget {
   @override
@@ -61,6 +62,11 @@ class _HomeNewState extends State<HomeNew> {
                         Future.delayed(Duration.zero, () {
                           Navigator.pushReplacement(context, MaterialPageRoute(
                               builder: (context) => RootPage()));
+                        });
+                      } else if(val.contains('Profile')){
+                        Future.delayed(Duration.zero, () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => UpdateProfilePic()));
                         });
                       }
                     },userName : user.firstName),

@@ -15,7 +15,7 @@ class PlayDateRequest {
   final int fromTime;
   final int toTime;
   File? _imgPath;
-  final String address;
+  final String? address;
 
 
   PlayDateRequest(
@@ -53,7 +53,7 @@ class PlayDateRequest {
       hobbiesName: json['hobbiesName'] ?? 'Not available',
       fromTime: json['fromTime'],
       toTime: json['toTime'],
-      address: json['address'],
+      address: json['address'] ?? 'Not Available',
 
     );
   }

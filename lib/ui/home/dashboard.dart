@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/send_accept_request_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
@@ -334,7 +335,7 @@ class _DashboardState extends State<Dashboard> {
     }
     playDateRequest.imgPath = await ImageUtils.getTempFile('playDateRequest_${playDateRequest.requestId}_img');
     if(playDateRequest.imgPath == null){
-      playDateRequest.imgPath = await ImageUtils.getTempFileByUrl('playDateRequest_${playDateRequest.requestId}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(playDateRequest.requestId));
+      playDateRequest.imgPath = await ImageUtils.getTempFileByUrl('playDateRequest_${playDateRequest.requestId}_img',await CustomBlocProvider.getBloc<ChildBloc>()!.fetchChildPic(playDateRequest.requestId));
     }
     if(playDateRequest.imgPath == null){
       return;
@@ -349,7 +350,7 @@ class _DashboardState extends State<Dashboard> {
     }
     child.imgPath = await ImageUtils.getFile('child_${child.id}_img');
     if(child.imgPath == null){
-      child.imgPath = await ImageUtils.getFileByUrl('child_${child.id}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(child.id));
+      child.imgPath = await ImageUtils.getFileByUrl('child_${child.id}_img',await CustomBlocProvider.getBloc<ChildBloc>()!.fetchChildPic(child.id));
     }
     if(child.imgPath == null){
       return;

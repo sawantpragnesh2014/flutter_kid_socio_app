@@ -70,7 +70,7 @@ class _AppBarViewState extends State<AppBarView> {
                 width: 80.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: image == null ?AssetImage('assets/default_profile_picture.png'):FileImage(image!) as ImageProvider,
+                    image: image == null ? handleImageNull(): FileImage(image!),
                     fit: BoxFit.contain,
                   ),
                   borderRadius: BorderRadius.all( Radius.circular(60.0)),
@@ -99,4 +99,10 @@ class _AppBarViewState extends State<AppBarView> {
     setState(() {
     });
   }
+
+  handleImageNull() {
+    return (CustomBlocProvider.getBloc<AuthBloc>()!.getUser!.photoURL == null?  AssetImage('assets/default_profile_picture.png') :NetworkImage(CustomBlocProvider.getBloc<AuthBloc>()!.getUser!.photoURL! + '?width=400&height400'));
+  }
 }
+
+

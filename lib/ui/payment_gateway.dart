@@ -112,6 +112,7 @@ class _PaymentState extends State<Payment> {
             SizedBox(height: 20.0,),
             TextFormField(
               decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Card Owner Name'),
+              textCapitalization: TextCapitalization.words,
               validator: (val) => val!.isEmpty?'Enter a card number':null,
               onChanged: (val){
                 setState(() {

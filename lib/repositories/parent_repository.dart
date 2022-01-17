@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/services/api_client.dart';
+import 'package:flutter_kid_socio_app/utils/image_utils.dart';
 
 class ParentRepository {
   final ApiClient apiClient = ApiClient();
@@ -41,11 +43,15 @@ class ParentRepository {
     return apiClient.addData(parent, '/api/UserMaster/Update') as String?;
   }
 
-  Future<void> uploadParentPic(int id, String photoUrl) {
-     return apiClient.addData(photoUrl, '/api/UserMaster/UploadParentImage?Id=$id');
+  Future<void> uploadParentPic(int id, /*Map<*/String/*, dynamic>*/ photoUrl) async {
+    File file = await ImageUtils.getFileByUrl('parent_profile_pic', photoUrl) ?? File('');
+     return apiClient.uploadPic(file, '/api/UserMaster/UploadParentImage?Id=$id');
   }
 
   Future<String?> fetchParentPic(int id) async {
-     return apiClient.getData('/api/UserMaster/UploadParentImage?Id=$id') as String?;
+    final dynamic response = await apiClient.getData('/api/UserMaster/GetParentImage?Id=$id');
+    print('fetchParentPic response ${response['data']}');
+    var data = response['data'];
+    return data;
   }
 }

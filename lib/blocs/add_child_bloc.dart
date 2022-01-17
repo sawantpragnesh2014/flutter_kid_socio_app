@@ -82,11 +82,21 @@ class AddChildBloc extends Bloc{
   }
 
   Future<void> uploadChildPic(int id, String photoUrl) async {
-    await childRepository.uploadChildPic(id,photoUrl);
+    try {
+      await childRepository.uploadChildPic(id, photoUrl);
+    } catch(e){
+      print(e);
+      return null;
+    }
   }
 
   Future<String?> fetchChildPic(int id) async {
-    await childRepository.fetchChildPic(id);
+    try {
+      await childRepository.fetchChildPic(id);
+    } catch(e){
+      print(e);
+      return null;
+    }
   }
 
   Future<void> addChildHobbies() async {

@@ -84,6 +84,14 @@ class _AddChildState extends State<AddChild> {
   Widget get _addProfilePic{
     return AddPic(btnStyle: AppStyles.stylePinkButton,onActionBtnHit: (val){
       print('child bloc $_addChildBloc');
+      if(val.isEmpty ){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Select a pic.',style: AppStyles.errorText),
+          ),
+        );
+        return;
+      }
       _addChildBloc!.photoUrl = val;
       _addChildBloc!.childViewSink.add(Type.INTEREST);
     },);

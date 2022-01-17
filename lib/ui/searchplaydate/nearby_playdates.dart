@@ -151,7 +151,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
             color: AppColors.colorF4F4F4,
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
             child: SendRequestPanel(
-              childAll: childAll,
+              nearbyPlayDate: childAll,
               child: child,
               panelType: 'send_request',
             ),
@@ -165,7 +165,7 @@ class _NearbyPlayDatesState extends State<NearbyPlayDates> {
     }
     child.imgPath = await ImageUtils.getTempFile('nearbyPlaydate_${child.childId}_img');
     if(child.imgPath == null){
-      child.imgPath = await ImageUtils.getTempFileByUrl('nearbyPlaydate_${child.childId}_img',await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(child.childId));
+      child.imgPath = await ImageUtils.getTempFileByUrl('nearbyPlaydate_${child.childId}_img',await CustomBlocProvider.getBloc<ChildBloc>()!.fetchChildPic(child.childId));
     }
     if(child.imgPath == null){
       return;

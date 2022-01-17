@@ -36,6 +36,7 @@ class _AddScheduleState extends State<AddSchedule> {
   /*TimeOfDay selectedTime = TimeOfDay.now();*/
   /*TimeOfDay initialTime;*/
   late int initialTimeSpan;
+  var txt = TextEditingController();
 
 
   // DateTime currentDate = DateTime.now();
@@ -215,14 +216,17 @@ class _AddScheduleState extends State<AddSchedule> {
   }
 
   get _addressPicker {
-    Address? address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
-    print('Address val $address');
+    String address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.addressStr;
+    txt.text = (!_agree ? '' : address);
+    _addChildBloc.address = txt.text;
     return TextFormField(
-      initialValue: address == null ? null : (!_agree ? null : address.address),
+      controller: txt,
+      textCapitalization: TextCapitalization.sentences,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address',prefixIcon: Icon(Icons.gps_fixed)),
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
         setState(() {
+          print('set state called');
           _addChildBloc.address = val;
         });
       },

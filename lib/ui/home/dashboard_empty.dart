@@ -52,7 +52,7 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 0.0),
         child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text('Lets get you started',textAlign: TextAlign.center,style: AppStyles.blueTextBold16),
             SizedBox(height: 16.0,),
             Text('Start by adding your kids to unlock 3 playdates',textAlign: TextAlign.center,style: AppStyles.blackTextRegular16,),
@@ -86,6 +86,7 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
               ),
               Container(
                 height: SizeConfig.blockSizeVertical*40,
+                alignment: Alignment.center,
                 child: PageView(
                   physics: ClampingScrollPhysics(),
                   controller: pageController,
@@ -101,11 +102,36 @@ class _DashboardEmptyState extends State<DashboardEmpty> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: buildPageIndicator(),
+              ),
               SizedBox(
                 height: 16.0,
               ),
             ],
           ),
         ));
+  }
+
+  List<Widget> buildPageIndicator() {
+    List<Widget> list = [];
+    for(int i = 0; i < numPages;i++){
+      list.add(i == currentPage? indicator(true):indicator(false));
+    }
+    return list;
+  }
+
+  indicator(bool isActive) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 150),
+      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      height: 12.0,
+      width: 12.0,
+      decoration: BoxDecoration(
+          color: isActive?Colors.yellow:Colors.grey[400],
+          borderRadius: BorderRadius.all(Radius.circular(12))
+      ),
+    );
   }
 }

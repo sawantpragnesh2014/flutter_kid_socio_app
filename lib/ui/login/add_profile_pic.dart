@@ -44,9 +44,19 @@ class _AddProfilePicState extends State<AddProfilePic> {
                 case Status.LOADING:
                   print('loading create parent');
                   return Loading();
+
                 case Status.COMPLETED:
                   print('create parent completed');
                   _loginBloc.parent!.id = snapshot.data!.data!;
+
+                  if((_loginBloc.photoUrl == null || _loginBloc.photoUrl!.isEmpty)  && _authBloc.getUser!.photoURL == null ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Select a pic.',style: AppStyles.errorText),
+                      ),
+                    );
+                    break;
+                  }
 
                   _loginBloc.uploadParentPic(_loginBloc.parent!.id,_loginBloc.photoUrl ?? '').then((value) => {
                     Future.delayed(Duration.zero, () {
@@ -56,31 +66,23 @@ class _AddProfilePicState extends State<AddProfilePic> {
                   });
                   print('calling home screen now');
                   break;
+
                 case Status.ERROR:
-                  return ErrorPage(
-                    errorMessage: snapshot.data!.message,
-                    onRetryPressed: () => _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid)),
-                  );
                 default:
                   return ErrorPage(
-                    errorMessage: 'Some error occured',
+                    errorMessage: snapshot.data!.message ?? 'Some error occured',
                     onRetryPressed: () => _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid)),
                   );
               }
             }
             return AddPic(
               onActionBtnHit: (val){
-
               /*Image image = Image.memory(base64Decode(val));*/
-
               print('image is $val');
                 _loginBloc.photoUrl = val;
               _loginBloc.createParent(_loginBloc.generateParentObject(_authBloc.getUser!.uid));
-                /*Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => HomeNew()));*/
-
               },
-              photoUrl: _loginBloc.photoUrl ?? '',
+              photoUrl: _authBloc.getUser!.photoURL ?? '',
             btnStyle: AppStyles.stylePinkButton,);
           }
       ),

@@ -26,9 +26,9 @@ class SendAcceptRequestBloc extends Bloc{
     outgoingRequestsController = StreamController<ApiResponse<List<PlayDateRequest>>>.broadcast();
   }
 
-  Future<String>? sendRequest(int childAllId, int childId){
+  Future<String>? sendRequest(int nearbyPlayDateId, int childId){
     try {
-      return sendAcceptRequestRepository.sendRequest(SendRequest(senderId: childId,receiverId: childAllId,requestSummary: RequestSummary()));
+      return sendAcceptRequestRepository.sendRequest(SendRequest(senderId: childId,receiverId: nearbyPlayDateId,requestSummary: RequestSummary()));
     }catch(e){
       print('Error is $e');
     }

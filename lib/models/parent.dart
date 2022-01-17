@@ -10,9 +10,10 @@ class Parent extends Equatable{
   String? photoUrl;
   String gender;
   Address? address;
+  String addressStr;
   UserLocation? userLocation;
 
-  Parent({this.id = 0,required this.uid,required this.firstName,required this.lastName,required this.email,required this.phoneNo, this.photoUrl,this.gender = '', this.address, this.userLocation});
+  Parent({this.id = 0,required this.uid,required this.firstName,required this.lastName,required this.email,required this.phoneNo, this.photoUrl,this.gender = '', this.address,this.addressStr = '', this.userLocation});
 
 
   @override
@@ -35,6 +36,7 @@ class Parent extends Equatable{
       photoUrl: json['parentImage'] ?? '',
       gender: json['gender'],
       address: json['userPersonal'],
+      addressStr: json['address'],
       userLocation: json['userLocation'],
     );
   }

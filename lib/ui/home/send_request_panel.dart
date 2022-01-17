@@ -12,13 +12,13 @@ import 'package:flutter_kid_socio_app/ui/reschedule_playdate/reschedule_playdate
 
 class SendRequestPanel extends StatefulWidget {
 
-  final NearbyPlaydate? childAll;
+  final NearbyPlaydate? nearbyPlayDate;
   final PlayDateRequest? incomingPlayDateRequest;
   late final Child child;
   final String panelType;
   final VoidCallback? callback;
 
-  SendRequestPanel({this.childAll,this.incomingPlayDateRequest,required this.child,required this.panelType,this.callback});
+  SendRequestPanel({this.nearbyPlayDate,this.incomingPlayDateRequest,required this.child,required this.panelType,this.callback});
 
   @override
   _SendRequestPanelState createState() => _SendRequestPanelState();
@@ -28,7 +28,7 @@ class _SendRequestPanelState extends State<SendRequestPanel> {
   late SendAcceptRequestBloc _sendRequestBloc;
 
   Widget get _timeAndHobbies {
-    return TimeAndHobbies(hobbiesName: (widget.panelType.contains('accept_request')? widget.incomingPlayDateRequest!.hobbiesName: widget.childAll!.hobbiesName), fromTime: '2:36 p.m',toTime: '4:36 p.m',);
+    return TimeAndHobbies(hobbiesName: (widget.panelType.contains('accept_request')? widget.incomingPlayDateRequest!.hobbiesName: widget.nearbyPlayDate!.hobbiesName), fromTime: '2:36 p.m',toTime: '4:36 p.m',);
   }
 
 Widget get _actionButtonView {
@@ -36,7 +36,7 @@ Widget get _actionButtonView {
       return ActionButtonView(
         btnName: "Send Request",
         onBtnHit: () async {
-          String? res = await _sendRequestBloc.sendRequest(widget.childAll!.childId, widget.child.id);
+          String? res = await _sendRequestBloc.sendRequest(widget.nearbyPlayDate!.childId, widget.child.id);
           if(res != null) {
            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -99,7 +99,7 @@ Widget get _actionButtonView {
         children: [
           Expanded(
             flex: 1,
-              child: ((widget.panelType.contains('accept_request'))? (ChildInfoTwo( playDateRequest : widget.incomingPlayDateRequest,)): (ChildInfoTwo(childAll: widget.childAll,)))
+              child: ((widget.panelType.contains('accept_request'))? (ChildInfoTwo( playDateRequest : widget.incomingPlayDateRequest,)): (ChildInfoTwo(childAll: widget.nearbyPlayDate,)))
           ),
           Expanded(
               flex: 1,

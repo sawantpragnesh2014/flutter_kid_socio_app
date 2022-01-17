@@ -101,8 +101,8 @@ class _SearchPlayDatesState extends State<SearchPlayDates> {
               SizedBox(height: 12.0,),
               _friendsList(widget.friendList!),
               SizedBox(height: 12.0,),*/
-              Text('Recent Playdates',style: AppStyles.blackTextBold18,),
-              SizedBox(height: 12.0,),
+              /*Text('Recent Playdates',style: AppStyles.blackTextBold18,),
+              SizedBox(height: 12.0,),*/
               /*_recentPlayDatesList(widget.recentPlayDateList ?? [])*/
 
             ],

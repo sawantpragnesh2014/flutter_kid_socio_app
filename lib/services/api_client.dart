@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:convert';
 
@@ -40,6 +41,31 @@ class ApiClient{
     return responseJson;
   }
 
+  uploadPic(File _image,String url) async {
+    var uri = Uri.parse('${_baseUrl+url}');
+    var request = MultipartRequest('POST', uri)
+      /*..fields['FormFile']='$imgUrl'*/
+      ..files.add(MultipartFile.fromBytes('FileForm', /*await File.fromUri("<path/to/file>").readAsBytes()*/_image.readAsBytesSync()));
+    StreamedResponse response = await request.send();
+    print('Image upload response code is ${response.statusCode}' );
+    print('Image upload response is ${response.toString()}');
+    if (response.statusCode == 200) print('Uploaded!');
+  }
+
+  /*void uploadFile(File file, String tag, callback) {
+    final xhr = HttpRequest();
+    xhr.open('POST', "upload/", true);
+    xhr.on.readyStateChange.add((e) {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        callback();
+      }
+    });
+    final formData = new FormData();
+    formData.appendBlob('file', file);
+    formData.append('tag', tag);
+    xhr.send(formData);
+  }*/
+
   Future<dynamic>  addData(dynamic requestBody,String url) async {
     var responseJson;
     try {
@@ -49,7 +75,8 @@ class ApiClient{
     }, body: jsonEncode(requestBody));
 
 
-    print('req body  ${jsonEncode(requestBody)}');
+    /*print('req body  ${jsonEncode(requestBody)}');*/
+    log('req body  ${jsonEncode(requestBody)}');
 
     print('response.statusCode ${response.statusCode}');
     print('response body ${response.body.toString()}');

@@ -119,7 +119,7 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
   Parent generateParentObject(String uid) {
-    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: null,address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation(latitude: _lat, longitude: _lon));
+    parent = Parent(uid: uid,firstName: _firstName,lastName: _lastName,gender: _gender,email: _email,phoneNo: _phoneNo,photoUrl: '',address: Address(address: _addressName,pinCode: _pinCode), userLocation: UserLocation(latitude: _lat, longitude: _lon));
     return parent!;
   }
 
@@ -141,10 +141,22 @@ Future<Parent?> fetchParent(String uid) async{
   }
 
   Future<void> uploadParentPic(int id, String photoUrl) async {
-    await _parentRepository.uploadParentPic(id,photoUrl);
+    /*var map = Map<String, dynamic>();
+    map['FormFile'] = '$photoUrl';
+    map['UserId'] = '$id';*/
+    print('uploading parent pic $id');
+    try {
+      await _parentRepository.uploadParentPic(id, photoUrl);
+    }catch (e){
+      print(e);
+    }
   }
 
   Future<String?> fetchParentPic(int id) async {
-    await _parentRepository.fetchParentPic(id);
+    try {
+      await _parentRepository.fetchParentPic(id);
+    } catch (e){
+      print(e);
+    }
   }
 }

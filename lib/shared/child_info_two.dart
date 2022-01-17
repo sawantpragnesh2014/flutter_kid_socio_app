@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_kid_socio_app/blocs/add_child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
+import 'package:flutter_kid_socio_app/blocs/child_bloc.dart';
 import 'package:flutter_kid_socio_app/blocs/login_bloc.dart';
 import 'package:flutter_kid_socio_app/models/child.dart';
 import 'package:flutter_kid_socio_app/models/nearby_playdate.dart';
@@ -24,7 +25,7 @@ class ChildInfoTwo extends StatefulWidget {
 }
 
 class _ChildInfoTwoState extends State<ChildInfoTwo> {
-  Address? address;
+  late String address;
   late String firstName;
   late int id;
   late String type;
@@ -32,11 +33,11 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
   File? image;
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
-    address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.address;
+    address = CustomBlocProvider.getBloc<LoginBloc>()!.parent!.addressStr;
     // photoUrl = widget.childAll == null ? widget.playDateRequest!.photoUrl : widget.childAll!.photoUrl;
-    photoUrl = widget.childAll == null ? await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(widget.playDateRequest!.requestId) : await CustomBlocProvider.getBloc<AddChildBloc>()!.fetchChildPic(widget.childAll!.childId);
+    setPhotoUrl();
     firstName = widget.childAll == null ? widget.playDateRequest!.firstName : widget.childAll!.firstName;
     id = widget.childAll == null ? widget.playDateRequest!.requestId : widget.childAll!.childId;
     type = widget.childAll == null ? 'playDateRequest' : 'nearbyPlaydate';
@@ -75,7 +76,7 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('$firstName',style: AppStyles.blackTextMedium36,),
-              Text(address == null ? '' : address!.address,style: AppStyles.blackTextMedium14),
+              Text(address,style: AppStyles.blackTextMedium14),
               Text('6th, August - 2 hours ago',style: AppStyles.editTextStyle,),
             ],
           )
@@ -98,5 +99,9 @@ class _ChildInfoTwoState extends State<ChildInfoTwo> {
     }
     setState(() {
     });
+  }
+
+  Future<void> setPhotoUrl() async {
+    photoUrl = widget.childAll == null ? await CustomBlocProvider.getBloc<ChildBloc>()!.fetchChildPic(widget.playDateRequest!.requestId) : await CustomBlocProvider.getBloc<ChildBloc>()!.fetchChildPic(widget.childAll!.childId);
   }
 }

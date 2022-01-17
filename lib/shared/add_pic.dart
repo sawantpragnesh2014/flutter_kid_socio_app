@@ -15,16 +15,16 @@ class AddPic extends StatefulWidget {
   final ButtonStyle btnStyle;
   final StringValue onActionBtnHit;
   final String photoUrl;
+  File? image;
 
   @override
   _AddPicState createState() => _AddPicState();
 
-  AddPic({required this.btnStyle,required this.onActionBtnHit,this.photoUrl = ''});
+  AddPic({required this.btnStyle,required this.onActionBtnHit,this.photoUrl = '',this.image});
 }
 
 class _AddPicState extends State<AddPic> {
   final _picker = ImagePicker();
-  File? _image;
 
   File? fileImg;
   @override
@@ -56,8 +56,8 @@ class _AddPicState extends State<AddPic> {
                 width: 300.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: (_image != null ? FileImage(_image!) : widget.photoUrl.isNotEmpty ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/facebook_logo.png')) as ImageProvider,
-                    fit: BoxFit.cover,
+                    image: (widget.image != null ? FileImage(widget.image!) : widget.photoUrl.isNotEmpty ? NetworkImage(widget.photoUrl + '?width=400&height400'):AssetImage('assets/default_profile_picture.png')) as ImageProvider,
+                    fit: BoxFit.contain,
                   ),
                   borderRadius: BorderRadius.all( Radius.circular(180.0)),
                   border: Border.all(
@@ -70,7 +70,7 @@ class _AddPicState extends State<AddPic> {
             SizedBox(height: 80.0,),
             ActionButtonView(btnName: "Continue",onBtnHit: (){
               print('Action btn hit');
-              String? base64StringFromImage = ImageUtils.upload(_image);
+              String? base64StringFromImage = ImageUtils.upload(widget.image);
               /*_image =*/
               widget.onActionBtnHit(base64StringFromImage??'');
             },buttonStyle: widget.btnStyle,),
@@ -112,19 +112,19 @@ class _AddPicState extends State<AddPic> {
   }
 
   _imgFromCamera() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.camera,);
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera,imageQuality: 85,);
     final File image = File(pickedFile!.path);
 
     setState(() {
-      _image = image;
+      widget.image = image;
     });
   }
 
   _imgFromGallery() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery,);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery,imageQuality: 85,);
     final File image = File(pickedFile!.path);
     setState(() {
-      _image = image;
+      widget.image = image;
     });
   }
 }

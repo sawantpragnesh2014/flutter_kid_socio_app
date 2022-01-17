@@ -38,6 +38,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     Widget get _lastName {
     return TextFormField(
       initialValue: user?.displayName?.split(' ')[1] ?? '',
+      textCapitalization: TextCapitalization.words,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Last Name'),
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
@@ -51,6 +52,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget get _firstName {
     return TextFormField(
       initialValue: user?.displayName?.split(' ')[0] ?? '',
+      textCapitalization: TextCapitalization.words,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'First Name'),
       validator: (val) => FormValidators.validateName(val!),
       onChanged: (val){
@@ -93,6 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget get _address {
     return TextFormField(
       keyboardType: TextInputType.multiline,
+      textCapitalization: TextCapitalization.sentences,
       maxLines: null,
       decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Address'),
       validator: (val) => FormValidators.validateName(val!),
