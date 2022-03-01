@@ -1,16 +1,11 @@
-/*
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_kid_socio_app/blocs/auth_bloc.dart';
-import 'package:flutter_kid_socio_app/blocs/bloc_provider.dart';
-import 'package:flutter_kid_socio_app/models/parent.dart';
 import 'package:flutter_kid_socio_app/shared/app_bar.dart';
 import 'package:flutter_kid_socio_app/shared/colors.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
-import 'package:flutter_kid_socio_app/ui/payment_gateway.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:flutter_kid_socio_app/models/parent.dart';
 
-import 'bottom_nav.dart';
 
 class ChoosePlan extends StatefulWidget {
 
@@ -24,28 +19,52 @@ class ChoosePlan extends StatefulWidget {
 
 class _ChoosePlanState extends State<ChoosePlan> {
   String email = "";
+  late Razorpay _razorpay;
+
   Widget cardView(String txt1, String txt2, String txt3, Color? color) {
-    return Container(
-      height: 150,
-      width: 150,
-      child: Card(
-        color: color,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(txt1, style: TextStyle(fontSize: 30.0, color: Colors.white)),
-              Text(txt2, style: TextStyle(fontSize: 10.0, color: Colors.white)),
-              Text(txt3, style: TextStyle(fontSize: 20.0, color: Colors.white)),
-            ],
+    return InkWell(
+      onTap: (){
+        if(txt1.contains("500")){
+          openCheckOut(500);
+        } else if(txt1.contains("1500")){
+          openCheckOut(1500);
+        }else if (txt1.contains("5000")){
+          openCheckOut(5000);
+        }
+      },
+      child: Container(
+        height: 150,
+        width: 150,
+        child: Card(
+          color: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(txt1, style: TextStyle(fontSize: 30.0, color: Colors.white)),
+                Text(txt2, style: TextStyle(fontSize: 10.0, color: Colors.white)),
+                Text(txt3, style: TextStyle(fontSize: 20.0, color: Colors.white)),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+
+
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
   @override
@@ -90,7 +109,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
               ),
               TextFormField(
                 decoration: AppStyles.textInputDecoration.copyWith(hintText: 'Have a coupon?'),
-                validator: (val) => val!.isEmpty?'Enter a valid coupon':null,
+                validator: (val) => val!.isEmpty?'Enter a valid coupon':'',
                 onChanged: (val){
                   setState(() {
                     email = val;
@@ -101,11 +120,47 @@ class _ChoosePlanState extends State<ChoosePlan> {
           )
           ),
         ),
-        bottomSheet: BottomNav(textName: "Get Started",bgColor:AppColors.coloref4138,onNavHit: (){
-          print('Hello Pragnesh');
-        },)
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear(); // Removes all listeners
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print("Payment successful");
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    print("Payment failed");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    print("External wallet");
+  }
+
+  void openCheckOut(int amt) {
+    var options = {
+      'key': 'rzp_test_VLyrCYtv9hqEOf',
+      'amount': amt,
+      'name': 'Kid Socio',
+      'description': 'kids app',
+      'prefill': {
+        'contact': widget.user.phoneNo,
+        'email': widget.user.email
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch(e){
+      print("${e.toString()}");
+    }
+  }
 }
-*/

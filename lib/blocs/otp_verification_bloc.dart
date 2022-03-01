@@ -31,7 +31,7 @@ class OtpVerificationBloc extends Bloc{
        bool result = await _auth.signInWithPhoneNumber(otp);
        otpVerificationSink.add(ApiResponse.completed(result));
     } catch(e){
-      otpVerificationSink.add(ApiResponse.error(e.toString()));
+      otpVerificationSink.add(ApiResponse.error(e.toString().contains("credential-already-in-use")? "Mobile number already linked with a different user account ":e.toString()));
       print("Failed to sign in: " + e.toString());
     }
   }

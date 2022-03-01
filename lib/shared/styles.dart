@@ -300,6 +300,7 @@ class AppStyles {
   );
 
   static ButtonStyle stylePurpleButton = ElevatedButton.styleFrom(
+    elevation: 8,
   shape: RoundedRectangleBorder(
   borderRadius: BorderRadius.circular(32), // <-- Radius
   ),

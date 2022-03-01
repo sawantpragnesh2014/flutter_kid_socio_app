@@ -13,11 +13,14 @@ import 'package:flutter_kid_socio_app/shared/form_validators.dart';
 import 'package:flutter_kid_socio_app/shared/gender_view.dart';
 import 'package:flutter_kid_socio_app/shared/size_config.dart';
 import 'package:flutter_kid_socio_app/shared/styles.dart';
+import 'package:flutter_kid_socio_app/ui/address_api/AddressSearch.dart';
+import 'package:flutter_kid_socio_app/ui/address_api/place_service.dart';
 import 'package:flutter_kid_socio_app/ui/login/add_profile_pic.dart';
 import 'package:flutter_kid_socio_app/ui/login/phone_verification.dart';
 import 'package:flutter_kid_socio_app/ui/login/privacy_policy.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
 
 class RegistrationForm extends StatefulWidget {
   @override
@@ -26,6 +29,7 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
   final formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
   // print(list['age']); //32
 
 
@@ -34,6 +38,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   late LoginBloc _loginBloc;
   late AuthBloc _authBloc;
+  String?  _sessionToken;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
     Widget get _lastName {
     return TextFormField(
@@ -94,6 +105,23 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Widget get _address {
     return TextFormField(
+      controller: _controller,
+      onTap: () async{
+        // generate a new token here
+        if(_sessionToken == null) {
+          _sessionToken = Uuid().v4();
+        }
+        final Suggestion? result = await showSearch(
+          context: context,
+          delegate: AddressSearch(sessionToken: _sessionToken!,apiClient: PlaceApiProvider(_sessionToken!)),
+        );
+        // This will change the text displayed in the TextField
+        if (result != null) {
+          setState(() {
+            _controller.text = result.description;
+          });
+        }
+      },
       keyboardType: TextInputType.multiline,
       textCapitalization: TextCapitalization.sentences,
       maxLines: null,
@@ -296,22 +324,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         }
                       }
                   ),
+                  SizedBox(height: 20.0,),
                 ],
               ),
             ),
           ),
         ),
       ),
-      /*bottomSheet: BottomNav(textName: 'Continue',bgColor: AppColors.color16499f,onNavHit: (){
-        if(formKey.currentState.validate()) {
-          print('Reg hit');
-          Parent parent = _loginBloc.createParentByFormFields(user.uid);
-          print('Parent created is $parent');
-          _authBloc.setUser(parent);
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => OTPScreen()));
-        }
-      },),*/
     );
   }
 
